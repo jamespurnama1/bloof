@@ -5,9 +5,10 @@ definePageMeta({
 
 const CMSStore = useCMSStore()
 const UIStore = useUIStore()
+const config = useRuntimeConfig()
 
 if (process.server) {
-  const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=metadata,`);
+  const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
 
   if (landing.value) {
     CMSStore.landingData = landing.value;

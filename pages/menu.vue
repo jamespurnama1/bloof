@@ -2,9 +2,10 @@
 const CMSStore = useCMSStore();
 const UIStore = useUIStore();
 const pdf = ref();
+const config = useRuntimeConfig()
 
 if (process.server) {
-  pdf.value = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=?read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=metadata`, {
+  pdf.value = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata`, {
     transform: (ReceivedData: menuData) => {
       return ReceivedData.object.metadata
     }
