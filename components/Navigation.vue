@@ -13,11 +13,23 @@
         class="text-7xl font-bold font-serif -translate-x-full opacity-0" :data-index="index" :key="index">
         <NuxtLink :to="value">{{ key }}</NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/" aria-label="Home" class="">
+        <img src="/logo.svg" alt="Bloof Logo" class="transition h-24 w-auto object-contain"
+          :class="[showFullNav ? '' : 'opacity-0']" />
+          <p class="font-bold font-serif text-xl text-center">Bloof</p>
+      </NuxtLink>
+      </li>
     </TransitionGroup>
     <button aria-label="Open Navigation" class="absolute right-[35px] top-1/2">
-      <img src="@/assets/images/caret.svg" alt="Navigation Arrow" class="transition h-7 w-auto object-contain"
+      <img src="@/assets/images/caret.svg" alt="Navigation Arrow" class="transition h-7 w-auto object-cover"
         :class="[showFullNav ? 'rotate-180' : '']" />
     </button>
+    <NuxtLink to="/" aria-label="Home" class="absolute right-[25px] bottom-5" :class="[showFullNav ? 'opacity-0' : '']">
+      <img src="/logo.svg" alt="Bloof Logo" class="transition h-20 w-auto object-contain" />
+        <p class="font-bold font-serif text-xl text-center">Bloof</p>
+    </NuxtLink>
+    <img src="@/assets/images/border_right.svg" alt="right border" class="absolute right-0 -top-5 h-[120vh] w-2 object-none" />
   </nav>
   <!-- Mobile -->
   <nav v-else-if="!UIStore.loadingScreen" class="fixed z-40 top-0 h-16 w-full bg-teal-600 py-2 px-4 flex justify-between items-center">
