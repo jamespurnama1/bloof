@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
+import { fileURLToPath } from 'node:url'
 
 export const routes = [
   {
@@ -33,7 +34,11 @@ export const routes = [
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  experimental: {
+    renderJsonPayloads: false
+  },
   ssr: true,
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
@@ -41,14 +46,18 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+    vue: {  
+    compilerOptions: {
+      // isCustomElement: (tag) => ['Vue3Lottie'].includes(tag),
+    },
+  },
   runtimeConfig: {
     public: {
       ESB_TOKEN: process.env.ESB_TOKEN,
       ESB_URL: process.env.ESB_URL,
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     },
-    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
-    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
-    CONTENTFUL_PREVIEW_ACCESS_TOKEN: process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
+    COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
   },
   app: {
     head: {
@@ -77,4 +86,16 @@ export default defineNuxtConfig({
       })
     }
   },
+  image: {
+   format: ['avif', 'webp', 'jpg']
+  },
+  vite: {
+    vue: {
+      script: {
+        globalTypeFiles: [
+          fileURLToPath(new URL('./types/index.d.ts', import.meta.url))
+        ]
+      }
+    }
+  }
 })

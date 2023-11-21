@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "lint:prettier": "prettier --check .",
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@samk-dev/nuxt-vcalendar": "^1.0.1",
     "@typescript-eslint/parser": "^6.9.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.53.0",
@@ -30,6 +31,16 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxt/image": "^1.0.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@tato30/vue-pdf": "^1.8.1",
+    "floating-vue": "^2.0.0-beta.24",
+    "gsap": "^3.12.2",
+    "pdfvuer": "^2.0.1",
+    "pinia": "^2.1.7",
+    "v-calendar": "^3.1.2",
+    "vue-pdf-embed": "^1.2.1",
+    "vue3-google-map": "^0.18.0",
     "vue3-lottie": "^3.2.0"
   }
 }

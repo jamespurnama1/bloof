@@ -1,17 +1,27 @@
 <template>
-  <div>
-    <h1>{{ route.name }}</h1>
-    <client-only>
-    <Vue3Lottie
-      animationLink="https://assets10.lottiefiles.com/packages/lf20_soCRuE.json"
-      :height="200"
-      :width="200"
-    />
-  </client-only>
+  <div class="md:ml-[100px]">
+    <section class="flex flex-col gap-12 h-[100dvh] pt-24">
+    <h1 v-if="route.name" class="md:px-10 text-7xl md:text-9xl text-center md:text-left">{{ route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
+    <ClientOnly v-if="route.path === '/happenings'">
+      <Vue3Lottie ref="lottieAnimation" :animationData="super1" :auto-play="false" @on-animation-loaded="onLoad" />
+    </ClientOnly>
+    <img v-else-if="route.path === '/contact'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="@/assets/images/super3.svg" alt="Bloof Pattern" />
+    <img v-else-if="route.path === '/events'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="@/assets/images/super4.svg" alt="Bloof Pattern" />
+    </section>
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-const route = useRoute()
+import { useUIStore } from '~/stores/UI';
+const UIStore = useUIStore();
+const route = useRoute();
+const lottieAnimation = ref();
+import super1 from '~/assets/super1.json';
+
+function onLoad() {
+  document.querySelector('.loading svg')?.setAttribute('preserveAspectRatio', 'xMidYMid slice')
+  // @ts-ignore
+  lottieAnimation.value!.playSegments([0, 300], true)
+}
 </script>

@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces.woff2") format("woff2 supports variations"),
+       url("../fonts/fraunces.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-italics.woff2") format("woff2 supports variations"),
+       url("../fonts/fraunces-italics.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../fonts/plusjakartasans.woff2") format("woff2 supports variations"),
+       url("../fonts/plusjakartasans.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("../fonts/plusjakartasans-italics.woff2") format("woff2 supports variations"),
+       url("../fonts/plusjakartasans-italics.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-style: italic;
+}
