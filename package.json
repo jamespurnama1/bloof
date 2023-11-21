@@ -38,6 +38,7 @@
     "gsap": "^3.12.2",
     "pdfvuer": "^2.0.1",
     "pinia": "^2.1.7",
+    "pixi.js": "^7.3.2",
     "v-calendar": "^3.1.2",
     "vue-pdf-embed": "^1.2.1",
     "vue3-google-map": "^0.18.0",

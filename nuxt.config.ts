@@ -60,6 +60,7 @@ export default defineNuxtConfig({
     COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
   },
   app: {
+    // pageTransition: { name: 'fade', mode: 'out-in' },
     head: {
       link: [
         {rel: "apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png"},

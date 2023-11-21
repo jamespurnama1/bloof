@@ -119,14 +119,14 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtImg preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
+      <NuxtImg v-if="CMSStore.landingData" preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
         sizes="100dvw" :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
-  <main class="md:ml-[100px]">
+  <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex h-screen bg-warm-200 items-center justify-center">
-      <h2 class="md:text-7xl text-3xl text-center mx-auto">Perched atop Hemangini Hotel, is a rooftop haven boasting stunning skyline
+      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5">Perched atop Hemangini Hotel, is a rooftop haven boasting stunning skyline
         views and an innovative cocktail
         program. Discover an <span>enchanting</span>blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly
         merging sophistication with a magnetic&nbsp;ambiance.</h2>
