@@ -29,7 +29,7 @@
       <img src="/logo.svg" alt="Bloof Logo" class="transition h-20 w-auto object-contain" />
         <p class="font-bold font-serif text-xl text-center">Bloof</p>
     </NuxtLink>
-    <img src="@/assets/images/border_right.svg" alt="right border" class="absolute right-0 -top-5 h-[120vh] w-2 object-none" />
+    <img src="@/assets/images/border_right.svg" alt="right border" class="absolute right-0 -top-5 h-[120vh] w-2 object-cover" />
   </nav>
   <!-- Mobile -->
   <nav v-else-if="!UIStore.loadingScreen" class="fixed z-40 top-0 h-16 w-full bg-teal-600 py-2 px-4 flex justify-between items-center">
