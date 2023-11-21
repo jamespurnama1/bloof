@@ -53,7 +53,7 @@ onMounted(() =>{
 
 <template>
   <section class="md:ml-[100px] pt-24 md:pt-0">
-    <h1 class="text-7xl md:text-9xl px-4 py-4 md:px-12 md:py-8">Menu</h1>
+    <h1 class="text-center md:text-left text-5xl md:text-9xl px-4 py-4 md:px-12 md:py-8">Menu</h1>
     <img class="w-full h-auto object-cover" src="/menu.jpg" alt="menu">
   <!-- <ClientOnly>
     <VuePDF :pdf="pdf" />

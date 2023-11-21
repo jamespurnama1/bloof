@@ -1,7 +1,7 @@
 <template>
   <div class="md:ml-[100px]">
     <section class="flex flex-col gap-12 h-[100dvh] pt-24">
-    <h1 v-if="route.name" class="md:px-10 text-7xl md:text-9xl text-center md:text-left">{{ route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
+    <h1 v-if="route.name" class="md:px-10 text-5xl md:text-9xl text-center md:text-left">{{ route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
     <ClientOnly v-if="route.path === '/happenings'">
       <Vue3Lottie class="sub" ref="lottieAnimation" :animationData="super1" :auto-play="false" @on-animation-loaded="onLoad" />
     </ClientOnly>

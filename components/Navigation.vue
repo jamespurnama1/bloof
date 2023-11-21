@@ -33,7 +33,7 @@
   </nav>
   <!-- Mobile -->
   <nav v-else-if="!UIStore.loadingScreen" class="fixed z-40 top-0 h-16 w-full bg-teal-600 py-2 px-4 flex justify-between items-center">
-    <img src="/logo.svg" alt="Bloof Logo" class="object-contain h-full w-auto" />
+    <NuxtLink to="/" class="h-full"><img src="/logo.svg" alt="Bloof Logo" class="object-contain h-full w-auto" /></NuxtLink>
     <NuxtLink to="/" class="font-bold font-serif text-xl">Bloof</NuxtLink>
     <button aria-label="Open Navigation" @click="showFullNav = !showFullNav">
       <img src="@/assets/images/caret.svg" alt="Navigation Arrow" class="transition h-5 w-auto object-contain"

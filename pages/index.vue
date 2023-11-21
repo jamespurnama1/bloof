@@ -161,7 +161,7 @@ onUnmounted(() => {
         <h3 class="text-5xl">Socials</h3>
         <img src="@/assets/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
       </div>
-      <div class="flex w-full flex-col flex-1 bg-pink-200">
+      <div class="flex w-full flex-col md:flex-row flex-1 bg-pink-200">
         <NuxtLink external target="_blank" @mouseover="socialsHover = index" @mouseleave="socialsHover = null"
           v-for="(value, key, index) in CMSStore.landingData.object.metadata.socials" :to="value" class="flex-1">
           <div class="flex w-full h-full items-center justify-center relative overflow-hidden">

@@ -36,7 +36,7 @@ onMounted(() => {
     <Navigation />
     <NuxtPage />
     <Transition name="fade">
-      <aside v-show="bottom" class="fixed right-10 bottom-10">
+      <aside v-show="bottom" class="fixed right-5 bottom-5 md:right-10 md:bottom-10">
         <button @click="scrollTop()" class="flex items-center justify-center">
           <p class="text-sm md:text-base">Back to top</p>
           <img src="@/assets/images/arrow.svg" alt="Arrow Up" aria-label="Arrow-Up"
