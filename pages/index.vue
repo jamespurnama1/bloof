@@ -119,7 +119,7 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtImg v-if="CMSStore.landingData" preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
+      <img v-if="CMSStore.landingData" preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
         sizes="100dvw" :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
