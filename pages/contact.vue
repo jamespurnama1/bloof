@@ -32,11 +32,11 @@ if (process.server) {
         <h2 class="text-4xl text-center md:text-left mt-5 md:mt-0">Contact</h2>
         <div class="flex flex-col md:flex-row gap-8 items-center">
           <span class="w-full md:w-1/2 flex items-center md:justify-start justify-center gap-2">
-            <img class="md:h-12 md:w-auto h-7 w-auto" src="@/assets/images/mail.svg" alt="e-mail" />
+            <img class="md:h-12 md:w-auto h-7 w-auto" src="/images/mail.svg" alt="e-mail" />
             <NuxtLink class="" to="mail:contact@bloofbdg.com">contact@bloofbdg.com</NuxtLink>
           </span>
           <span class="w-full md:w-1/2 flex items-center md:justify-start justify-center gap-2">
-            <img class="md:h-12 md:w-auto h-7 w-auto" src="@/assets/images/phone.svg" alt="phone" />
+            <img class="md:h-12 md:w-auto h-7 w-auto" src="/images/phone.svg" alt="phone" />
             <NuxtLink class="" to="tel:+6281120008999">0811-2000-8999</NuxtLink>
           </span>
         </div>
@@ -63,7 +63,7 @@ if (process.server) {
         </div>
       </div>
       <div class="w-1/3 h-full flex items-center justify-center">
-        <img src="@/assets/images/bird_fly.svg" alt="Bloof Bird Flying" class="h-36 w-auto object-contain" />
+        <img src="/images/bird_fly.svg" alt="Bloof Bird Flying" class="h-36 w-auto object-contain" />
       </div>
     </div>
   </section>

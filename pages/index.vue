@@ -6,6 +6,7 @@ import super1 from '~/assets/super1.json'
 const main = ref();
 const ctx = ref();
 const socialsHover = ref();
+const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
@@ -117,16 +118,18 @@ onUnmounted(() => {
     <div class="transition-opacity duration-1000" :class="[UIStore.loadingScreen ? 'opacity-0' : 'opacity-100']">
       <h1 class="text-7xl">Bloof</h1>
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
-      <img @click="scrollDown" src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+      <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <img v-if="CMSStore.landingData" preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
-        sizes="100dvw" :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
+      <img v-if="CMSStore.landingData" preload
+        :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}?w=1920`" alt="Bloof Restaurant" sizes="100dvw"
+        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex h-screen bg-warm-200 items-center justify-center">
-      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5">Perched atop Hemangini Hotel, is a rooftop haven boasting stunning skyline
+      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5">Perched atop Hemangini Hotel, is a rooftop haven boasting
+        stunning skyline
         views and an innovative cocktail
         program. Discover an <span>enchanting</span>blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly
         merging sophistication with a magnetic&nbsp;ambiance.</h2>
@@ -148,7 +151,7 @@ onUnmounted(() => {
         <h3 class="text-3xl md:text-5xl text-white text-center">Menu</h3>
         <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">Chapter 1</p>
       </NuxtLink>
-      <img src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+      <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
@@ -159,7 +162,7 @@ onUnmounted(() => {
     <section class="h-[100dvh] flex flex-col">
       <div class="w-full bg-warm-400 flex px-6 py-4 items-center gap-6">
         <h3 class="text-5xl">Socials</h3>
-        <img src="@/assets/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
+        <img src="/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
       </div>
       <div class="flex w-full flex-col md:flex-row flex-1 bg-pink-200">
         <NuxtLink external target="_blank" @mouseover="socialsHover = index" @mouseleave="socialsHover = null"
@@ -181,7 +184,7 @@ onUnmounted(() => {
       <NuxtLink to="/happenings" class="mb-5">
         <h3 class="md:text-5xl text-3xl text-white text-center">Happenings</h3>
       </NuxtLink>
-      <img src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+      <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
@@ -202,13 +205,22 @@ onUnmounted(() => {
           <Vue3Lottie ref="lottieReservations" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
             :animationData="super1" :noMargin="true" width="50%" height="100%" :auto-play="true" />
         </ClientOnly> -->
-        <img class="w-full h-full absolute object-cover" src="@/assets/images/super2.svg" alt="Bloof Pattern" />
+        <Transition name="fade">
+          <img v-if="!privateRoom" class="w-full h-full absolute object-cover" src="/images/super2.svg"
+            alt="Bloof Pattern" />
+          <img v-else-if="privateRoom === 'bloof_belly'" class="w-full h-full absolute object-cover"
+            :src="`${CMSStore.landingData.object.metadata.private_rooms.bloof_belly.imgix_url}?w=720`"
+            alt="Bloof Pattern" />
+          <img v-else-if="privateRoom === 'bloof_eye'" class="w-full h-full absolute object-cover"
+            :src="`${CMSStore.landingData.object.metadata.private_rooms.bloof_eye.imgix_url}?w=720`"
+            alt="Bloof Pattern" />
+        </Transition>
       </div>
       <div class="flex items-center justify-center md:w-1/2 h-full bg-teal-400 p-10">
         <ClientOnly>
-          <Reservation />
-        </ClientOnly>
-      </div>
-    </section>
-  </main>
+          <Reservation @private-room="(e) => privateRoom = e" />
+      </ClientOnly>
+    </div>
+  </section>
+</main>
 </template>

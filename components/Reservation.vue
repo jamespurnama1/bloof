@@ -1,15 +1,26 @@
 <script setup lang="ts">
 const UIStore = useUIStore();
 const formStore = useFormStore();
+const CMSStore = useCMSStore();
 const selectedTime = ref(0);
+const privateRoom = ref({
+  name: ['Bloof Eye', 'Bloof Belly'],
+  checked: false,
+  index: 0,
+});
 const selectedPurpose = ref(0);
+const emit = defineEmits(['private-room'])
 const config = useRuntimeConfig()
 const date = ref(new Date(new Date(Date.now()).setHours(new Date().getHours() + 1)));
 const guests = ref(1);
+const terms = ref(false);
+const tried = ref(false);
+const modal = ref(false);
 const submitted = ref(false);
 const purposes = ref([] as purpose[]);
 // 1 month
 const maxDate = new Date(Date.now()).getTime() + 2629800000;
+const max = computed(() => privateRoom.value.checked && privateRoom.value.name[privateRoom.value.index] === 'Bloof Eye' ? 8 : 10)
 // 1 hour
 const minDate = new Date(Date.now()).getTime() + 3600000;
 
@@ -22,19 +33,31 @@ for (let i = 0; i <= 5; i++) {
   noMondays.value.push(new Date(mon));
 }
 
+function handlePrivateRoom(checked: boolean) {
+  if (checked) {
+    privateRoom.value.index ? privateRoom.value.index = 0 : privateRoom.value.index = 1;
+    emit('private-room', privateRoom.value.name[privateRoom.value.index].toLowerCase().replace(' ', '_'))
+  } else {
+    emit('private-room', '')
+  }
+  getGuests.value = guests.value
+}
+
 const getGuests = computed({
   get() {
     return guests.value === 1 ? `${guests.value} guest` : `${guests.value} guests`;
   },
-  set(val) {
-    if (guests.value >= 10 && val === '+') {
+  set(val: string | number) {
+    if (guests.value >= max.value && val === '+') {
       guests.value = 1
     } else if (guests.value <= 1 && val === '-') {
-      guests.value = 10
+      guests.value = max.value
     } else if (val === '+') {
       guests.value++
-    } else {
+    } else if (val === '-') {
       guests.value--
+    } else {
+      guests.value = Math.min(val as number, max.value)
     }
     formStore.guests = guests.value;
   }
@@ -62,7 +85,7 @@ const getDate = computed({
   set(val) {
     let computedVal = val.getTime();
     // reset time to 17:00 if more than 1 day
-    if(Math.abs(computedVal - date.value.getTime()) >= 86400000) {
+    if (Math.abs(computedVal - date.value.getTime()) >= 86400000) {
       computedVal = new Date(computedVal).setHours(17, 0);
     }
     // set minimum 1 hour from now. set maximum 1 month from now
@@ -107,6 +130,7 @@ function onDateChange(date: Date | number) {
 onDateChange(new Date(Date.now()));
 
 async function submitReservation() {
+  terms.value = false
   if (!formStore.valid) return;
   await $fetch(`${config.public.ESB_URL}/reservation/transaction/`, {
     headers,
@@ -120,11 +144,11 @@ async function submitReservation() {
       "reservationDate": formStore.getDate,
       "reservationTime": formStore.getTime,
       "purpose": formStore.purpose,
-      "notes": formStore.notes
+      "notes": formStore.notes + privateRoom.value.checked ? privateRoom.value.name[privateRoom.value.index] : ''
     }
   }).then(res => {
-    console.log(res)
     submitted.value = true;
+    modal.value = true;
   }, error => {
     console.error(error);
   })
@@ -157,19 +181,28 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Pop v-if="terms" @close="terms = false" title="Information and Regulation"
+    :content="CMSStore.landingData.object.metadata.regulation" bird="fly">
+    <button
+      class="button text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
+      @click="submitReservation()">Reserve</button>
+  </Pop>
+  <Pop v-if="submitted && modal" @close="modal = false" @submit="modal = false"
+    :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
   <form v-if="timeData && !submitted" class="flex flex-col max-w-2xl items-center justify-center gap-5">
 
     <!-- Guests -->
     <span class="flex items-center justify-center">
-      <img src="@/assets/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
         @click="getGuests = '-'" />
       <p class="text-2xl md:text-4xl text-center">{{ getGuests }}</p>
-      <img src="@/assets/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="getGuests = '+'" />
+      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="getGuests = '+'" />
     </span>
 
     <!-- Calendar -->
     <span class="flex items-center justify-center">
-      <img @click="onDateChange(getDate.getTime() - 86400000)" src="@/assets/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
+      <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.svg"
+        class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
       <VDropdown auto>
         <p class="text-2xl md:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
           weekday:
@@ -192,25 +225,28 @@ onMounted(async () => {
           </ClientOnly>
         </template>
       </VDropdown>
-      <img @click="onDateChange(getDate.getTime() + 86400000)" src="@/assets/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" />
+      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto"
+        alt="Date Next" />
     </span>
 
     <!-- Time -->
     <span class="flex items-center justify-center">
-      <img src="@/assets/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Time Previous"
-         @click="onDateChange(getDate.getTime() - 1800000)" />
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Time Previous"
+        @click="onDateChange(getDate.getTime() - 1800000)" />
       <VDropdown>
         <p class="text-2xl md:text-4xl text-center">
           {{ getDate.getHours().toString().padStart(2, '0') + ":" + getDate.getMinutes().toString().padStart(2, '0') }}
         </p>
         <template #popper="{ hide }" class="w-max">
           <div class="p-5 grid grid-cols-2 gap-1 w-max">
-            <button @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()" v-for="time in times" class="text-sm md:text-lg font-bold font-serif disabled:opacity-20"
+            <button
+              @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()"
+              v-for="time in times" class="text-sm md:text-lg font-bold font-serif disabled:opacity-20"
               :disabled="!timeAvail.find(x => x === time)">{{ time }}</button>
           </div>
         </template>
       </VDropdown>
-      <img src="@/assets/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Time Next"
+      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Time Next"
         @click="onDateChange(getDate.getTime() + 1800000)" />
     </span>
 
@@ -224,12 +260,22 @@ onMounted(async () => {
     <BloofInput class="flex-1 w-full my-2" placeholder="Purpose" type="purpose" label="purpose" :purposes="purposes"
       required />
     <BloofInput class="flex-1 w-full my-2" placeholder="Notes" type="text" label="notes" />
-
+    <BloofInput @change-check="(e) => { privateRoom.checked = e; handlePrivateRoom(privateRoom.checked) }" type="checkbox" label="private" placeholder="Private Room" />
+    <!-- <label for="private">Private Room</label> -->
+    <span v-if="privateRoom.checked" class="flex items-center justify-center">
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
+        @click="handlePrivateRoom(true)" />
+      <p class="text-2xl md:text-4xl text-center">{{ privateRoom.name[privateRoom.index] }}</p>
+      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
+    </span>
     <!-- Minimum Purchase -->
-    <p v-if="guests >= 5"><sup>*</sup>A minimum purchase of 500k is required for this&nbsp;booking.</p>
+    <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++   is required for this&nbsp;booking.</p>
+    <p v-else-if="guests >= 5"><sup>*</sup>A minimum purchase of Rp. 500.000++ is required for this&nbsp;booking.</p>
+    <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 outline-4 outline">Please fill the&nbsp;form.</p>
 
     <!-- Submit -->
-    <button class="button text-3xl my-2" type="submit" @click.prevent="submitReservation()">Submit</button>
+    <button class="button text-3xl my-2 disabled:opacity-50" type="submit" :disabled="tried && !formStore.valid"
+      @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
   </form>
 
   <div v-else-if="submitted">
@@ -265,5 +311,4 @@ onMounted(async () => {
 
 .v-popper--theme-grid .v-popper__arrow-inner {
   visibility: hidden;
-}
-</style>
+}</style>

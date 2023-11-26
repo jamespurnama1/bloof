@@ -5,8 +5,8 @@
     <ClientOnly v-if="route.path === '/happenings'">
       <Vue3Lottie class="sub" ref="lottieAnimation" :animationData="super1" :auto-play="false" @on-animation-loaded="onLoad" />
     </ClientOnly>
-    <img v-else-if="route.path === '/contact'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="@/assets/images/super3.svg" alt="Bloof Pattern" />
-    <img v-else-if="route.path === '/events'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="@/assets/images/super4.svg" alt="Bloof Pattern" />
+    <img v-else-if="route.path === '/contact'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="/images/super3.svg" alt="Bloof Pattern" />
+    <img v-else-if="route.path === '/events'" class="w-full object-cover h-2/3 absolute bottom-0 right-0" src="/images/super4.svg" alt="Bloof Pattern" />
     </section>
     <slot />
   </div>

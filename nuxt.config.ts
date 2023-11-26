@@ -39,9 +39,10 @@ export default defineNuxtConfig({
   },
   ssr: true,
   modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
+      'postcss-import': {},
       tailwindcss: {},
       autoprefixer: {},
     },
@@ -69,8 +70,18 @@ export default defineNuxtConfig({
         {rel: "manifest", href: "/site.webmanifest", crossorigin:"use-credentials"},
         {rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5"}],
       meta: [
-        {name: "msapplication-TileColor", content:"#00aba9"},
-        {name: "theme-color", content:"#ffffff"}
+        {name: "msapplication-TileColor", content:"#b6dfd8"},
+        {name: "theme-color", content:"#faf9f8"},
+        {property:"og:title", content:"Bloof Bandung"},
+		    {property: "og:site_name", content: "Bloof Restaurant"},
+		    {property: "og:url", content: "https://bloofbdg.com"},
+		    {property: "og:description", content: ""},
+		    {property: "og:type", content: "restaurant"},
+		    {property: "og:image", content: "https://bloofbdg.com/og.jpg"},
+		    {name: "twitter:card", content: "summary_large_image"},
+		    {name: "twitter:title", content: "Bloof Bandung Restaurant"},
+		    {name: "twitter:description", content: ""},
+		    {name: "twitter:image", content: "https://bloofbdg.com/twitter.jpg"},
       ]
     }
   },
