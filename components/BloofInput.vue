@@ -1,10 +1,5 @@
 <template>
   <div ref="bloofInput" class="relative flex items-center justify-center">
-    <!-- <img src="/images/border_top.svg" alt="border top" class="z-10 absolute -top-1 left-0 w-full" />
-    <img src="/images/border_right.svg" alt="border right"
-      class="z-10 absolute -top-1 -right-1 h-[110%] fit-none" />
-    <img src="/images/border_bottom.svg" alt="border bottom" class="z-10 absolute -bottom-1 -left-1 w-full" />
-    <img src="/images/border_left.svg" alt="border left" class="z-10 absolute -top-1 -left-1 h-full" /> -->
 
     <!-- Title -->
     <VDropdown v-if="props.type === 'radio'" auto borderless>

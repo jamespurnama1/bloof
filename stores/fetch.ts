@@ -5,6 +5,12 @@ export const useCMSStore = defineStore('CMS-store', () => {
   const galleryData = ref();
   const eventsData = ref();
   const happeningsData = ref();
+  const posts = ref({
+    ongoing: [],
+    upcoming: [],
+    happy_hours: [],
+    collaborations: [],
+  } as {[key: string]: happening[]})
   const menuData = ref();
   const config = useRuntimeConfig();
 
@@ -16,7 +22,11 @@ export const useCMSStore = defineStore('CMS-store', () => {
          const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`, {
           transform(data: landingData) {return data.object.metadata}
         });
+        if (data.value) {
         landingData.value = data.value;
+        } else {
+          throw Error
+        }
       } catch (error) {
         console.error(error)
       }
@@ -30,7 +40,11 @@ async function getEvents() {
     const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570ca615339469859176ff?read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
           transform(data: eventsData) {return data.object.metadata}
         });
-        eventsData.value = data.value;
+        if (data.value) {
+          eventsData.value = data.value;
+        } else {
+          throw Error
+        }
       } catch (error) {
         console.error(error)
       }
@@ -44,7 +58,11 @@ async function getMenu() {
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`, {
         transform(data: eventsData) {return data.object.metadata}
     });
-      menuData.value = data.value;
+      if (data.value) {
+        menuData.value = data.value;
+      } else {
+        throw Error
+      }
     } catch (error) {
       console.error(error)
     }
@@ -58,7 +76,14 @@ async function getHappenings() {
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&limit=10&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
         transform(data: happeningsData) {return data.objects}
     });
+    if (data.value) {
+      data.value.forEach(x => {
+        posts.value[x.metadata.type.key].push(x)
+      })
       happeningsData.value = data.value;
+    } else {
+      throw Error
+    }
     } catch (error) {
       console.error(error)
     }
@@ -70,7 +95,11 @@ async function getGallery() {
   if (!galleryData.value) {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
-      galleryData.value = data.value;
+      if (data.value) {
+        galleryData.value = data.value;
+      } else {
+      throw Error
+    }
     } catch (error) {
       console.error(error)
     }
@@ -106,5 +135,5 @@ async function getGallery() {
     }
   })
 
-  return { landingData, galleryData, eventsData, happeningsData, menuData, getFirstRow, getSecondRow, getLanding, getEvents, getMenu, getHappenings, getGallery }
+  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, getLanding, getEvents, getMenu, getHappenings, getGallery }
 })

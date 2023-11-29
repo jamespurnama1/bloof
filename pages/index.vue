@@ -112,7 +112,7 @@ onUnmounted(() => {
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
       <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
-        :src="`${CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')}`" alt="Bloof Restaurant" densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
+        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant" densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>

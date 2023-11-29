@@ -38,7 +38,7 @@ export default defineNuxtConfig({
     renderJsonPayloads: false
   },
   ssr: true,
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-swiper'],
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {

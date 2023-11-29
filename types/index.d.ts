@@ -1,14 +1,14 @@
 declare global {
 
   declare type reservationTime = {
-    time: String;
-    available: Boolean;
+    time: string;
+    available: boolean;
   };
 
   declare type purpose = {
-    bookPurposeID: Number;
-    purposeNameId: String;
-    purposeNameEn: String;
+    bookPurposeID: number;
+    purposeNameId: string;
+    purposeNameEn: string;
   };
 
   declare type reservationPurpose = {
@@ -20,67 +20,67 @@ declare global {
   };
 
   declare type media = {
-    name?: String;
-    url: URL;
-    imgix_url: URL;
+    name?: string;
+    url: url;
+    imgix_url: url;
   };
 
   declare type extraMetadata = {
-    id: String;
-    bucket: String;
-    created_at: Date;
-    modified_at: Date;
+    id: string;
+    bucket: string;
+    created_at: date;
+    modified_at: date;
     status: 'published' | 'draft';
-    thumbnail: URL;
-    published_at: Date;
-    modified_by: String;
-    created_by: String;
-    type: String;
+    thumbnail: url;
+    published_at: date;
+    modified_by: string;
+    created_by: string;
+    type: string;
   };
 
   declare type landingData = {
     object: {
       metadata: {
         hero_image: media;
-        socials: {[key: string]: String};
+        socials: {[key: string]: string};
         happening: happening & extraMetadata;
-        location: { address: String; lng: Number; lat: Number; };
+        location: { address: string; lng: number; lat: number; };
       };
     };
   };
 
   declare type galleryData = {
     media: media[];
-    total: Number;
+    total: number;
   };
 
   declare type eventsData = {
     object: {
       metadata: {
-        description: String;
-        brochures?: URL[];
-        call_to_action: String;
-        more_description: String;
+        description: string;
+        brochures?: url[];
+        call_to_action: string;
+        more_description: string;
       };
     };
   };
 
   declare type happening = {
-    slug: String;
-    title: String;
+    slug: string;
+    title: string;
     metadata: {
       thumbnail: media;
       type: {
-        key: String;
-        value: String;
+        key: string;
+        value: string;
       };
-      post: String;
+      post: string;
     };
   };
 
   declare type happeningsData = {
     objects: happening[];
-    total: Number;
+    total: number;
   };
 
   declare type menuData = {
@@ -88,8 +88,8 @@ declare global {
       metadata: {
         thumbnail: media;
         pdf: {
-          url: URL;
-          imgix_url: URL;
+          url: url;
+          imgix_url: url;
         };
       };
     };
