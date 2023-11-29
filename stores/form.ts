@@ -10,6 +10,17 @@ export const useFormStore = defineStore('form-store', () => {
   const guests = ref(1);
   const purpose = ref();
 
+function reset() {
+  name.value = ''
+  title.value = ''
+  email.value = ''
+  phone.value = null
+  notes.value = ''
+  date.value = null
+  guests.value = 1
+  purpose.value = ''
+}
+
   const purposeIsValid = computed(() => {
     return Boolean(purpose.value && purpose.value.length);
   })
@@ -60,5 +71,24 @@ const nameIsValid = computed(() => {
     return date.value.toISOString().substring(0, 10)
   })
 
-  return {name, title, email, phone, notes, date, guests, purpose, valid, getTime, getDate, phoneIsValid, dateIsValid, emailIsValid, nameIsValid, titleIsValid, purposeIsValid, guestIsValid}
+  // Event
+  const pax = ref('>50');
+  const budget = ref('100k');
+
+  const paxIsValid = computed(() => {
+    const arr = ['>50', '50-100', '100-150'];
+    return arr.some(x => x === pax.value);
+  })
+
+  const budgetIsValid = computed(() => {
+    const arr = ['100k', '100k-200k', '200k<'];
+    return arr.some(x => x === budget.value);
+  })
+
+
+  const eventValid = computed(() => {
+    return Boolean(nameIsValid.value && emailIsValid.value && phoneIsValid.value && dateIsValid.value && paxIsValid.value && budgetIsValid.value);
+  })
+
+  return {reset, name, title, email, phone, notes, date, guests, purpose, valid, getTime, getDate, phoneIsValid, dateIsValid, emailIsValid, nameIsValid, titleIsValid, purposeIsValid, guestIsValid, eventValid, budgetIsValid, paxIsValid, pax, budget}
 })

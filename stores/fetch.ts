@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 
 export const useCMSStore = defineStore('CMS-store', () => {
-  const landingData = ref();
-  const galleryData = ref();
-  const eventsData = ref();
-  const happeningsData = ref();
+  const landingData = ref() as Ref<landingData>;
+  const galleryData = ref()  as Ref<galleryData>;
+  const eventsData = ref() as Ref<eventsData>;
+  const happeningsData = ref() as Ref<happening[]>;
   const posts = ref({
     ongoing: [],
     upcoming: [],
@@ -20,7 +20,7 @@ export const useCMSStore = defineStore('CMS-store', () => {
     if (!landingData.value) {
       try {
          const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`, {
-          transform(data: landingData) {return data.object.metadata}
+          transform(data: {object: { metadata: landingData}}) {return data.object.metadata}
         });
         if (data.value) {
         landingData.value = data.value;
@@ -38,7 +38,7 @@ async function getEvents() {
   if (!eventsData.value) {
     try{
     const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570ca615339469859176ff?read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
-          transform(data: eventsData) {return data.object.metadata}
+          transform(data: {object: { metadata: eventsData}}) {return data.object.metadata}
         });
         if (data.value) {
           eventsData.value = data.value;
@@ -56,7 +56,7 @@ async function getMenu() {
   if (!menuData.value) {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`, {
-        transform(data: eventsData) {return data.object.metadata}
+        transform(data: {object: { metadata: menuData}}) {return data.object.metadata}
     });
       if (data.value) {
         menuData.value = data.value;
@@ -74,7 +74,7 @@ async function getHappenings() {
   if (!happeningsData.value) {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&limit=10&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
-        transform(data: happeningsData) {return data.objects}
+        transform(data: happeningsData) { return data.objects }
     });
     if (data.value) {
       data.value.forEach(x => {
@@ -96,7 +96,7 @@ async function getGallery() {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
       if (data.value) {
-        galleryData.value = data.value;
+        galleryData.value = data.value as galleryData;
       } else {
       throw Error
     }

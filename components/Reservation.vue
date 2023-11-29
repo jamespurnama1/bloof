@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
 const UIStore = useUIStore();
 const formStore = useFormStore();
 const CMSStore = useCMSStore();
@@ -155,6 +153,8 @@ async function submitReservation() {
 
 const timeData = ref()
 
+formStore.reset()
+
 onMounted(async () => {
   // get dates
   await Promise.all([$fetch(`${config.public.ESB_URL}/reservation/time/?reservationDate=${date.value.toISOString().substring(0, 10)}`, {
@@ -181,7 +181,7 @@ onMounted(async () => {
 
 <template>
   <Pop v-if="terms" @close="terms = false" title="Information and Regulation"
-    :content="CMSStore.landingData.object.metadata.regulation" bird="fly">
+    :content="CMSStore.landingData.regulation" bird="fly">
     <button
       class="button text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
       @click="submitReservation()">Reserve</button>
@@ -192,10 +192,10 @@ onMounted(async () => {
 
     <!-- Guests -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Guests Previous"
         @click="getGuests = '-'" />
       <p class="text-2xl md:text-4xl text-center">{{ getGuests }}</p>
-      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="getGuests = '+'" />
+      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Guests Next" @click="getGuests = '+'" />
     </span>
 
     <!-- Calendar -->

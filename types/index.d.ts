@@ -39,14 +39,18 @@ declare global {
   };
 
   declare type landingData = {
-    object: {
-      metadata: {
-        hero_image: media;
-        socials: {[key: string]: string};
-        happening: happening & extraMetadata;
-        location: { address: string; lng: number; lat: number; };
-      };
+    hero_image: media;
+    socials: {[key: string]: string};
+    happening: happening & extraMetadata;
+    location: { address: string; lng: number; lat: number; };
+    menu: {
+      metadata: menuData;
     };
+    private_rooms: {
+      bloof_eye: media;
+      bloof_belly: media;
+    };
+    regulation: string;
   };
 
   declare type galleryData = {
@@ -55,14 +59,10 @@ declare global {
   };
 
   declare type eventsData = {
-    object: {
-      metadata: {
-        description: string;
-        brochures?: url[];
-        call_to_action: string;
-        more_description: string;
-      };
-    };
+    description: string;
+    brochures?: url[];
+    call_to_action: string;
+    more_description: string;
   };
 
   declare type happening = {
@@ -84,14 +84,10 @@ declare global {
   };
 
   declare type menuData = {
-    object: {
-      metadata: {
-        thumbnail: media;
-        pdf: {
-          url: url;
-          imgix_url: url;
-        };
-      };
+    thumbnail: media;
+    pdf: {
+      url: url;
+      imgix_url: url;
     };
   };
 };
