@@ -8,6 +8,15 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
+const CMSStore = useCMSStore()
+if (process.server) {
+  CMSStore.getLanding()
+  CMSStore.getMenu()
+  CMSStore.getEvents()
+  CMSStore.getHappenings()
+  CMSStore.getGallery()
+}
+
 const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 const UIStore = useUIStore();
 const bottom = ref(false);

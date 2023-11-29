@@ -99,7 +99,10 @@ export default defineNuxtConfig({
     }
   },
   image: {
-   format: ['avif', 'webp', 'jpg']
+   format: ['avif', 'webp', 'jpg'],
+     imgix: {
+      baseURL: 'https://imgix.cosmicjs.com'
+    }
   },
   vite: {
     vue: {

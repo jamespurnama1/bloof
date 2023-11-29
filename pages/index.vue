@@ -15,49 +15,7 @@ const UIStore = useUIStore();
 const CMSStore = useCMSStore();
 const formStore = useFormStore();
 const lottieAnimation = ref();
-const config = useRuntimeConfig();
 
-if (process.server) {
-  const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
-
-  if (landing.value) {
-    CMSStore.landingData = landing.value;
-  } else {
-    throw Error
-  }
-
-  const { data: gallery } = await useFetch<galleryData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
-
-  if (gallery.value) {
-    CMSStore.galleryData = gallery.value;
-  } else {
-    throw Error
-  }
-
-  // const { data: happenings } = await useFetch<happeningsData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&limit=10&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`);
-
-  // if (happenings.value) {
-  //   CMSStore.happeningsData = happenings.value;
-  // } else {
-  //   throw Error
-  // }
-
-  const { data: events } = await useFetch<eventsData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570ca615339469859176ff?read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`);
-
-  if (events.value) {
-    CMSStore.eventsData = events.value;
-  } else {
-    throw Error
-  }
-
-  const { data: menu } = await useFetch<menuData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
-
-  if (menu.value) {
-    CMSStore.menuData = menu.value;
-  } else {
-    throw Error
-  }
-}
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
@@ -77,12 +35,15 @@ function handleNewsletter() {
   newsletter.value = false;
 }
 
-onMounted(() => {
+onMounted(async() => {
   UIStore.$subscribe((mutation, state) => {
     if (UIStore.loadingScreen || newsletterTried.value) return;
-    newsletter.value = true;
+    setTimeout(() => {
+      newsletter.value = true;
+    }, 1500);
   })
 
+  await nextTick()
   ctx.value = gsap.context((self) => {
     // Nav Auto
     ScrollTrigger.create({
@@ -150,8 +111,8 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <nuxtImg v-if="CMSStore.landingData" preload
-        :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}?w=1920`" alt="Bloof Restaurant" sizes="100dvw"
+      <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
+        :src="`${CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')}`" alt="Bloof Restaurant" densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
@@ -186,7 +147,7 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <img class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.menuData.object.metadata.thumbnail.imgix_url">
+        :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url">
     </section>
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
@@ -196,13 +157,13 @@ onUnmounted(() => {
       </div>
       <div class="flex w-full flex-col md:flex-row flex-1 bg-pink-200">
         <NuxtLink external target="_blank" @mouseover="socialsHover = index" @mouseleave="socialsHover = null"
-          v-for="(value, key, index) in CMSStore.landingData.object.metadata.socials" :to="value" class="flex-1">
+          v-for="(value, key, index) in CMSStore.landingData.socials" :to="value" class="flex-1">
           <div class="flex w-full h-full items-center justify-center relative overflow-hidden">
             <h4 class="relative z-10 text-4xl">{{ key }}</h4>
             <ClientOnly>
               <Vue3Lottie ref="lottieAnimation" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" :animationData="super1"
-                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.object.metadata.socials).length"
+                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.socials).length"
                 height="100%" :auto-play="true" @on-animation-loaded="onLoad(index)" />
             </ClientOnly>
           </div>
@@ -219,7 +180,7 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtImg class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.landingData.object.metadata.happening.metadata.thumbnail.imgix_url" />
+        :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url" />
     </section>
     <!-- Maps --->
     <section class="h-[100dvh]">
@@ -239,10 +200,10 @@ onUnmounted(() => {
           <img v-if="!privateRoom" class="w-full h-full absolute object-cover" src="/images/super2.svg"
             alt="Bloof Pattern" />
           <img v-else-if="privateRoom === 'bloof_belly'" class="w-full h-full absolute object-cover"
-            :src="`${CMSStore.landingData.object.metadata.private_rooms.bloof_belly.imgix_url}?w=720`"
+            :src="`${CMSStore.landingData.private_rooms.bloof_belly.imgix_url}?w=720`"
             alt="Bloof Pattern" />
           <img v-else-if="privateRoom === 'bloof_eye'" class="w-full h-full absolute object-cover"
-            :src="`${CMSStore.landingData.object.metadata.private_rooms.bloof_eye.imgix_url}?w=720`"
+            :src="`${CMSStore.landingData.private_rooms.bloof_eye.imgix_url}?w=720`"
             alt="Bloof Pattern" />
         </Transition>
       </div>

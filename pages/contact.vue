@@ -7,26 +7,31 @@ const CMSStore = useCMSStore()
 const UIStore = useUIStore()
 const config = useRuntimeConfig()
 
-if (process.server) {
-  const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
+// if (process.server) {
+//   const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
+//   if (landing.value) {
+//     CMSStore.landingData = landing.value;
+//   } else {
+//     throw Error
+//   }
+//   console.log(CMSStore.landingData)
+// }
 
-  if (landing.value) {
-    CMSStore.landingData = landing.value;
-    UIStore.fetching = false;
-  } else {
-    throw Error
-  }
-}
+onMounted(async() => {
+  // CMSStore.$subscribe((mutation, state) => {
+  //   console.log(CMSStore.landingData)
+  // })
+  // await nextTick();
+  UIStore.fetching = false;
+})
 </script>
 
 <template>
   <section class="">
-    <div class="h-[66vh]">
+    <div v-if="CMSStore.landingData" class="h-[66vh]">
       <Maps />
     </div>
-    <NuxtLink class="text-xs md:text-sm px-2 md:px-12" external to="https://maps.app.goo.gl/wuhZUwjokcWtqcGY9">Jl. Dr.
-      Setiabudi
-      No.66, Hegarmanah, Kec. Cidadap, Kota Bandung, Jawa Barat&nbsp;40141</NuxtLink>
+    <NuxtLink class="text-xs md:text-sm px-2 md:px-12" external to="https://maps.app.goo.gl/wuhZUwjokcWtqcGY9">Jl. Dr. Setiabudi No.66, Hegarmanah, Kec. Cidadap, Kota Bandung, Jawa Barat&nbsp;40141</NuxtLink>
     <div class="flex flex-col items-center md:flex-row w-full px-2 md:px-12 md:mt-12">
       <div class="md:w-2/3 flex flex-col gap-5">
         <h2 class="text-4xl text-center md:text-left mt-5 md:mt-0">Contact</h2>

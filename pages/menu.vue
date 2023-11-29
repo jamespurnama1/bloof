@@ -44,10 +44,11 @@ if (process.server) {
 //   { immediate: true }
 // );
 
-onMounted(() =>{
-  setTimeout(() => {
+onMounted(async() =>{
+  // setTimeout(() => {
+    await nextTick()
     UIStore.fetching = false;
-  }, 500);
+  // }, 500);
 })
 </script>
 

@@ -14,11 +14,10 @@ if (process.server) {
   }
 }
 
-onMounted(() => {
+onMounted(async() => {
   document.body.style.overflow = 'hidden'
-  setTimeout(() => {
+  await nextTick()
     UIStore.fetching = false;
-  }, 500);
 
 
   // Class to generate a random masonry layout, using a square grid as base
