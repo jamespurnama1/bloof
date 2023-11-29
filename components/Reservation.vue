@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+
 const UIStore = useUIStore();
 const formStore = useFormStore();
 const CMSStore = useCMSStore();
-const selectedTime = ref(0);
 const privateRoom = ref({
   name: ['Bloof Eye', 'Bloof Belly'],
   checked: false,
   index: 0,
 });
-const selectedPurpose = ref(0);
 const emit = defineEmits(['private-room'])
 const config = useRuntimeConfig()
 const date = ref(new Date(new Date(Date.now()).setHours(new Date().getHours() + 1)));
@@ -107,12 +107,11 @@ const getDate = computed({
 })
 
 
-const attributes = ref([
-  {
+const attributes = ref(
+  [{
     highlight: true,
     dates: date.value,
-  },
-]);
+  }]);
 
 // Avail time
 const timeAvail = ref([]) as Ref<String[]>
@@ -241,7 +240,8 @@ onMounted(async () => {
           <div class="p-5 grid grid-cols-2 gap-1 w-max">
             <button
               @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()"
-              v-for="time in times" class="text-sm md:text-lg font-bold font-serif disabled:opacity-20"
+              v-for="time in times"
+              class="text-sm md:text-lg font-bold font-serif disabled:opacity-20 hover:disabled:scale-100"
               :disabled="!timeAvail.find(x => x === time)">{{ time }}</button>
           </div>
         </template>
@@ -260,7 +260,8 @@ onMounted(async () => {
     <BloofInput class="flex-1 w-full my-2" placeholder="Purpose" type="purpose" label="purpose" :purposes="purposes"
       required />
     <BloofInput class="flex-1 w-full my-2" placeholder="Notes" type="text" label="notes" />
-    <BloofInput @change-check="(e) => { privateRoom.checked = e; handlePrivateRoom(privateRoom.checked) }" type="checkbox" label="private" placeholder="Private Room" />
+    <BloofInput @change-check="(e) => { privateRoom.checked = e; handlePrivateRoom(privateRoom.checked) }" type="checkbox"
+      label="private" placeholder="Private Room" />
     <!-- <label for="private">Private Room</label> -->
     <span v-if="privateRoom.checked" class="flex items-center justify-center">
       <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
@@ -269,12 +270,14 @@ onMounted(async () => {
       <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
     </span>
     <!-- Minimum Purchase -->
-    <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++   is required for this&nbsp;booking.</p>
+    <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.</p>
     <p v-else-if="guests >= 5"><sup>*</sup>A minimum purchase of Rp. 500.000++ is required for this&nbsp;booking.</p>
-    <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 outline-4 outline">Please fill the&nbsp;form.</p>
+    <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 outline-4 outline">Please fill the form&nbsp;correctly.</p>
 
     <!-- Submit -->
-    <button class="button text-3xl my-2 disabled:opacity-50" type="submit" :disabled="tried && !formStore.valid"
+    <button
+      class="button text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
+      type="submit" :disabled="tried && !formStore.valid"
       @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
   </form>
 
@@ -311,4 +314,5 @@ onMounted(async () => {
 
 .v-popper--theme-grid .v-popper__arrow-inner {
   visibility: hidden;
-}</style>
+}
+</style>

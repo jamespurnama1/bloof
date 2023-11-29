@@ -1,19 +1,19 @@
 <template>
   <section class="flex items-center justify-center fixed top-0 left-0 w-full h-full z-50">
     <dialog ref="dialog" open
-      class="bg-warm-200 relative max-h-[70%] outline outline-4 outline-black w-min min-w-[50%] scale-0 h-full">
-      <button class="absolute top-5 right-5" @click="$emit('close')"><img class="h-6 w-auto" src="/images/x.svg"
+      class="bg-warm-200 relative outline outline-4 outline-black w-min md:min-w-[50%] min-w-[90%] scale-0 max-h-[70%]">
+      <button class="absolute top-5 right-5 z-10" @click="$emit('close')"><img class="h-6 w-auto" src="/images/x.svg"
           alt="Close Pop up" /></button>
-      <div class="flex flex-col p-5 relative overflow-scroll h-full pt-12">
-      <div class="flex flex-col gap-3 items-center">
-        <div class="flex items-center gap-5">
+      <div class="flex flex-col p-3 md:p-5 relative overflow-y-scroll h-min pt-6 md:pt-12 gap-3 md:gap-5">
+      <div class="flex flex-col gap-1 md:gap-3 items-center">
+        <div class="flex flex-col md:flex-row items-center gap-5">
           <img class="h-12 w-auto" :src="`/images/bird_${props.bird}.svg`" :alt="`bird ${props.bird}`" />
-          <h2 class="text-center text-4xl">{{ props.title }}</h2>
+          <h2 class="text-center text-xl md:text-4xl">{{ props.title }}</h2>
         </div>
-        <p class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
+        <p v-if="props.content" class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
       </div>
       <slot>
-        <button class="button text-3xl my-2" @click="$emit('submit')">Okay</button>
+        <button class="button text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100" @click="$emit('submit')">Okay</button>
       </slot>
       </div>
     </dialog>

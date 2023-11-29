@@ -1,22 +1,23 @@
-// declare global {
+declare global {
+
   declare type reservationTime = {
     time: String;
     available: Boolean;
-  }
+  };
 
   declare type purpose = {
     bookPurposeID: Number;
     purposeNameId: String;
     purposeNameEn: String;
-  }
+  };
 
-  declare interface reservationPurpose {
+  declare type reservationPurpose = {
     reservationPurpose: purpose[]
-  }
+  };
 
-  declare interface reservationTimes {
+  declare type reservationTimes = {
     reservationTime: reservationTime[];
-  }
+  };
 
   declare type media = {
     name?: String;
@@ -35,9 +36,9 @@
     modified_by: String;
     created_by: String;
     type: String;
-  }
+  };
 
-  declare interface landingData {
+  declare type landingData = {
     object: {
       metadata: {
         hero_image: media;
@@ -48,12 +49,12 @@
     };
   };
 
-  declare interface galleryData {
+  declare type galleryData = {
     media: media[];
     total: Number;
   };
 
-  declare interface eventsData {
+  declare type eventsData = {
     object: {
       metadata: {
         description: String;
@@ -75,24 +76,24 @@
       };
       post: String;
     };
-  }
+  };
 
-  declare interface happeningsData {
+  declare type happeningsData = {
     objects: happening[];
     total: Number;
   };
 
-  declare interface menuData {
+  declare type menuData = {
     object: {
       metadata: {
         thumbnail: media;
         pdf: {
           url: URL;
           imgix_url: URL;
-        }
-      }
-    }
-  }
-// }
+        };
+      };
+    };
+  };
+};
 
 export {};

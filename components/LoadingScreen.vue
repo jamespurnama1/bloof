@@ -37,8 +37,10 @@ onMounted(async () => {
   setTimeout(() => {
     takingLonger.value = true
   }, 10000)
+  await new Promise(resolve => setTimeout(resolve, 10));
+  // await nextTick()
   window.scrollTo(0, 0)
-  await new Promise(resolve => setTimeout(resolve, 100));
+  // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
 })
 

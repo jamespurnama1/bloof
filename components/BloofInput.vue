@@ -45,7 +45,7 @@
 
     <!-- Checkbox -->
     <span v-else-if="props.type === 'checkbox'" class="flex items-center gap-3">
-      <div @click="value = !value; $emit('changeCheck', value)" class="bordered h-5 w-5 relative">
+      <div @click="value = !value; $emit('changeCheck', value)" class="bordered bg-warm-200 h-5 w-5 relative">
         <img v-if="value" class="scale-[200%] origin-bottom" src="/images/check.svg" alt="checked" />
       </div>
       <input type="checkbox" :id="props.label" :name="props.label"

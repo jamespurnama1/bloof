@@ -6,10 +6,14 @@ import super1 from '~/assets/super1.json'
 const main = ref();
 const ctx = ref();
 const socialsHover = ref();
+const newsletterTried = ref(false);
+const modal = ref(false);
+const newsletter = ref(false);
 const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
+const formStore = useFormStore();
 const lottieAnimation = ref();
 const config = useRuntimeConfig();
 
@@ -62,8 +66,23 @@ function onLoad(index: number) {
   // @ts-ignore
   lottieAnimation.value![index].playSegments([0, 300], true)
 }
-const { currentRoute } = useRouter();
+
+function handleNewsletter() {
+  if (!formStore.emailIsValid) {
+    newsletterTried.value = true; 
+    return
+  }
+  //submit to firebase
+  modal.value = true;
+  newsletter.value = false;
+}
+
 onMounted(() => {
+  UIStore.$subscribe((mutation, state) => {
+    if (UIStore.loadingScreen || newsletterTried.value) return;
+    newsletter.value = true;
+  })
+
   ctx.value = gsap.context((self) => {
     // Nav Auto
     ScrollTrigger.create({
@@ -113,6 +132,17 @@ onUnmounted(() => {
 
 <template>
   <!-- Hero --->
+  <Pop v-if="newsletter" @close="newsletter = false; newsletterTried = true" @submit="handleNewsletter()" title="Don’t miss out on promotions!"
+    :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'" bird="fly">
+    <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
+      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here." :required="true" />
+      <button
+        class="button text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
+        @click="handleNewsletter()">Submit</button>
+    </div>
+  </Pop>
+  <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false"
+    :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
   <header class="h-screen w-full flex flex-col relative justify-center items-center z-20">
     <img src="/logo.svg" alt="Bloof Logo" class="md:h-72 h-36 w-auto relative z-10" />
     <div class="transition-opacity duration-1000" :class="[UIStore.loadingScreen ? 'opacity-0' : 'opacity-100']">
@@ -120,7 +150,7 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <img v-if="CMSStore.landingData" preload
+      <nuxtImg v-if="CMSStore.landingData" preload
         :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}?w=1920`" alt="Bloof Restaurant" sizes="100dvw"
         :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
@@ -219,8 +249,8 @@ onUnmounted(() => {
       <div class="flex items-center justify-center md:w-1/2 h-full bg-teal-400 p-10">
         <ClientOnly>
           <Reservation @private-room="(e) => privateRoom = e" />
-      </ClientOnly>
-    </div>
-  </section>
-</main>
+        </ClientOnly>
+      </div>
+    </section>
+  </main>
 </template>
