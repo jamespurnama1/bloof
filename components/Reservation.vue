@@ -171,7 +171,7 @@ onMounted(async () => {
       (res[0] as reservationTimes).reservationTime.forEach(x => {
         if (x.available) timeAvail.value.push(x.time)
       })
-      UIStore.fetching = false;
+      UIStore.fetch = false;
     }
   }, error => {
     console.error(error);

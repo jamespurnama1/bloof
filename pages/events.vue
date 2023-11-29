@@ -5,8 +5,7 @@ definePageMeta({
 const UIStore = useUIStore();
 
 onMounted(async() => {
-  await nextTick()
-    UIStore.fetching = false;
+
 })
 </script>
 

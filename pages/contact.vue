@@ -21,8 +21,6 @@ onMounted(async() => {
   // CMSStore.$subscribe((mutation, state) => {
   //   console.log(CMSStore.landingData)
   // })
-  // await nextTick();
-  UIStore.fetching = false;
 })
 </script>
 

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useUIStore = defineStore('UI-store', () => {
   const loadingScreen = ref(true);
-  const fetching = ref(true);
+  const fetch = ref(true);
   const maps_loading = ref(true);
   const showNav = ref(false);
   const width = ref(0);
@@ -20,7 +20,12 @@ export const useUIStore = defineStore('UI-store', () => {
     return true;
   })
 
+  const fetching = computed(() => {
+    if (currentRoute.value.path === '/') return fetch.value;
+    return false;
+  })
+
   const loading = computed(() => maps.value || fetching.value)
 
-  return { fetching, loading, maps, maps_loading, loadingScreen, nav, showNav, width }
+  return { fetch, fetching, loading, maps, maps_loading, loadingScreen, nav, showNav, width }
 })

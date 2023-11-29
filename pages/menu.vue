@@ -46,8 +46,6 @@ if (process.server) {
 
 onMounted(async() =>{
   // setTimeout(() => {
-    await nextTick()
-    UIStore.fetching = false;
   // }, 500);
 })
 </script>
