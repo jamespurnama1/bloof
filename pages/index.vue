@@ -27,7 +27,7 @@ function onLoad(index: number) {
 
 function handleNewsletter() {
   if (!formStore.emailIsValid) {
-    newsletterTried.value = true; 
+    newsletterTried.value = true;
     return
   }
   //submit to firebase
@@ -35,7 +35,7 @@ function handleNewsletter() {
   newsletter.value = false;
 }
 
-onMounted(async() => {
+onMounted(async () => {
   UIStore.$subscribe((mutation, state) => {
     if (UIStore.loadingScreen || newsletterTried.value) return;
     setTimeout(() => {
@@ -93,10 +93,13 @@ onUnmounted(() => {
 
 <template>
   <!-- Hero --->
-  <Pop v-if="newsletter" @close="newsletter = false; newsletterTried = true" @submit="handleNewsletter()" title="Don’t miss out on promotions!"
-    :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'" bird="fly">
+  <Pop v-if="newsletter" @close="newsletter = false; newsletterTried = true" @submit="handleNewsletter()"
+    title="Don’t miss out on promotions!"
+    :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
+    bird="fly">
     <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
-      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here." :required="true" />
+      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here."
+        :required="true" />
       <button
         class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
         @click="handleNewsletter()">Submit</button>
@@ -112,7 +115,8 @@ onUnmounted(() => {
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
       <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
-        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant" densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
+        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
+        densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
@@ -137,13 +141,13 @@ onUnmounted(() => {
       </div>
     </section>
     <!-- Menu --->
-    <section class="relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
+    <section class="menu relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
       <NuxtLink to="/menu" class="md:mb-10">
         <h3 class="text-3xl md:text-5xl text-white text-center">Menu</h3>
         <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">Chapter 1</p>
       </NuxtLink>
       <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
-        class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert" />
+        class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <img class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
@@ -163,20 +167,20 @@ onUnmounted(() => {
             <ClientOnly>
               <Vue3Lottie ref="lottieAnimation" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" :animationData="super1"
-                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.socials).length"
-                height="100%" :auto-play="true" @on-animation-loaded="onLoad(index)" />
+                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
+                :auto-play="true" @on-animation-loaded="onLoad(index)" />
             </ClientOnly>
           </div>
         </NuxtLink>
       </div>
     </section>
     <!-- Events --->
-    <section class="relative h-[100dvh] flex justify-end items-end p-2 md:p-10 overflow-hidden">
+    <section class="happenings relative h-[100dvh] flex justify-end items-end p-2 md:p-10 overflow-hidden">
       <NuxtLink to="/happenings" class="mb-5">
         <h3 class="md:text-5xl text-3xl text-white text-center">Happenings</h3>
       </NuxtLink>
       <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
-        class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert" />
+        class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtImg class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
@@ -200,11 +204,9 @@ onUnmounted(() => {
           <img v-if="!privateRoom" class="w-full h-full absolute object-cover" src="/images/super2.svg"
             alt="Bloof Pattern" />
           <img v-else-if="privateRoom === 'bloof_belly'" class="w-full h-full absolute object-cover"
-            :src="`${CMSStore.landingData.private_rooms.bloof_belly.imgix_url}?w=720`"
-            alt="Bloof Pattern" />
+            :src="`${CMSStore.landingData.private_rooms.bloof_belly.imgix_url}?w=720`" alt="Bloof Pattern" />
           <img v-else-if="privateRoom === 'bloof_eye'" class="w-full h-full absolute object-cover"
-            :src="`${CMSStore.landingData.private_rooms.bloof_eye.imgix_url}?w=720`"
-            alt="Bloof Pattern" />
+            :src="`${CMSStore.landingData.private_rooms.bloof_eye.imgix_url}?w=720`" alt="Bloof Pattern" />
         </Transition>
       </div>
       <div class="flex items-center justify-center md:w-1/2 h-full bg-teal-400 p-10">
@@ -216,6 +218,22 @@ onUnmounted(() => {
   </main>
 </template>
 
-<style lang="scss">
-//animation: rotate duration timing-function delay iteration-count direction fill-mode;
-</style>
+<style scoped lang="scss">
+.happenings:hover,
+.menu:hover {
+  .arrow {
+    animation: rotate 2s steps(4, end) infinite;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(190deg);
+  }
+  50% {
+    transform: rotate(230deg);
+  }
+  100% {
+    transform: rotate(200deg);
+  }
+}</style>
