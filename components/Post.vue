@@ -11,7 +11,7 @@
     </button> -->
       <swiper-slide class="relative h-full overflow-hidden" v-for="(post, i) in (shuffledArray as happening[] | number[])"
         :key="i">
-        <NuxtLink v-if="typeof post !== 'number'" :to="post.slug" class=" group/item p-2 w-full h-full flex items-end">
+        <NuxtLink v-if="typeof post !== 'number'" :to="`/happenings/${post.slug}`" class=" group/item p-2 w-full h-full flex items-end">
           <h3 class="text-white relative z-10 whitespace-nowrap overflow-ellipsis max-w-[80%] overflow-hidden text-xl">{{
             post.title }}</h3>
           <div

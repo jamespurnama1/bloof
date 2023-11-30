@@ -13,8 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useUIStore } from '~/stores/UI';
-const UIStore = useUIStore();
 const route = useRoute();
 const lottieAnimation = ref();
 import super1 from '~/assets/super1.json';
