@@ -123,11 +123,7 @@ onUnmounted(() => {
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex h-screen bg-warm-200 items-center justify-center">
-      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5">Perched atop Hemangini Hotel, is a rooftop haven boasting
-        stunning skyline
-        views and an innovative cocktail
-        program. Discover an <span>enchanting</span>blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly
-        merging sophistication with a magnetic&nbsp;ambiance.</h2>
+      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
     </section>
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] w-full overflow-hidden flex-col my-5">
@@ -236,4 +232,12 @@ onUnmounted(() => {
   100% {
     transform: rotate(200deg);
   }
-}</style>
+}
+
+.circle {
+  background-image: url('/images/circle.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+</style>
