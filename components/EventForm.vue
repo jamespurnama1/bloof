@@ -133,7 +133,20 @@ function onDateChange(date: Date | number) {
 
 onDateChange(new Date(Date.now()));
 
-function handleSubmit() {
+async function handleSubmit() {
+  if (!formStore.eventValid) return;
+  await $fetch('/api/events', {
+    method: 'POST',
+    body: { 
+      name: formStore.name,
+      phone: formStore.phone,
+      email: formStore.email,
+      notes: formStore.notes,
+      date: formStore.getDate,
+      pax: formStore.pax,
+      budget: formStore.budget,
+    }
+  })
   modal.value = true;
   submitted.value = true;
 }

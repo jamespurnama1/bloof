@@ -63,6 +63,9 @@ export default defineNuxtConfig({
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     },
     COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
+    GMAIL_SEND: process.env.GMAIL_SEND,
+    GMAIL_RECEIVE: process.env.GMAIL_RECEIVE,
+    GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
   },
   app: {
     // pageTransition: { name: 'fade', mode: 'out-in' },
@@ -116,5 +119,8 @@ export default defineNuxtConfig({
         ]
       }
     }
+  },
+  nitro: {
+    preset: "vercel",
   }
 })
