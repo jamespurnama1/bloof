@@ -1,6 +1,6 @@
 <template>
   <CustomMarker :options="{ position: { lat: marker.lat, lng: marker.lng }, anchorPoint: 'CENTER' }">
-    <img src="@/assets/images/marker.svg" width="80" height="80" />
+    <img src="/images/marker.svg" width="80" height="80" />
   </CustomMarker>
 </template>
 

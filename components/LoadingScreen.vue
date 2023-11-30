@@ -10,7 +10,7 @@ const logo = ref(true);
 const takingLonger = ref(false);
 const { currentRoute } = useRouter();
 
-UIStore.$subscribe((mutation, state) => {
+function loadIn() {
   if (UIStore.loading) return;
   // @ts-ignore
   lottieAnimation.value?.playSegments([300, 360], false);
@@ -18,6 +18,10 @@ UIStore.$subscribe((mutation, state) => {
   setTimeout(() => {
     logo.value = false
   }, 3000)
+}
+
+UIStore.$subscribe((mutation, state) => {
+  loadIn()
 })
 
 function onLottieLoop(x: boolean) {
@@ -37,9 +41,12 @@ onMounted(async () => {
   setTimeout(() => {
     takingLonger.value = true
   }, 10000)
+  await new Promise(resolve => setTimeout(resolve, 10));
+  // await nextTick()
   window.scrollTo(0, 0)
-  await new Promise(resolve => setTimeout(resolve, 100));
+  // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
+  loadIn()
 })
 
 onUnmounted(() => {

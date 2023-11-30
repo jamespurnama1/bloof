@@ -27,6 +27,10 @@ export const routes = [
     path: '/happenings',
   },
   {
+    name: [],
+    path: '/happenings/[id]'
+  },
+  {
     name: '404',
     path: '/404',
   },
@@ -39,16 +43,17 @@ export default defineNuxtConfig({
   },
   ssr: true,
   modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
+      'postcss-import': {},
       tailwindcss: {},
       autoprefixer: {},
     },
   },
     vue: {  
     compilerOptions: {
-      // isCustomElement: (tag) => ['Vue3Lottie'].includes(tag),
+      isCustomElement: (tag) => tag.startsWith('swiper-'),
     },
   },
   runtimeConfig: {
@@ -58,6 +63,9 @@ export default defineNuxtConfig({
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     },
     COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
+    GMAIL_SEND: process.env.GMAIL_SEND,
+    GMAIL_RECEIVE: process.env.GMAIL_RECEIVE,
+    GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
   },
   app: {
     // pageTransition: { name: 'fade', mode: 'out-in' },
@@ -69,8 +77,18 @@ export default defineNuxtConfig({
         {rel: "manifest", href: "/site.webmanifest", crossorigin:"use-credentials"},
         {rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5"}],
       meta: [
-        {name: "msapplication-TileColor", content:"#00aba9"},
-        {name: "theme-color", content:"#ffffff"}
+        {name: "msapplication-TileColor", content:"#b6dfd8"},
+        {name: "theme-color", content:"#faf9f8"},
+        {property:"og:title", content:"Bloof Bandung"},
+		    {property: "og:site_name", content: "Bloof Restaurant"},
+		    {property: "og:url", content: "https://bloofbdg.com"},
+		    {property: "og:description", content: ""},
+		    {property: "og:type", content: "restaurant"},
+		    {property: "og:image", content: "https://bloofbdg.com/og.jpg"},
+		    {name: "twitter:card", content: "summary_large_image"},
+		    {name: "twitter:title", content: "Bloof Bandung Restaurant"},
+		    {name: "twitter:description", content: ""},
+		    {name: "twitter:image", content: "https://bloofbdg.com/twitter.jpg"},
       ]
     }
   },
@@ -88,7 +106,10 @@ export default defineNuxtConfig({
     }
   },
   image: {
-   format: ['avif', 'webp', 'jpg']
+   format: ['avif', 'webp', 'jpg'],
+     imgix: {
+      baseURL: 'https://imgix.cosmicjs.com'
+    }
   },
   vite: {
     vue: {
@@ -98,5 +119,8 @@ export default defineNuxtConfig({
         ]
       }
     }
+  },
+  nitro: {
+    preset: "vercel",
   }
 })

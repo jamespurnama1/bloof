@@ -44,10 +44,9 @@ if (process.server) {
 //   { immediate: true }
 // );
 
-onMounted(() =>{
-  setTimeout(() => {
-    UIStore.fetching = false;
-  }, 500);
+onMounted(async() =>{
+  // setTimeout(() => {
+  // }, 500);
 })
 </script>
 

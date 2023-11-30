@@ -6,53 +6,16 @@ import super1 from '~/assets/super1.json'
 const main = ref();
 const ctx = ref();
 const socialsHover = ref();
+const newsletterTried = ref(false);
+const modal = ref(false);
+const newsletter = ref(false);
+const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
+const formStore = useFormStore();
 const lottieAnimation = ref();
-const config = useRuntimeConfig();
 
-if (process.server) {
-  const { data: landing } = await useFetch<landingData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570bde15339469859176f9?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
-
-  if (landing.value) {
-    CMSStore.landingData = landing.value;
-  } else {
-    throw Error
-  }
-
-  const { data: gallery } = await useFetch<galleryData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
-
-  if (gallery.value) {
-    CMSStore.galleryData = gallery.value;
-  } else {
-    throw Error
-  }
-
-  // const { data: happenings } = await useFetch<happeningsData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&limit=10&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`);
-
-  // if (happenings.value) {
-  //   CMSStore.happeningsData = happenings.value;
-  // } else {
-  //   throw Error
-  // }
-
-  const { data: events } = await useFetch<eventsData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570ca615339469859176ff?read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`);
-
-  if (events.value) {
-    CMSStore.eventsData = events.value;
-  } else {
-    throw Error
-  }
-
-  const { data: menu } = await useFetch<menuData>(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata,`);
-
-  if (menu.value) {
-    CMSStore.menuData = menu.value;
-  } else {
-    throw Error
-  }
-}
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
@@ -61,8 +24,26 @@ function onLoad(index: number) {
   // @ts-ignore
   lottieAnimation.value![index].playSegments([0, 300], true)
 }
-const { currentRoute } = useRouter();
-onMounted(() => {
+
+function handleNewsletter() {
+  if (!formStore.emailIsValid) {
+    newsletterTried.value = true;
+    return
+  }
+  //submit to firebase
+  modal.value = true;
+  newsletter.value = false;
+}
+
+onMounted(async () => {
+  UIStore.$subscribe((mutation, state) => {
+    if (UIStore.loadingScreen || newsletterTried.value) return;
+    setTimeout(() => {
+      newsletter.value = true;
+    }, 1500);
+  })
+
+  await nextTick()
   ctx.value = gsap.context((self) => {
     // Nav Auto
     ScrollTrigger.create({
@@ -112,24 +93,37 @@ onUnmounted(() => {
 
 <template>
   <!-- Hero --->
+  <Pop v-if="newsletter" @close="newsletter = false; newsletterTried = true" @submit="handleNewsletter()"
+    title="Don’t miss out on promotions!"
+    :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
+    bird="fly">
+    <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
+      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here."
+        :required="true" />
+      <button
+        class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
+        @click="handleNewsletter()">Submit</button>
+    </div>
+  </Pop>
+  <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false"
+    :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
   <header class="h-screen w-full flex flex-col relative justify-center items-center z-20">
     <img src="/logo.svg" alt="Bloof Logo" class="md:h-72 h-36 w-auto relative z-10" />
     <div class="transition-opacity duration-1000" :class="[UIStore.loadingScreen ? 'opacity-0' : 'opacity-100']">
       <h1 class="text-7xl">Bloof</h1>
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
-      <img @click="scrollDown" src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+      <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <img v-if="CMSStore.landingData" preload :src="`${CMSStore.landingData.object.metadata.hero_image.imgix_url}`" alt="Bloof Restaurant"
-        sizes="100dvw" :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
+      <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
+        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
+        densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
+        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex h-screen bg-warm-200 items-center justify-center">
-      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5">Perched atop Hemangini Hotel, is a rooftop haven boasting stunning skyline
-        views and an innovative cocktail
-        program. Discover an <span>enchanting</span>blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly
-        merging sophistication with a magnetic&nbsp;ambiance.</h2>
+      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
     </section>
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] w-full overflow-hidden flex-col my-5">
@@ -143,50 +137,50 @@ onUnmounted(() => {
       </div>
     </section>
     <!-- Menu --->
-    <section class="relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
+    <section class="menu relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
       <NuxtLink to="/menu" class="md:mb-10">
         <h3 class="text-3xl md:text-5xl text-white text-center">Menu</h3>
         <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">Chapter 1</p>
       </NuxtLink>
-      <img src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
-        class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert" />
+      <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+        class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <img class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.menuData.object.metadata.thumbnail.imgix_url">
+        :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url">
     </section>
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
       <div class="w-full bg-warm-400 flex px-6 py-4 items-center gap-6">
         <h3 class="text-5xl">Socials</h3>
-        <img src="@/assets/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
+        <img src="/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
       </div>
       <div class="flex w-full flex-col md:flex-row flex-1 bg-pink-200">
         <NuxtLink external target="_blank" @mouseover="socialsHover = index" @mouseleave="socialsHover = null"
-          v-for="(value, key, index) in CMSStore.landingData.object.metadata.socials" :to="value" class="flex-1">
+          v-for="(value, key, index) in CMSStore.landingData.socials" :to="value" class="flex-1">
           <div class="flex w-full h-full items-center justify-center relative overflow-hidden">
             <h4 class="relative z-10 text-4xl">{{ key }}</h4>
             <ClientOnly>
               <Vue3Lottie ref="lottieAnimation" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" :animationData="super1"
-                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.object.metadata.socials).length"
-                height="100%" :auto-play="true" @on-animation-loaded="onLoad(index)" />
+                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
+                :auto-play="true" @on-animation-loaded="onLoad(index)" />
             </ClientOnly>
           </div>
         </NuxtLink>
       </div>
     </section>
     <!-- Events --->
-    <section class="relative h-[100dvh] flex justify-end items-end p-2 md:p-10 overflow-hidden">
+    <section class="happenings relative h-[100dvh] flex justify-end items-end p-2 md:p-10 overflow-hidden">
       <NuxtLink to="/happenings" class="mb-5">
         <h3 class="md:text-5xl text-3xl text-white text-center">Happenings</h3>
       </NuxtLink>
-      <img src="@/assets/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
-        class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert" />
+      <img src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
+        class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtImg class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.landingData.object.metadata.happening.metadata.thumbnail.imgix_url" />
+        :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url" />
     </section>
     <!-- Maps --->
     <section class="h-[100dvh]">
@@ -202,13 +196,48 @@ onUnmounted(() => {
           <Vue3Lottie ref="lottieReservations" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
             :animationData="super1" :noMargin="true" width="50%" height="100%" :auto-play="true" />
         </ClientOnly> -->
-        <img class="w-full h-full absolute object-cover" src="@/assets/images/super2.svg" alt="Bloof Pattern" />
+        <Transition name="fade">
+          <img v-if="!privateRoom" class="w-full h-full absolute object-cover" src="/images/super2.svg"
+            alt="Bloof Pattern" />
+          <img v-else-if="privateRoom === 'bloof_belly'" class="w-full h-full absolute object-cover"
+            :src="`${CMSStore.landingData.private_rooms.bloof_belly.imgix_url}?w=720`" alt="Bloof Pattern" />
+          <img v-else-if="privateRoom === 'bloof_eye'" class="w-full h-full absolute object-cover"
+            :src="`${CMSStore.landingData.private_rooms.bloof_eye.imgix_url}?w=720`" alt="Bloof Pattern" />
+        </Transition>
       </div>
       <div class="flex items-center justify-center md:w-1/2 h-full bg-teal-400 p-10">
         <ClientOnly>
-          <Reservation />
+          <Reservation @private-room="(e) => privateRoom = e" />
         </ClientOnly>
       </div>
     </section>
   </main>
 </template>
+
+<style scoped lang="scss">
+.happenings:hover,
+.menu:hover {
+  .arrow {
+    animation: rotate 2s steps(4, end) infinite;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(190deg);
+  }
+  50% {
+    transform: rotate(230deg);
+  }
+  100% {
+    transform: rotate(200deg);
+  }
+}
+
+.circle {
+  background-image: url('/images/circle.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+</style>

@@ -8,6 +8,15 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
+const CMSStore = useCMSStore()
+if (process.server) {
+  CMSStore.getLanding()
+  CMSStore.getMenu()
+  CMSStore.getEvents()
+  CMSStore.getHappenings()
+  CMSStore.getGallery()
+}
+
 const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 const UIStore = useUIStore();
 const bottom = ref(false);
@@ -39,7 +48,7 @@ onMounted(() => {
       <aside v-show="bottom" class="fixed right-5 bottom-5 md:right-10 md:bottom-10">
         <button @click="scrollTop()" class="flex items-center justify-center">
           <p class="text-sm md:text-base">Back to top</p>
-          <img src="@/assets/images/arrow.svg" alt="Arrow Up" aria-label="Arrow-Up"
+          <img src="/images/arrow.svg" alt="Arrow Up" aria-label="Arrow-Up"
             class="rotate-180 h-8 md:h-12 w-auto" />
         </button>
       </aside>

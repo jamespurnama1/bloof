@@ -1,4 +1,4 @@
-@import "fonts.css";
+@import "fonts.scss";
 
 @tailwind base;
 @tailwind components;
@@ -33,12 +33,22 @@ h1, h2, h3, h4, h5, form p, form input, form button {
   font-weight: 800;
 }
 
-.button {
- background-image: url("@/assets/images/button.svg");
+%button {
  background-size: contain;
  background-repeat: no-repeat;
  padding: 20px 50px;
  background-position: center;
+ @apply font-serif font-bold;
+}
+
+.button_pink {
+  @extend %button;
+  background-image: url("/images/button_pink.svg");
+}
+
+.button_teal {
+  @extend %button;
+  background-image: url("/images/button_teal.svg");
 }
 
 .fade-enter-active,
@@ -49,6 +59,25 @@ h1, h2, h3, h4, h5, form p, form input, form button {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.scale-enter-active {
+  animation: bounce-in 0.5s;
+}
+.scale-leave-active {
+  animation: bounce-in 0.5s reverse;
 }
 
 .slideLeft-enter-active,

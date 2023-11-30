@@ -1,98 +1,95 @@
-// declare global {
+declare global {
+
   declare type reservationTime = {
-    time: String;
-    available: Boolean;
-  }
+    time: string;
+    available: boolean;
+  };
 
   declare type purpose = {
-    bookPurposeID: Number;
-    purposeNameId: String;
-    purposeNameEn: String;
-  }
+    bookPurposeID: number;
+    purposeNameId: string;
+    purposeNameEn: string;
+  };
 
-  declare interface reservationPurpose {
+  declare type reservationPurpose = {
     reservationPurpose: purpose[]
-  }
+  };
 
-  declare interface reservationTimes {
+  declare type reservationTimes = {
     reservationTime: reservationTime[];
-  }
+  };
 
   declare type media = {
-    name?: String;
-    url: URL;
-    imgix_url: URL;
+    name?: string;
+    url: url;
+    imgix_url: url;
   };
 
   declare type extraMetadata = {
-    id: String;
-    bucket: String;
-    created_at: Date;
-    modified_at: Date;
+    id: string;
+    bucket: string;
+    created_at: date;
+    modified_at: date;
     status: 'published' | 'draft';
-    thumbnail: URL;
-    published_at: Date;
-    modified_by: String;
-    created_by: String;
-    type: String;
-  }
-
-  declare interface landingData {
-    object: {
-      metadata: {
-        hero_image: media;
-        socials: {[key: string]: String};
-        happening: happening & extraMetadata;
-        location: { address: String; lng: Number; lat: Number; };
-      };
-    };
+    thumbnail: url;
+    published_at: date;
+    modified_by: string;
+    created_by: string;
+    type: string;
   };
 
-  declare interface galleryData {
+  declare type landingData = {
+    hero_image: media;
+    socials: {[key: string]: string};
+    happening: happening & extraMetadata;
+    location: { address: string; lng: number; lat: number; };
+    menu: {
+      metadata: menuData;
+    };
+    private_rooms: {
+      bloof_eye: media;
+      bloof_belly: media;
+    };
+    regulation: string;
+  };
+
+  declare type galleryData = {
     media: media[];
-    total: Number;
+    total: number;
   };
 
-  declare interface eventsData {
-    object: {
-      metadata: {
-        description: String;
-        brochures?: URL[];
-        call_to_action: String;
-        more_description: String;
-      };
-    };
+  declare type eventsData = {
+    description: string;
+    brochures?: url[];
+    call_to_action: string;
+    more_description: string;
   };
 
   declare type happening = {
-    slug: String;
-    title: String;
+    slug: string;
+    title: string;
     metadata: {
       thumbnail: media;
       type: {
-        key: String;
-        value: String;
+        key: string;
+        value: string;
       };
-      post: String;
+      post: string;
     };
-  }
-
-  declare interface happeningsData {
-    objects: happening[];
-    total: Number;
   };
 
-  declare interface menuData {
-    object: {
-      metadata: {
-        thumbnail: media;
-        pdf: {
-          url: URL;
-          imgix_url: URL;
-        }
-      }
-    }
-  }
-// }
+  declare type happeningsData = {
+    objects: happening[];
+    total: number;
+  };
+
+  declare type menuData = {
+    thumbnail: media;
+    pdf: {
+      url: url;
+      imgix_url: url;
+    };
+  };
+};
 
 export {};
