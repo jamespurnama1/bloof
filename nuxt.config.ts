@@ -38,7 +38,7 @@ export default defineNuxtConfig({
     renderJsonPayloads: false
   },
   ssr: true,
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-swiper'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
@@ -49,7 +49,7 @@ export default defineNuxtConfig({
   },
     vue: {  
     compilerOptions: {
-      // isCustomElement: (tag) => ['Vue3Lottie'].includes(tag),
+      isCustomElement: (tag) => tag.startsWith('swiper-'),
     },
   },
   runtimeConfig: {
