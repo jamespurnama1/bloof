@@ -183,7 +183,7 @@ onMounted(async () => {
   <Pop v-if="terms" @close="terms = false" title="Information and Regulation"
     :content="CMSStore.landingData.regulation" bird="fly">
     <button
-      class="button text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
+      class="button_pink text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
       @click="submitReservation()">Reserve</button>
   </Pop>
   <Pop v-if="submitted && modal" @close="modal = false" @submit="modal = false"
@@ -276,7 +276,7 @@ onMounted(async () => {
 
     <!-- Submit -->
     <button
-      class="button text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
+      class="button_pink text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
       type="submit" :disabled="tried && !formStore.valid"
       @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
   </form>

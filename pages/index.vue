@@ -98,7 +98,7 @@ onUnmounted(() => {
     <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
       <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here." :required="true" />
       <button
-        class="button text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
+        class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
         @click="handleNewsletter()">Submit</button>
     </div>
   </Pop>

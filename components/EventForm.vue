@@ -68,7 +68,7 @@
         form&nbsp;correctly.</p>
       <!-- Submit -->
       <button
-        class="button text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
+        class="button_pink text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
         type="submit" :disabled="tried && !formStore.eventValid"
         @click.prevent="formStore.eventValid ? handleSubmit() : tried = true">Submit</button>
     </form>

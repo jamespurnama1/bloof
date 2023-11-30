@@ -27,6 +27,10 @@ export const routes = [
     path: '/happenings',
   },
   {
+    name: [],
+    path: '/happenings/[id]'
+  },
+  {
     name: '404',
     path: '/404',
   },

@@ -33,13 +33,22 @@ h1, h2, h3, h4, h5, form p, form input, form button {
   font-weight: 800;
 }
 
-.button {
- background-image: url("/images/button.svg");
+%button {
  background-size: contain;
  background-repeat: no-repeat;
  padding: 20px 50px;
  background-position: center;
  @apply font-serif font-bold;
+}
+
+.button_pink {
+  @extend %button;
+  background-image: url("/images/button_pink.svg");
+}
+
+.button_teal {
+  @extend %button;
+  background-image: url("/images/button_teal.svg");
 }
 
 .fade-enter-active,

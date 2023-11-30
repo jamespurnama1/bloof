@@ -13,7 +13,7 @@
         <p v-if="props.content" class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
       </div>
       <slot>
-        <button class="button text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100" @click="$emit('submit')">Okay</button>
+        <button class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100" @click="$emit('submit')">Okay</button>
       </slot>
       </div>
     </dialog>

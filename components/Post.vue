@@ -1,7 +1,7 @@
 <template>
   <div class="w-full py-3 px-5 flex items-center"
     :class="[`bg-${bg}`, index % 2 === 1 ? 'justify-start' : 'justify-end']">
-    <h2 class="text-5xl md:text-7xl">{{ title }}</h2>
+    <h2 class="text-3xl md:text-7xl">{{ title }}</h2>
   </div>
   <ClientOnly v-if="posts.length">
     <swiper-container ref="swiperRef" init="false"
@@ -31,7 +31,7 @@
   </ClientOnly>
   <div class="w-full h-48 md:h-64 lg:h-72 relative flex items-center justify-center" v-else>
     <div class="bordered bg-warm-200 p-5 relative z-10 flex items-center justify-center">
-      <h3 class="text-center text-black text-3xl md:text-5xl">No {{ title.endsWith("s") ? title : title + 's' }} yet...
+      <h3 class="text-center text-black text-xl md:text-5xl">No {{ title.endsWith("s") ? title : title + 's' }} yet...
       </h3>
     </div>
     <img class="absolute top-0 left-0 w-full h-full object-cover -z-0" :src="`/images/super${getRandomInt(3)}.svg`"
