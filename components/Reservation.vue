@@ -115,6 +115,7 @@ const attributes = ref(
 const timeAvail = ref([]) as Ref<String[]>
 // const { data, error, pending } = await fetchTime(new Date(new Date(Date.now()).setDate(new Date(Date.now()).getDate() + 1)));
 
+formStore.reset()
 
 function onDateChange(date: Date | number) {
   if (typeof date === 'number') {
@@ -141,7 +142,7 @@ async function submitReservation() {
       "reservationDate": formStore.getDate,
       "reservationTime": formStore.getTime,
       "purpose": formStore.purpose,
-      "notes": formStore.notes + privateRoom.value.checked ? privateRoom.value.name[privateRoom.value.index] : ''
+      "notes": formStore.notes + privateRoom.value.checked ? `Reservation for private room: ${privateRoom.value.name[privateRoom.value.index]}` : ''
     }
   }).then(res => {
     submitted.value = true;
@@ -152,8 +153,6 @@ async function submitReservation() {
 }
 
 const timeData = ref()
-
-formStore.reset()
 
 onMounted(async () => {
   // get dates
