@@ -53,7 +53,7 @@ onMounted(() => {
         </button>
       </aside>
     </Transition>
-    <footer class="h-64 md:h-[500px] flex items-center justify-center flex-col md:ml-[100px]">
+    <footer class="h-64 md:h-[500px] flex items-center justify-center flex-col">
       <img src="/logo.svg" alt="Bloof Logo" class="h-16 md:h-48 w-auto" />
       <h5 class="text-3xl md:text-5xl">Bloof</h5>
       <p class="md:text-xs text-[0.6em]">© 2023 Bloof is part of hemangini Hotel</p>

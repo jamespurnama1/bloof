@@ -9,6 +9,7 @@ const socialsHover = ref();
 const newsletterTried = ref(false);
 const modal = ref(false);
 const newsletter = ref(false);
+const newsletterSubmitted = ref(false);
 const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
@@ -32,12 +33,13 @@ function handleNewsletter() {
   }
   //submit to firebase
   modal.value = true;
+  newsletterSubmitted.value = true
   newsletter.value = false;
 }
 
 onMounted(async () => {
   UIStore.$subscribe((mutation, state) => {
-    if (UIStore.loadingScreen || newsletterTried.value) return;
+    if (UIStore.loadingScreen || newsletterTried.value || newsletterSubmitted.value) return;
     setTimeout(() => {
       newsletter.value = true;
     }, 1500);
@@ -98,7 +100,7 @@ onUnmounted(() => {
     :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
     bird="fly">
     <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
-      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here."
+      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
         :required="true" />
       <button
         class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
@@ -122,11 +124,11 @@ onUnmounted(() => {
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
-    <section class="flex h-screen bg-warm-200 items-center justify-center">
-      <h2 class="md:text-7xl text-3xl text-center mx-auto px-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
+    <section class="flex min-h-screen bg-warm-200 items-center justify-center">
+      <h2 class="xl:text-7xl xl:leading-tight lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
     </section>
     <!-- Gallery --->
-    <section class="gallery flex gap-5 h-[50dvh] w-full overflow-hidden flex-col my-5">
+    <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
         <img class="object-cover w-96" v-for="image in CMSStore.getFirstRow"
           :src="`${image.imgix_url}?auto=compress&q=75&w=640`" />
@@ -152,8 +154,8 @@ onUnmounted(() => {
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
       <div class="w-full bg-warm-400 flex px-6 py-4 items-center gap-6">
-        <h3 class="text-5xl">Socials</h3>
-        <img src="/images/bird_wave.svg" class="h-12 md:h-36" alt="Bloof Bird" />
+        <h3 class="text-3xl xl:text-5xl">Socials</h3>
+        <img src="/images/bird_wave.svg" class="h-12 md:h-20 xl:h-36" alt="Bloof Bird" />
       </div>
       <div class="flex w-full flex-col md:flex-row flex-1 bg-pink-200">
         <NuxtLink external target="_blank" @mouseover="socialsHover = index" @mouseleave="socialsHover = null"
@@ -187,7 +189,7 @@ onUnmounted(() => {
       <Maps />
     </section>
     <!-- Reservations --->
-    <section class="md:h-[100dvh] flex flex-col md:flex-row">
+    <section class="md:min-h-[100dvh] flex flex-col md:flex-row">
       <div class="flex items-center justify-center relative overflow-hidden md:w-1/2 min-h-[50dvh] md:min-h-0">
         <div class="bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
@@ -205,7 +207,7 @@ onUnmounted(() => {
             :src="`${CMSStore.landingData.private_rooms.bloof_eye.imgix_url}?w=720`" alt="Bloof Pattern" />
         </Transition>
       </div>
-      <div class="flex items-center justify-center md:w-1/2 h-full bg-teal-400 p-10">
+      <div class="flex items-center justify-center md:w-1/2 h-auto bg-teal-400 p-10">
         <ClientOnly>
           <Reservation @private-room="(e) => privateRoom = e" />
         </ClientOnly>
