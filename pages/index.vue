@@ -9,6 +9,7 @@ const socialsHover = ref();
 const newsletterTried = ref(false);
 const modal = ref(false);
 const newsletter = ref(false);
+const newsletterSubmitted = ref(false);
 const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
@@ -32,12 +33,13 @@ function handleNewsletter() {
   }
   //submit to firebase
   modal.value = true;
+  newsletterSubmitted.value = true
   newsletter.value = false;
 }
 
 onMounted(async () => {
   UIStore.$subscribe((mutation, state) => {
-    if (UIStore.loadingScreen || newsletterTried.value) return;
+    if (UIStore.loadingScreen || newsletterTried.value || newsletterSubmitted.value) return;
     setTimeout(() => {
       newsletter.value = true;
     }, 1500);
@@ -98,7 +100,7 @@ onUnmounted(() => {
     :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
     bird="fly">
     <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
-      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here."
+      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
         :required="true" />
       <button
         class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
