@@ -19,7 +19,7 @@
           <nuxtImg preload provider="imgix"
             class="md:grayscale absolute top-0 left-0 object-cover w-full h-full -z-10 group-hover/item:scale-125 group-hover/slider:grayscale-0 transition duration-700 md:brightness-50 group-hover/item:brightness-100"
             :src="post.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" :alt="post.title"
-            densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:25vw xl:25vw xxl:25vw 2xl:25vw"
+            densities="x1 x2" :sizes="`xs:100vw sm:100vw md:100vw lg:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw xl:${Math.max(1, Math.min(props.posts.length, 4))/100}vw xxl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw 2xl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw`"
             :placeholder="[50, 25, 75, 5]" />
         </NuxtLink>
         <img v-else class="flex-1 h-full w-full object-cover" :src="`/images/super${post}.svg`" alt="Bloof Pattern">
@@ -65,7 +65,7 @@ function shuffle(array: any[]) {
 let shuffledArray = [...props.posts];
 
 function resize() {
-  if (UIStore.width < 768) return;
+  if (UIStore.width < 768 || props.posts.length < 4) return;
   shuffledArray = [...shuffledArray, getRandomInt(3)];
   for (let i = 0; shuffledArray.length <= 4; i++) {
     shuffledArray = [...shuffledArray, getRandomInt(3)];
@@ -88,7 +88,7 @@ onMounted(async () => {
         slidesPerView: 1
       },
       768: {
-        slidesPerView: 4
+        slidesPerView: Math.max(1, Math.min(props.posts.length, 4))
       },
     }
   }

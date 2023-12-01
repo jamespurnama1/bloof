@@ -10,7 +10,7 @@
     <TransitionGroup tag="ul" mode="out-in" :css="false" @enter="onEnter" @leave="onLeave" name="slideLeft"
       class="m-5 flex items-start justify-center flex-col gap-6">
       <li v-for="(value, key, index) in items" v-show="showFullNav"
-        class="text-7xl font-bold font-serif -translate-x-full opacity-0" :data-index="index" :key="index">
+        class="text-5xl xl:text-7xl font-bold font-serif -translate-x-full opacity-0" :data-index="index" :key="index">
         <NuxtLink :to="value">{{ key }}</NuxtLink>
       </li>
       <li :key="Object.keys(items).length + 1">
@@ -31,6 +31,7 @@
       <p class="font-bold font-serif text-xl text-center">Bloof</p>
     </NuxtLink>
   </nav>
+
   <!-- Mobile -->
   <nav v-else-if="!UIStore.loadingScreen"
     class="fixed z-40 top-0 h-16 w-full bg-teal-600 py-2 px-4 flex justify-between items-center transition-all outline-4 outline" :class="showFullNav ? 'outline-transparent' : 'outline-black'">
