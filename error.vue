@@ -8,7 +8,7 @@
         <strong class="font-normal">{{ error.statusCode }} {{ error.statusMessage.split(':')[0] }}</strong>
       </p>
       <button
-        class="button_teal my-8 text-3xl hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
+        class="button_teal my-8 text-3xl"
         @click="handleError()">Home</button>
     </div>
   </NuxtLayout>

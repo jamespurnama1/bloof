@@ -34,7 +34,7 @@
       <h3 class="text-center text-black text-xl md:text-5xl">No {{ title.endsWith("s") ? title : title + 's' }} yet...
       </h3>
     </div>
-    <img class="absolute top-0 left-0 w-full h-full object-cover -z-0" :src="`/images/super${getRandomInt(3)}.svg`"
+    <img class="absolute top-0 left-0 w-full h-full object-cover -z-0 saturate-0" :src="`/images/super${getRandomInt(3)}.svg`"
       alt="Bloof Pattern">
   </div>
 </template>

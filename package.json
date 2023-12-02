@@ -37,17 +37,15 @@
   "dependencies": {
     "@nuxt/image": "^1.0.0",
     "@pinia/nuxt": "^0.5.1",
-    "@tato30/vue-pdf": "^1.8.1",
+    "flipbook-vue": "^1.0.0-beta.4",
     "floating-vue": "^2.0.0-beta.24",
     "gsap": "^3.12.2",
     "nodemailer": "^6.9.7",
-    "pdfvuer": "^2.0.1",
     "pinia": "^2.1.7",
     "pixi.js": "^7.3.2",
     "sass": "^1.69.5",
     "swiper": "^11.0.5",
     "v-calendar": "^3.1.2",
-    "vue-pdf-embed": "^1.2.1",
     "vue3-google-map": "^0.18.0",
     "vue3-lottie": "^3.2.0"
   }

@@ -15,6 +15,8 @@ if (process.server) {
   CMSStore.getEvents()
   CMSStore.getHappenings()
   CMSStore.getGallery()
+  CMSStore.getFood()
+  CMSStore.getDrinks()
 }
 
 const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -54,7 +56,7 @@ onMounted(() => {
       </aside>
     </Transition>
     <footer class="h-64 md:h-[500px] flex items-center justify-center flex-col">
-      <img src="/logo.svg" alt="Bloof Logo" class="h-16 md:h-48 w-auto" />
+      <img src="/logo.svg" alt="Bloof Logo" class="h-16 md:h-32 lg:h-48 lg:max-h-[30%]  w-auto" />
       <h5 class="text-3xl md:text-5xl">Bloof</h5>
       <p class="md:text-xs text-[0.6em]">© 2023 Bloof is part of hemangini Hotel</p>
     </footer>

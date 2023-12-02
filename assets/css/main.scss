@@ -38,7 +38,11 @@ h1, h2, h3, h4, h5, form p, form input, form button {
  background-repeat: no-repeat;
  padding: 20px 50px;
  background-position: center;
- @apply font-serif font-bold;
+ @apply font-serif font-bold hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100;
+
+ &.small {
+  padding: 10px 30px;
+ }
 }
 
 .button_pink {

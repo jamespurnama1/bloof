@@ -4,7 +4,7 @@
   <Transition name="fade">
     <form v-if="!submitted"
       class="flex flex-col max-w-2xl md:max-w-none items-center justify-center gap-5 md:gap-12 md:w-3/4">
-      <div class="flex items-center justify-center gap-5 md:gap-16 flex-col md:flex-row md:w-full">
+      <div class="flex items-center justify-center gap-1 xl:gap-5 md:gap-16 flex-col md:flex-row md:w-full">
         <div class="flex items-center justify-center flex-col gap-3">
           <BloofInput class="flex-1 w-full" placeholder="Name" type="text" label="name" />
           <BloofInput class="flex-1 w-full my-2" placeholder="Phone" type="tel" label="phone" />
@@ -16,9 +16,9 @@
           <p class="text-center font-sans font-normal text-sm mt-3">Event Date</p>
           <span class="flex items-center justify-center">
             <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.svg"
-              class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
+              class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous" />
             <VDropdown auto>
-              <p class="text-2xl md:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
+              <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
                 weekday:
                   "long", month: "short", day: "numeric"
               }) }}</p>
@@ -40,26 +40,26 @@
               </template>
             </VDropdown>
             <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg"
-              class="p-2 h-10 md:h-12 w-auto" alt="Date Next" />
+              class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" />
           </span>
 
           <!-- Guests -->
           <p class="text-center font-sans font-normal text-sm mt-3">No. of guests</p>
           <span class="flex items-center justify-center">
-            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Number of Guests Prev"
+            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
               @click="paxSelected ? paxSelected-- : paxSelected = pax.length - 1" />
-            <p class="text-2xl md:text-4xl text-center">{{ pax[paxSelected] }} pax</p>
-            <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Number of Guests Next"
+            <p class="text-2xl xl:text-4xl text-center">{{ pax[paxSelected] }} pax</p>
+            <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
               @click="paxSelected === pax.length - 1 ? paxSelected = 0 : paxSelected++" />
           </span>
 
           <!-- Budget -->
           <p class="text-center font-sans font-normal text-sm mt-3">Budget per guest</p>
           <span class="flex items-center justify-center">
-            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Number of Guests Prev"
+            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
               @click="budgetSelected ? budgetSelected-- : budgetSelected = budget.length - 1" />
-            <p class="text-2xl md:text-4xl text-center">{{ budget[budgetSelected] }}</p>
-            <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Number of Guests Next"
+            <p class="text-2xl xl:text-4xl text-center">{{ budget[budgetSelected] }}</p>
+            <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
               @click="budgetSelected === budget.length - 1 ? budgetSelected = 0 : budgetSelected++" />
           </span>
         </div>
@@ -68,11 +68,11 @@
         form&nbsp;correctly.</p>
       <!-- Submit -->
       <button
-        class="button_pink text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
+        class="button_pink text-xl xl:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 small"
         type="submit" :disabled="tried && !formStore.eventValid"
         @click.prevent="formStore.eventValid ? handleSubmit() : tried = true">Submit</button>
     </form>
-    <h3 v-else class="text-3xl md:text-5xl text-center">We can't wait to have this event with you!</h3>
+    <h3 v-else class="text-3xl xl:text-5xl text-center">We can't wait to have this event with you!</h3>
   </Transition>
 </template>
 

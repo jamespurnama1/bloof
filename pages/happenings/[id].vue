@@ -7,9 +7,9 @@
         <h1 class="text-4xl md:text-9xl text-left">{{ post.title }}</h1>
         <h2  class="bordered w-min whitespace-nowrap bg-teal-400 p-2 my-2 text-xs font-sans">{{ post.metadata.type.value }}</h2>
       </header>
-      <main class="">
+      <main>
         <article class="pt-4 md:pt-12 min-h-[50dvh] md:max-w-2xl px-8 md:px-0 w-full">
-          <p class="" v-html="$mdRenderer.render(post.metadata.post)" />
+          <p v-html="$mdRenderer.render(post.metadata.post)" />
         </article>
       </main>
     </div>
