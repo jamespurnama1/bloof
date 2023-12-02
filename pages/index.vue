@@ -103,19 +103,19 @@ onUnmounted(() => {
       <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
         :required="true" />
       <button
-        class="button_pink text-xl md:text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 hover:disabled:scale-100"
+        class="button_pink text-xl md:text-3xl my-2"
         @click="handleNewsletter()">Submit</button>
     </div>
   </Pop>
   <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false"
     :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
   <header class="h-screen w-full flex flex-col relative justify-center items-center z-20">
-    <img src="/logo.svg" alt="Bloof Logo" class="md:h-72 h-36 w-auto relative z-10" />
+    <img src="/logo.svg" alt="Bloof Logo" class="lg:h-72 lg:max-h-[30%] h-36 w-auto relative z-10" />
     <div class="transition-opacity duration-1000" :class="[UIStore.loadingScreen ? 'opacity-0' : 'opacity-100']">
       <h1 class="text-7xl">Bloof</h1>
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
-        class="mt-5 h-20 md:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
+        class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
       <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
         :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
         densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
@@ -125,7 +125,7 @@ onUnmounted(() => {
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex min-h-screen bg-warm-200 items-center justify-center">
-      <h2 class="xl:text-7xl xl:leading-tight lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
+      <h2 class="xl:text-7xl xl:leading-none lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">Perched atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.svg" alt="Bloof" /> is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern1.svg" alt="pattern 1" /> and an innovative cocktail program. <img class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto" src="/images/pattern2.svg" alt="pattern 2" /> Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern3.svg" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
     </section>
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">

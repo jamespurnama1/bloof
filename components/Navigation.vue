@@ -15,7 +15,7 @@
       </li>
       <li :key="Object.keys(items).length + 1">
         <NuxtLink to="/" aria-label="Home" class="">
-          <img src="/logo.svg" alt="Bloof Logo" class="transition h-24 w-auto object-contain"
+          <img src="/logo.svg" alt="Bloof Logo" class="transition h-18 xl:h-24 w-auto object-contain"
             :class="[showFullNav ? '' : 'opacity-0']" />
           <p class="font-bold font-serif text-xl text-center">Bloof</p>
         </NuxtLink>
@@ -27,7 +27,7 @@
     </button>
     <NuxtLink @click="showFullNav = false" to="/" aria-label="Home" class="absolute right-[25px] bottom-5"
       :class="[showFullNav ? 'opacity-0' : '']">
-      <img src="/logo.svg" alt="Bloof Logo" class="transition h-20 w-auto object-contain" />
+      <img src="/logo.svg" alt="Bloof Logo" class="transition h-16 xl:h-20 w-auto object-contain" />
       <p class="font-bold font-serif text-xl text-center">Bloof</p>
     </NuxtLink>
   </nav>

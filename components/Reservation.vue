@@ -187,14 +187,14 @@ onMounted(async () => {
   </Pop>
   <Pop v-if="submitted && modal" @close="modal = false" @submit="modal = false"
     :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
-  <form v-if="timeData && !submitted" class="flex flex-col max-w-2xl items-center justify-center gap-5">
+  <form v-if="timeData && !submitted" class="flex flex-col max-w-2xl items-center justify-center gap-1 xl:gap-5">
 
     <!-- Guests -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Guests Previous"
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Guests Previous"
         @click="getGuests = '-'" />
-      <p class="text-2xl md:text-4xl text-center">{{ getGuests }}</p>
-      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Guests Next" @click="getGuests = '+'" />
+      <p class="text-2xl xl:text-4xl text-center">{{ getGuests }}</p>
+      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Guests Next" @click="getGuests = '+'" />
     </span>
 
     <!-- Calendar -->
@@ -202,7 +202,7 @@ onMounted(async () => {
       <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.svg"
         class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
       <VDropdown auto>
-        <p class="text-2xl md:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
+        <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
           weekday:
             "long", month: "short", day: "numeric"
         }) }}</p>
@@ -223,16 +223,16 @@ onMounted(async () => {
           </ClientOnly>
         </template>
       </VDropdown>
-      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto"
+      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto"
         alt="Date Next" />
     </span>
 
     <!-- Time -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Time Previous"
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Time Previous"
         @click="onDateChange(getDate.getTime() - 1800000)" />
       <VDropdown>
-        <p class="text-2xl md:text-4xl text-center">
+        <p class="text-2xl xl:text-4xl text-center">
           {{ getDate.getHours().toString().padStart(2, '0') + ":" + getDate.getMinutes().toString().padStart(2, '0') }}
         </p>
         <template #popper="{ hide }" class="w-max">
@@ -240,12 +240,12 @@ onMounted(async () => {
             <button
               @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()"
               v-for="time in times"
-              class="text-sm md:text-lg font-bold font-serif disabled:opacity-20 hover:disabled:scale-100"
+              class="text-sm xl:text-lg font-bold font-serif"
               :disabled="!timeAvail.find(x => x === time)">{{ time }}</button>
           </div>
         </template>
       </VDropdown>
-      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Time Next"
+      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next"
         @click="onDateChange(getDate.getTime() + 1800000)" />
     </span>
 
@@ -263,10 +263,10 @@ onMounted(async () => {
       label="private" placeholder="Private Room" />
     <!-- <label for="private">Private Room</label> -->
     <span v-if="privateRoom.checked" class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous"
+      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous"
         @click="handlePrivateRoom(true)" />
-      <p class="text-2xl md:text-4xl text-center">{{ privateRoom.name[privateRoom.index] }}</p>
-      <img src="/images/caret.svg" class="p-2 h-10 md:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
+      <p class="text-2xl xl:text-4xl text-center">{{ privateRoom.name[privateRoom.index] }}</p>
+      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
     </span>
     <!-- Minimum Purchase -->
     <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.</p>
@@ -275,7 +275,7 @@ onMounted(async () => {
 
     <!-- Submit -->
     <button
-      class="button_pink text-3xl my-2 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2 disabled:opacity-50 hover:disabled:scale-100"
+      class="button_pink text-xl xl:text-3xl my-2 small"
       type="submit" :disabled="tried && !formStore.valid"
       @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
   </form>

@@ -21,6 +21,7 @@ declare global {
 
   declare type media = {
     name?: string;
+    original_name?: string;
     url: url;
     imgix_url: url;
   };
@@ -53,7 +54,7 @@ declare global {
     regulation: string;
   };
 
-  declare type galleryData = {
+  declare type photosData = {
     media: media[];
     total: number;
   };

@@ -1,22 +1,11 @@
 <script setup lang="ts">
 const CMSStore = useCMSStore();
-const UIStore = useUIStore();
-const pdf = ref();
-const config = useRuntimeConfig()
+const sel = ref('food')
 
-if (process.server) {
-  pdf.value = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects/65570c4515339469859176fb?read_key=?read_key=${config.COSMIC_READ_KEY}&depth=1&props=metadata`, {
-    transform: (ReceivedData: menuData) => {
-      return ReceivedData.object.metadata
-    }
-  })
+// if (process.server) {
+//   CMSStore.getMenuPDF()
+// }
 
-  if (pdf.value) {
-    CMSStore.menuData = pdf.value;
-  } else {
-    throw Error
-  }
-}
 // const props = withDefaults(
 //   defineProps<{
 //     url?: string;
@@ -25,7 +14,6 @@ if (process.server) {
 //   {}
 // );
 
-// const { $usePDF } = useNuxtApp();
 // let pdf = ref();
 // let pages = ref(0);
 // let info = ref();
@@ -44,18 +32,48 @@ if (process.server) {
 //   { immediate: true }
 // );
 
-onMounted(async() =>{
-  // setTimeout(() => {
-  // }, 500);
+
+onMounted(() => {
+  // CMSStore.$subscribe((mutation, state) => {
+  //   if (!CMSStore.galleryData) return;
+  //   images.value = CMSStore.galleryData.media.map(x => {
+  //     return x.imgix_url
+  //   })
+  // })
 })
 </script>
 
 <template>
-  <section class="md:ml-[100px] pt-24 md:pt-0">
-    <h1 class="text-center md:text-left text-5xl md:text-9xl px-4 py-4 md:px-12 md:py-8">Menu</h1>
-    <img class="w-full h-auto object-cover" src="/menu.jpg" alt="menu">
-  <!-- <ClientOnly>
-    <VuePDF :pdf="pdf" />
-  </ClientOnly> -->
+  <section class="md:ml-[100px] pt-24 md:pt-0 flex flex-col relative">
+    <div class="flex gap-2 px-4 py-4 md:px-12 md:py-8 flex-col">
+      <h1 class="text-center md:text-left text-5xl md:text-7xl xl:text-9xl">Menu</h1>
+      <div class="flex justify-center md:justify-start gap-2">
+        <button @click="sel = 'food'" class="button_pink small hover:opacity-100"
+          :class="[sel === 'food' ? '' : 'opacity-50']">food</button>
+        <button @click="sel = 'drinks'" class="button_teal small hover:opacity-100"
+          :class="[sel === 'drinks' ? '' : 'opacity-50']">drinks</button>
+      </div>
+      <p class="text-xs text-center md:text-start">Swipe to browse the menu.</p>
+    </div>
+    <div class="invisible" />
+    <!-- <img class="w-full h-auto object-cover" src="/menu.jpg" alt="menu"> -->
+    <ClientOnly v-if="CMSStore.drinks.length && CMSStore.food.length">
+      <flipbook :zooms="[1, 2]" class="flipbook w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
+        :class="[sel === 'food' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.food"
+        :pagesHiRes="CMSStore.food_highres"></flipbook>
+      <flipbook :zooms="[1, 2]" class="flipbook w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
+        :class="[sel === 'drinks' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.drinks"
+        :pagesHiRes="CMSStore.drinks_highres"></flipbook>
+    </ClientOnly>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.flipbook,
+.invisible {
+  @media (min-width: 768px) {
+    height: calc((25.5 * (100vw - 196px)) / 36);
+  }
+
+  height: calc((25.5 * (90vw - 32px)) / 18);
+}</style>

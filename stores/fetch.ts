@@ -1,8 +1,9 @@
+import type { AsyncData } from 'nuxt/app';
 import { defineStore } from 'pinia'
 
 export const useCMSStore = defineStore('CMS-store', () => {
   const landingData = ref() as Ref<landingData>;
-  const galleryData = ref()  as Ref<galleryData>;
+  const galleryData = ref()  as Ref<photosData>;
   const eventsData = ref() as Ref<eventsData>;
   const happeningsData = ref() as Ref<happening[]>;
   const posts = ref({
@@ -13,7 +14,10 @@ export const useCMSStore = defineStore('CMS-store', () => {
   } as {[key: string]: happening[]})
   const menuData = ref();
   const config = useRuntimeConfig();
-
+  const food = ref([null] as (URL | null)[])
+  const drinks = ref([null] as (URL | null)[])
+  const food_highres = ref([null] as (URL | null)[])
+  const drinks_highres = ref([null] as (URL | null)[])
   const numToReturn = 7;
 
   async function getLanding() {
@@ -73,7 +77,7 @@ async function getMenu() {
 async function getHappenings() {
   if (!happeningsData.value) {
     try{
-      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&limit=10&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
         transform(data: happeningsData) { return data.objects }
     });
     if (data.value) {
@@ -96,7 +100,63 @@ async function getGallery() {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
       if (data.value) {
-        galleryData.value = data.value as galleryData;
+        galleryData.value = data.value as photosData;
+      } else {
+      throw Error
+    }
+    } catch (error) {
+      console.error(error)
+    }
+    return galleryData.value;
+  }
+}
+
+async function getFood() {
+  if (!galleryData.value) {
+    try{
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22food%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
+      if (data.value) {
+        data.value.media.sort((a, b) => {
+          // faster than localCompare()
+          // a.original_name?.localeCompare(b.original_name as string)
+          return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
+        });
+        food.value = data.value.media.map(x => {
+          return `${x.imgix_url}?w=1080` as unknown as URL
+        })
+        food_highres.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1920` as unknown as URL
+        })
+        food.value.unshift(null)
+        food_highres.value.unshift(null)
+      } else {
+      throw Error
+    }
+    } catch (error) {
+      console.error(error)
+    }
+    return galleryData.value;
+  }
+}
+
+async function getDrinks() {
+  if (!galleryData.value) {
+    try{
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22drinks%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
+      if (data.value) {
+        data.value.media.sort((a, b) => {
+          // faster than localCompare()
+          // a.original_name?.localeCompare(b.original_name as string)
+          return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
+        });
+        drinks.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1080` as unknown as URL
+        })
+        drinks_highres.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1920` as unknown as URL
+        })
+        drinks.value.unshift(null)
+        drinks_highres.value.unshift(null)
       } else {
       throw Error
     }
@@ -135,5 +195,5 @@ async function getGallery() {
     }
   })
 
-  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, getLanding, getEvents, getMenu, getHappenings, getGallery }
+  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks }
 })
