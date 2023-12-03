@@ -189,7 +189,7 @@ onUnmounted(() => {
       <Maps />
     </section>
     <!-- Reservations --->
-    <section class="md:min-h-[100dvh] flex flex-col md:flex-row">
+    <section id="reservation" class="md:min-h-[100dvh] flex flex-col md:flex-row">
       <div class="flex items-center justify-center relative overflow-hidden md:w-1/2 min-h-[50dvh] md:min-h-0">
         <div class="bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
