@@ -105,7 +105,7 @@ const getDate = computed({
 })
 
 
-const attributes = ref(
+const attributes = computed(() =>
   [{
     highlight: true,
     dates: date.value,
