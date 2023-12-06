@@ -1,4 +1,5 @@
 import type { PerspectiveCamera, Scene, Vector3, Object3D } from 'three';
+//@ts-ignore
 import { CSS3DObject, type CSS3DRenderer } from 'three/addons';
 
 
@@ -49,9 +50,9 @@ export const galleryInit = (images: media[], dom: HTMLElement) => {
         console.log(event)
           if (!event) return
           disableMouse = true
-          const rot = (x: number) => (-Math.abs(x - 180) + 180) * 0.05
+          const rot = (x: number) => (-Math.abs(x - 180) + 180)
           $gsap.to(camera.position, {
-            x: Math.abs(event.alpha!) * 5,
+            x: rot(event.alpha!) * 5,
             y: Math.abs(event.beta!) * 5,
             duration: 1,
             ease: 'power1',
