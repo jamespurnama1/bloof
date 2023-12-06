@@ -304,7 +304,6 @@ export const galleryInit = (images: media[], dom: HTMLElement) => {
       if (objects[i].position.z > 4000) {
         $gsap.to(objects[i].element, {
           opacity: 0.0,
-          filter: 'blur(50px)',
           duration: 15,
         })
       }
