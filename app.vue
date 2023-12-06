@@ -51,7 +51,6 @@ function req() {
   try {
     ; (DeviceOrientationEvent as any).requestPermission();
   } catch (error) {
-    console.error(error);
   }
 }
 
