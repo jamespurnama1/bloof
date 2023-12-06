@@ -63,7 +63,7 @@ const getGuests = computed({
 
 const headers = {
   Authorization: `Bearer ${config.public.ESB_TOKEN}`,
-  'Data-Branch': 'OUTB'
+  'Data-Branch': config.public.ESB_BRANCH_CODE
 }
 
 const times = ref([]) as Ref<String[]>
