@@ -68,6 +68,7 @@ export default defineNuxtConfig({
     public: {
       ESB_TOKEN: process.env.ESB_TOKEN,
       ESB_URL: process.env.ESB_URL,
+      ESB_BRANCH_CODE: process.env.ESB_BRANCH_CODE,
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     },
     COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
