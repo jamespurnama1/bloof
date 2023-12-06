@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import { galleryAnimate } from '~/composables/Gallery';
-
 const CMSStore = useCMSStore();
-
+const canvas = ref();
+// const init = ref(false)
 // init({{ images| tojson | safe }});
 // animate();
+// const anim = () => galleryInit(CMSStore.galleryData.media.map(x => ({imgix_url: `${x.imgix_url}?w=720`, original_name: x.original_name} as media)), canvas.value);
 onMounted(async() => {
   document.body.style.overflow = 'hidden'
-  galleryInit(CMSStore.galleryData.media)
-  galleryAnimate()
+  // if (CMSStore.galleryData) {
+  //   anim()
+  //   init.value = true;
+  // }
+  galleryInit(CMSStore.galleryData.media.map(x => ({ imgix_url: `${x.imgix_url}?w=720`, original_name: x.original_name } as media)), canvas.value);
+  // CMSStore.$subscribe(() => {
+  //   if (!CMSStore.galleryData || init.value) return;
+  //   anim()
+  //   init.value = true;
+  // })
 })
 
   onUnmounted(() => {
@@ -25,8 +33,13 @@ onMounted(async() => {
   </section>
 </template>
 
-<style scoped>
-canvas {
-  mask-image: radial-gradient(circle, rgba(255, 255, 255, 1) 35%, rgba(0, 0, 0, 1) 50%);
+<style lang="scss">
+.galleryimg {
+  @media (min-width: 768px) {
+    min-width: none;
+    min-height: none;
+  }
+  min-width: 48rem;
+  height: auto;
 }
 </style>
