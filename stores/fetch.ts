@@ -112,7 +112,7 @@ async function getGallery() {
 }
 
 async function getFood() {
-  if (!galleryData.value) {
+  if (!food.value) {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22food%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
       if (data.value) {
@@ -135,12 +135,12 @@ async function getFood() {
     } catch (error) {
       console.error(error)
     }
-    return galleryData.value;
+    return food.value;
   }
 }
 
 async function getDrinks() {
-  if (!galleryData.value) {
+  if (!drinks.value) {
     try{
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22drinks%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
       if (data.value) {
@@ -163,7 +163,7 @@ async function getDrinks() {
     } catch (error) {
       console.error(error)
     }
-    return galleryData.value;
+    return drinks.value;
   }
 }
 

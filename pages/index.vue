@@ -6,15 +6,10 @@ import super1 from '~/assets/super1.json'
 const main = ref();
 const ctx = ref();
 const socialsHover = ref();
-const newsletterTried = ref(false);
-const modal = ref(false);
-const newsletter = ref(false);
-const newsletterSubmitted = ref(false);
 const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
-const formStore = useFormStore();
 const lottieAnimation = ref();
 
 
@@ -26,25 +21,18 @@ function onLoad(index: number) {
   lottieAnimation.value![index].playSegments([0, 300], true)
 }
 
-function handleNewsletter() {
-  if (!formStore.emailIsValid) {
-    newsletterTried.value = true;
-    return
-  }
-  //submit to firebase
-  modal.value = true;
-  newsletterSubmitted.value = true
-  newsletter.value = false;
-}
+// function handleNewsletter() {
+//   if (!formStore.emailIsValid) {
+//     newsletterTried.value = true;
+//     return
+//   }
+//   //submit to firebase
+//   modal.value = true;
+//   newsletterSubmitted.value = true
+//   newsletter.value = false;
+// }
 
 onMounted(async () => {
-  UIStore.$subscribe((mutation, state) => {
-    if (UIStore.loadingScreen || newsletterTried.value || newsletterSubmitted.value) return;
-    setTimeout(() => {
-      newsletter.value = true;
-    }, 1500);
-  })
-
   await nextTick()
   ctx.value = gsap.context((self) => {
     // Nav Auto
@@ -95,20 +83,6 @@ onUnmounted(() => {
 
 <template>
   <!-- Hero --->
-  <Pop v-if="newsletter" @close="newsletter = false; newsletterTried = true" @submit="handleNewsletter()"
-    title="Don’t miss out on promotions!"
-    :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
-    bird="fly">
-    <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
-      <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
-        :required="true" />
-      <button
-        class="button_pink text-xl md:text-3xl my-2"
-        @click="handleNewsletter()">Submit</button>
-    </div>
-  </Pop>
-  <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false"
-    :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
   <header class="h-screen w-full flex flex-col relative justify-center items-center z-20">
     <img src="/logo.svg" alt="Bloof Logo" class="lg:h-72 lg:max-h-[30%] h-36 w-auto relative z-10" />
     <div class="transition-opacity duration-1000" :class="[UIStore.loadingScreen ? 'opacity-0' : 'opacity-100']">
@@ -189,7 +163,7 @@ onUnmounted(() => {
       <Maps />
     </section>
     <!-- Reservations --->
-    <section class="md:min-h-[100dvh] flex flex-col md:flex-row">
+    <section id="reservation" class="md:min-h-[100dvh] flex flex-col md:flex-row">
       <div class="flex items-center justify-center relative overflow-hidden md:w-1/2 min-h-[50dvh] md:min-h-0">
         <div class="bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>

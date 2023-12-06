@@ -42,7 +42,15 @@ export default defineNuxtConfig({
     renderJsonPayloads: false
   },
   ssr: true,
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar'],
+  site: {
+    url: 'https://bloofbdg.com',
+  },
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ]
+  },
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap'],
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
