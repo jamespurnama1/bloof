@@ -1,5 +1,5 @@
 import type { PerspectiveCamera, Scene, Vector3, Object3D } from 'three';
-import { CSS3DObject, type CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3Drenderer';
+import { CSS3DObject, type CSS3DRenderer } from 'three/addons';
 
 
 export const galleryInit = (images: media[], dom: HTMLElement) => {
