@@ -11,7 +11,7 @@ onMounted(async() => {
   //   anim()
   //   init.value = true;
   // }
-  galleryInit(CMSStore.galleryData.media.map(x => ({ imgix_url: `${x.imgix_url}?w=720`, original_name: x.original_name } as media)), canvas.value);
+  galleryInit(CMSStore.galleryData.media.map(x => ({ imgix_url: `${x.imgix_url}?w=720&fm=webp`, original_name: x.original_name } as media)), canvas.value);
   // CMSStore.$subscribe(() => {
   //   if (!CMSStore.galleryData || init.value) return;
   //   anim()
