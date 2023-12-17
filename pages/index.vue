@@ -90,7 +90,7 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <nuxtImg v-if="CMSStore.landingData" preload provider="imgix"
+      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix"
         :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
         densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
@@ -155,7 +155,7 @@ onUnmounted(() => {
         class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtImg class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
+      <NuxtPicture class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
         :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url" />
     </section>
     <!-- Maps --->

@@ -88,15 +88,17 @@ export default defineNuxtConfig({
       meta: [
         {name: "msapplication-TileColor", content:"#b6dfd8"},
         {name: "theme-color", content:"#faf9f8"},
-        {property:"og:title", content:"Bloof Bandung"},
-		    {property: "og:site_name", content: "Bloof Restaurant"},
+        {property:"title", content:"Bloof Bandung Restaurant"},
+        {property:"description", content:"Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
+        {property:"og:title", content:"Bloof Bandung Restaurant"},
+		    {property: "og:site_name", content: "Bloof Bandung Restaurant"},
 		    {property: "og:url", content: "https://bloofbdg.com"},
-		    {property: "og:description", content: ""},
+		    {property: "og:description", content: "Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
 		    {property: "og:type", content: "restaurant"},
 		    {property: "og:image", content: "https://bloofbdg.com/og.jpg"},
 		    {name: "twitter:card", content: "summary_large_image"},
 		    {name: "twitter:title", content: "Bloof Bandung Restaurant"},
-		    {name: "twitter:description", content: ""},
+		    {name: "twitter:description", content: "Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
 		    {name: "twitter:image", content: "https://bloofbdg.com/twitter.jpg"},
       ]
     }
@@ -129,7 +131,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  nitro: {
-    preset: "vercel",
-  }
+  // nitro: {
+  //   preset: "vercel",
+  // }
 })

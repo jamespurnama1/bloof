@@ -122,10 +122,10 @@ async function getFood() {
           return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
         });
         food.value = data.value.media.map(x => {
-          return `${x.imgix_url}?w=1080` as unknown as URL
+          return `${x.imgix_url}?w=1080&auto=format` as unknown as URL
         })
         food_highres.value = (data.value as photosData).media.map(x => {
-          return `${x.imgix_url}?w=1920` as unknown as URL
+          return `${x.imgix_url}?w=1920&auto=format` as unknown as URL
         })
         food.value.unshift(null)
         food_highres.value.unshift(null)
@@ -150,10 +150,10 @@ async function getDrinks() {
           return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
         });
         drinks.value = (data.value as photosData).media.map(x => {
-          return `${x.imgix_url}?w=1080` as unknown as URL
+          return `${x.imgix_url}?w=1080&auto=format` as unknown as URL
         })
         drinks_highres.value = (data.value as photosData).media.map(x => {
-          return `${x.imgix_url}?w=1920` as unknown as URL
+          return `${x.imgix_url}?w=1920&auto=format` as unknown as URL
         })
         drinks.value.unshift(null)
         drinks_highres.value.unshift(null)

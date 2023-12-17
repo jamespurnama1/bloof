@@ -16,7 +16,7 @@
             post.title }}</h3>
           <div
             class="bg-gradient-to-b w-full h-full absolute top-0 left-0 from-transparent to-teal-600 opacity-75 mix-blend-multiply -z-0" />
-          <nuxtImg preload provider="imgix"
+          <NuxtPicture preload provider="imgix"
             class="md:grayscale absolute top-0 left-0 object-cover w-full h-full -z-10 group-hover/item:scale-125 group-hover/slider:grayscale-0 transition duration-700 md:brightness-50 group-hover/item:brightness-100"
             :src="post.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" :alt="post.title"
             densities="x1 x2" :sizes="`xs:100vw sm:100vw md:100vw lg:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw xl:${Math.max(1, Math.min(props.posts.length, 4))/100}vw xxl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw 2xl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw`"
