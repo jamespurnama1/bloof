@@ -91,9 +91,10 @@ onUnmounted(() => {
       <img @click="scrollDown" src="/images/arrow.svg" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
       <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix"
+        :imgAttrs="{ class: 'object-cover' }"
         :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
         densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 h-full w-full object-cover top-0 left-0" />
+        :placeholder="[50, 25, 75, 5]" class="flex absolute -z-20 h-full w-full top-0 left-0" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
@@ -122,8 +123,11 @@ onUnmounted(() => {
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <img class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url">
+      <NuxtPicture class="flex zoom absolute top-0 left-0 w-full h-full -z-20"
+        lazy provider="imgix"
+        :imgAttrs="{ class: 'object-cover' }"
+        densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
+        :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
@@ -146,7 +150,7 @@ onUnmounted(() => {
         </NuxtLink>
       </div>
     </section>
-    <!-- Events --->
+    <!-- Happenings --->
     <section class="happenings relative h-[100dvh] flex justify-end items-end p-2 md:p-10 overflow-hidden">
       <NuxtLink to="/happenings" class="mb-5">
         <h3 class="md:text-5xl text-3xl text-white text-center">Happenings</h3>
@@ -155,8 +159,11 @@ onUnmounted(() => {
         class="md:mt-5 md:mb-0 mb-2 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="zoom absolute top-0 left-0 object-cover w-full h-full -z-20"
-        :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url" />
+      <NuxtPicture class="flex zoom absolute top-0 left-0 w-full h-full -z-20"
+        :imgAttrs="{ class: 'object-cover' }"
+        lazy provider="imgix"
+        densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
+        :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
     <!-- Maps --->
     <section class="h-[100dvh]">

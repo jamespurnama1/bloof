@@ -42,7 +42,8 @@ onMounted(async () => {
         <h3 class="text-3xl md:text-5xl text-center">Special Packages</h3>
         <swiper-container ref="swiperRef" init="false" class="flex w-full">
           <swiper-slide class="m-auto" v-for="(brochure, i) in CMSStore.eventsData.brochures" :key="i">
-            <NuxtPicture preload provider="imgix" class="object-cover m-auto max-h-[80vh] w-auto"
+            <NuxtPicture preload provider="imgix" class="flex m-auto max-h-[80vh] w-auto"
+              :imgAttrs="{ class: 'object-cover' }"
               :src="brochure.brochure.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="" densities="x1 x2"
               :sizes="`xs:100vw sm:100vw md:50vw lg:50vw xl:50vw xxl:50vw 2xl:50vw`" :placeholder="[50, 25, 75, 5]" />
           </swiper-slide>
