@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <img ref="cursor" src="/images/cursor.svg"
+    <img ref="cursor" src="/images/cursor.png"
       class="origin-center cursor transform-gpu pointer-events-none z-[20000] fixed w-16 h-16 -top-8 -left-8 opacity-0 transition-transform ease-out" />
   </ClientOnly>
 </template>

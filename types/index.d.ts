@@ -22,6 +22,9 @@ declare global {
   declare type media = {
     name?: string;
     original_name?: string;
+    metadata?: {
+      name: string;
+    };
     url: url;
     imgix_url: url;
   };

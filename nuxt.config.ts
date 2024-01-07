@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import { fileURLToPath } from 'node:url'
+import { ofetch } from 'ofetch'
 
 export const routes = [
   {
@@ -36,8 +37,13 @@ export const routes = [
   },
 ]
 
+const happenings = async () => {
+  const response: happeningsData = await ofetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=slug`);
+  return response.objects.map(x => `/happenings/${x.slug}`)
+}
+
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' ? true : false },
   experimental: {
     renderJsonPayloads: false
   },
@@ -50,13 +56,32 @@ export default defineNuxtConfig({
       '/api/__sitemap__/urls',
     ]
   },
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire'],
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
       'postcss-import': {},
       tailwindcss: {},
       autoprefixer: {},
+    },
+  },
+  vuefire: {
+    config: {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID
+    },
+    appCheck: {
+      // Allows you to use a debug token in development
+      debug: process.env.NODE_ENV !== 'production',
+      isTokenAutoRefreshEnabled: true,
+      provider: 'ReCaptchaV3',
+      // Find the instructions in the Firebase documentation, link above
+      key: process.env.RECAPTCHA_SITE_KEY,
     },
   },
     vue: {  
@@ -79,7 +104,7 @@ export default defineNuxtConfig({
   app: {
     // pageTransition: { name: 'fade', mode: 'out-in' },
     head: {
-      title: "Bloof Bandung Restaurant",
+      title: "Bloof Bandung Rooftop Restaurant",
       link: [
         {rel: "apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png"},
         {rel: "icon", type:"image/png", sizes:"32x32", href: "/favicon-32x32.png"},
@@ -114,6 +139,13 @@ export default defineNuxtConfig({
           }
         })
       })
+    },
+    async 'nitro:config'(nitroConfig) {
+      // if (nitroConfig.dev || !nitroConfig.prerender || !nitroConfig.prerender.routes) { return }
+      if (process.argv?.includes('generate')) {
+      const happeningsSlug = await happenings();
+      nitroConfig.prerender!.routes!.push(...happeningsSlug);
+      }
     }
   },
   image: {
@@ -131,7 +163,4 @@ export default defineNuxtConfig({
       }
     }
   },
-  // nitro: {
-  //   preset: "vercel",
-  // }
 })

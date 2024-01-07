@@ -52,7 +52,7 @@ onMounted(async () => {
 onUnmounted(() => {
   // @ts-ignore
   lottieAnimation.value?.destroy();
-  if (currentRoute.value.path !== '/gallery') document.querySelector('body')!.style.overflow = 'initial'
+  document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
 
@@ -65,7 +65,7 @@ onUnmounted(() => {
       </p>
     </Transition>
     <Transition name="fade">
-      <img v-if="currentRoute.path !== '/' && logo" src="/logo.svg" alt="Bloof Logo" class="h-72 w-auto absolute z-10" />
+      <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" class="h-72 w-auto absolute z-10" />
     </Transition>
     <Vue3Lottie ref="lottieAnimation" class="loading min-h-full min-w-full overflow-hidden" :animationData="super1"
       :noMargin="true" width="100%" height="100%" :auto-play="false" @on-animation-loaded="onLoad"

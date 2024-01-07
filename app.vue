@@ -25,6 +25,7 @@ const bottom = ref(false);
 const width = ref(0);
 const newsletterTried = ref(false);
 const modal = ref(false);
+const error = ref(false);
 const newsletter = ref(false);
 const newsletterSubmitted = ref(false);
 const formStore = useFormStore();
@@ -35,14 +36,23 @@ function updateWidth() {
   UIStore.width = width.value;
 };
 
-function handleNewsletter() {
+async function handleNewsletter() {
   if (!formStore.emailIsValid) {
     newsletterTried.value = true;
     return
   }
   //submit to firebase
-  modal.value = true;
-  newsletterSubmitted.value = true
+  await $fetch('/api/newsletter', {
+    method: 'POST',
+    body: {
+      email: formStore.email,
+    }
+  }).then(() => {
+    newsletterSubmitted.value = true;
+    modal.value = true;
+  }).catch(() => {
+    error.value = true;
+  })
   newsletter.value = false;
 }
 
@@ -80,15 +90,15 @@ onMounted(() => {
     title="Don’t miss out on promotions!"
     :content="newsletterTried ? `<span class='text-pink-800'>Please enter a valid e-mail address.</span>` : 'Sign up for our newsletter'"
     bird="fly">
-    <div class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
+    <form class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
       <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
         :required="true" />
-      <button class="button_pink text-xl md:text-3xl my-2" @click="handleNewsletter()">Submit</button>
-    </div>
+      <button type="submit" class="button_pink text-xl md:text-3xl my-2" @click.prevent="handleNewsletter()">Submit</button>
+    </form>
   </Pop>
-  <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false; req()"
+  <LazyPop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false; req()"
     :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
-
+  <LazyPop v-else-if="!newsletter && error" @close="error = false" @submit="reloadNuxtApp()" title="Something went wrong" bird="thank" button="Reload Me" />
   <NuxtLayout>
     <Cursor v-if="width > 768" />
     <Navigation />
@@ -97,12 +107,12 @@ onMounted(() => {
       <aside v-show="bottom" class="fixed right-5 bottom-5 md:right-10 md:bottom-10">
         <button @click="scrollTop()" class="flex items-center justify-center">
           <p class="text-sm md:text-base">Back to top</p>
-          <img src="/images/arrow.svg" alt="Arrow Up" aria-label="Arrow-Up" class="rotate-180 h-8 md:h-12 w-auto" />
+          <img src="/images/arrow.png" alt="Arrow Up" aria-label="Arrow-Up" class="rotate-180 h-8 md:h-12 w-auto" />
         </button>
       </aside>
     </Transition>
     <footer class="h-64 md:h-[500px] flex items-center justify-center flex-col">
-      <img src="/logo.svg" alt="Bloof Logo" class="h-16 md:h-32 lg:h-48 lg:max-h-[30%]  w-auto" />
+      <img src="/logo.png" alt="Bloof Logo" class="h-16 md:h-32 lg:h-48 lg:max-h-[30%]  w-auto" />
       <h5 class="text-3xl md:text-5xl">Bloof</h5>
       <p class="md:text-xs text-[0.6em]">© 2023 Bloof is part of hemangini Hotel</p>
     </footer>

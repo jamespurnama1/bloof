@@ -2,18 +2,18 @@
   <section class="flex items-center justify-center fixed top-0 left-0 w-full h-full z-50">
     <dialog ref="dialog" open
       class="bg-warm-200 relative outline outline-4 outline-black w-min md:min-w-[50%] min-w-[90%] scale-0 h-min overflow-hidden">
-      <button class="absolute top-5 right-5 z-10" @click="$emit('close')"><img class="h-6 w-auto" src="/images/x.svg"
+      <button class="absolute top-5 right-5 z-10" @click="$emit('close')"><img class="h-6 w-auto" src="/images/x.png"
           alt="Close Pop up" /></button>
       <div class="flex flex-col p-3 md:p-5 relative overflow-y-scroll pt-6 md:pt-12 gap-3 md:gap-5 h-full max-h-[70vh]">
       <div class="flex flex-col gap-1 md:gap-3 items-center">
         <div class="flex flex-col md:flex-row items-center gap-5">
-          <img class="h-12 w-auto" :src="`/images/bird_${props.bird}.svg`" :alt="`bird ${props.bird}`" />
+          <img class="h-12 w-auto" :src="`/images/bird_${props.bird}.png`" :alt="`bird ${props.bird}`" />
           <h2 class="text-center text-xl md:text-4xl">{{ props.title }}</h2>
         </div>
         <p v-if="props.content" class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
       </div>
       <slot>
-        <button class="button_pink text-xl md:text-3xl my-2" @click="$emit('submit')">Okay</button>
+        <button class="button_pink text-xl md:text-3xl my-2" @click="$emit('submit')">{{ props.button }}</button>
       </slot>
       </div>
     </dialog>
@@ -31,7 +31,11 @@ const { $gsap: gsap } = useNuxtApp();
 const props = defineProps({
   title: String,
   content: String,
-  bird: String
+  bird: String,
+  button: {
+    type: String,
+    default: "Okay"
+  }
 });
 
 onMounted(() => {
@@ -45,7 +49,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (currentRoute.value.path !== '/gallery') document.querySelector('body')!.style.overflow = 'initial'
+  document.querySelector('body')!.style.overflow = 'initial'
   ctx.value ? ctx.value.revert() : null;
 })
 </script>

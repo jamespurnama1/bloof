@@ -2,7 +2,7 @@
   <NuxtLayout>
     <Cursor v-if="width > 768" />
     <div class="flex flex-col items-center justify-center h-screen bg-pink-200">
-      <img class="h-32 md:h-64" src="/images/bird_thank.svg" alt="Bird Sorry" />
+      <img class="h-32 md:h-64" src="/images/bird_thank.png" alt="Bird Sorry" />
       <h1 class="text-center text-5xl md:text-9xl">{{ message }}</h1>
       <p v-if="error">
         <strong class="font-normal">{{ error.statusCode }} {{ error.statusMessage.split(':')[0] }}</strong>
