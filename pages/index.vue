@@ -207,7 +207,7 @@ onUnmounted(() => {
           <Vue3Lottie ref="lottieReservations" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
             :animationData="super1" :noMargin="true" width="50%" height="100%" :auto-play="true" />
         </ClientOnly> -->
-        <Transition name="fade" class="relative overflow-hidden">
+        <Transition name="fade" class="absolute overflow-hidden">
           <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0" loading="lazy" :placeholder="[50, 25, 75, 5]"
             :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg" alt="Bloof Pattern" />
           <NuxtPicture v-else-if="privateRoom === 'bloof_belly'" class="absolute w-full h-full top-0 left-0" loading="lazy"
