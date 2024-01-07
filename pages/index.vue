@@ -11,12 +11,6 @@ const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
 const lottieAnimation = ref();
-// const count = {
-//   1: 0,
-//   2: 0,
-//   3: 0,
-// } as {[key: number]: number}
-
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
@@ -24,20 +18,8 @@ function onLoad(index: number) {
   document.querySelector(`.lottie-${index} svg`)?.setAttribute('preserveAspectRatio', 'xMidYMid slice')
   const anim = lottieAnimation.value![index]
   anim.goToAndStop(360, true);
-  //anim.setDirection(-1);
   anim.play()
 }
-
-// function handleNewsletter() {
-//   if (!formStore.emailIsValid) {
-//     newsletterTried.value = true;
-//     return
-//   }
-//   //submit to firebase
-//   modal.value = true;
-//   newsletterSubmitted.value = true
-//   newsletter.value = false;
-// }
 
 onMounted(async () => {
   await nextTick()

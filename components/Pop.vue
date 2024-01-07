@@ -13,7 +13,7 @@
         <p v-if="props.content" class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
       </div>
       <slot>
-        <button class="button_pink text-xl md:text-3xl my-2" @click="$emit('submit')">Okay</button>
+        <button class="button_pink text-xl md:text-3xl my-2" @click="$emit('submit')">{{ props.button }}</button>
       </slot>
       </div>
     </dialog>
@@ -31,7 +31,11 @@ const { $gsap: gsap } = useNuxtApp();
 const props = defineProps({
   title: String,
   content: String,
-  bird: String
+  bird: String,
+  button: {
+    type: String,
+    default: "Okay"
+  }
 });
 
 onMounted(() => {
