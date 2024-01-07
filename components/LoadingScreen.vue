@@ -52,7 +52,7 @@ onMounted(async () => {
 onUnmounted(() => {
   // @ts-ignore
   lottieAnimation.value?.destroy();
-  if (currentRoute.value.path !== '/gallery') document.querySelector('body')!.style.overflow = 'initial'
+  document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
 

@@ -98,7 +98,7 @@ async function getHappenings() {
 async function getGallery() {
   if (!galleryData.value) {
     try{
-      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,`);
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,metadata`);
       if (data.value) {
         galleryData.value = data.value as photosData;
       } else {
