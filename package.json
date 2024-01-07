@@ -50,6 +50,7 @@
     "nodemailer": "^6.9.7",
     "nuxt-vuefire": "^1.0.1",
     "pinia": "^2.1.7",
+    "posthog-js": "^1.96.1",
     "sass": "^1.69.5",
     "swiper": "^11.0.5",
     "v-calendar": "^3.1.2",

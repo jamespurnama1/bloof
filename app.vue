@@ -42,12 +42,8 @@ async function handleNewsletter() {
     return
   }
   //submit to firebase
-  await $fetch('/api/newsletter', {
-    method: 'POST',
-    body: {
-      email: formStore.email,
-    }
-  }).then(() => {
+  pushDatabase(formStore.email)
+  .then(() => {
     newsletterSubmitted.value = true;
     modal.value = true;
   }).catch(() => {
