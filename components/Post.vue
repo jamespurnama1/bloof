@@ -25,7 +25,7 @@
             :sizes="`xs:100vw sm:100vw md:100vw lg:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw xl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw xxl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw 2xl:${Math.max(1, Math.min(props.posts.length, 4)) / 100}vw`"
             :placeholder="[50, 25, 75, 5]" />
         </NuxtLink>
-        <img v-else class="flex-1 h-full w-full object-cover" :src="`/images/super${post}.svg`" alt="Bloof Pattern">
+        <img v-else class="flex-1 h-full w-full object-cover" :src="`/images/super${post}.jpg`" alt="Bloof Pattern">
       </swiper-slide>
       <!-- <button @click="swiperRef.slideNext()" class="absolute right-5 z-20 top-1/2 -translate-y-1/2 bg-warm-200 bordered p-2 hover:scale-110 active:duration-0 active:translate-x-[3px] active:translate-y-[1px] hover:disabled:scale-100 transition">
         <img src="/images/caret.png" :alt="`${title} Slide Right`" class="transition h-5 w-auto object-cover">
@@ -38,7 +38,7 @@
       </h3>
     </div>
     <img class="absolute top-0 left-0 w-full h-full object-cover -z-0 saturate-0"
-      :src="`/images/super${getRandomInt(3)}.svg`" alt="Bloof Pattern">
+      :src="`/images/super${getRandomInt(3)}.jpg`" alt="Bloof Pattern">
   </div>
 </template>
 
@@ -84,7 +84,6 @@ onMounted(async () => {
   })
   const params = {
     modules: [$Autoplay],
-    loop: true,
     autoplay: { delay: 1500, pauseOnMouseEnter: true },
     breakpoints: {
       320: {
