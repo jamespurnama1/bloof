@@ -41,6 +41,8 @@ function handleNewsletter() {
     return
   }
   //submit to firebase
+
+  
   modal.value = true;
   newsletterSubmitted.value = true
   newsletter.value = false;
