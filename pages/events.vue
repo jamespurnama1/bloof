@@ -55,7 +55,7 @@ onMounted(async () => {
       <p v-if="more_description" class="max-w-xs md:max-w-xl" v-html="more_description"></p>
     </section>
     <section class="bg-warm-400 min-h-[50dvh] p-12 flex items-center justify-center">
-      <EventForm />
+      <LazyEventForm />
     </section>
   </main>
 </template>

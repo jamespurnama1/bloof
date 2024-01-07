@@ -86,7 +86,7 @@ onMounted(() => {
       <button class="button_pink text-xl md:text-3xl my-2" @click="handleNewsletter()">Submit</button>
     </div>
   </Pop>
-  <Pop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false; req()"
+  <LazyPop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false; req()"
     :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
 
   <NuxtLayout>
@@ -97,12 +97,12 @@ onMounted(() => {
       <aside v-show="bottom" class="fixed right-5 bottom-5 md:right-10 md:bottom-10">
         <button @click="scrollTop()" class="flex items-center justify-center">
           <p class="text-sm md:text-base">Back to top</p>
-          <img src="/images/arrow.svg" alt="Arrow Up" aria-label="Arrow-Up" class="rotate-180 h-8 md:h-12 w-auto" />
+          <img src="/images/arrow.png" alt="Arrow Up" aria-label="Arrow-Up" class="rotate-180 h-8 md:h-12 w-auto" />
         </button>
       </aside>
     </Transition>
     <footer class="h-64 md:h-[500px] flex items-center justify-center flex-col">
-      <img src="/logo.svg" alt="Bloof Logo" class="h-16 md:h-32 lg:h-48 lg:max-h-[30%]  w-auto" />
+      <img src="/logo.png" alt="Bloof Logo" class="h-16 md:h-32 lg:h-48 lg:max-h-[30%]  w-auto" />
       <h5 class="text-3xl md:text-5xl">Bloof</h5>
       <p class="md:text-xs text-[0.6em]">© 2023 Bloof is part of hemangini Hotel</p>
     </footer>

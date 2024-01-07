@@ -15,7 +15,7 @@
           <!-- Calendar -->
           <p class="text-center font-sans font-normal text-sm mt-3">Event Date</p>
           <span class="flex items-center justify-center">
-            <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.svg"
+            <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.png"
               class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous" />
             <VDropdown auto>
               <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
@@ -39,27 +39,27 @@
                 </ClientOnly>
               </template>
             </VDropdown>
-            <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg"
+            <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.png"
               class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" />
           </span>
 
           <!-- Guests -->
           <p class="text-center font-sans font-normal text-sm mt-3">No. of guests</p>
           <span class="flex items-center justify-center">
-            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
+            <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
               @click="paxSelected ? paxSelected-- : paxSelected = pax.length - 1" />
             <p class="text-2xl xl:text-4xl text-center">{{ pax[paxSelected] }} pax</p>
-            <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
+            <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
               @click="paxSelected === pax.length - 1 ? paxSelected = 0 : paxSelected++" />
           </span>
 
           <!-- Budget -->
           <p class="text-center font-sans font-normal text-sm mt-3">Budget per guest</p>
           <span class="flex items-center justify-center">
-            <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
+            <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Prev"
               @click="budgetSelected ? budgetSelected-- : budgetSelected = budget.length - 1" />
             <p class="text-2xl xl:text-4xl text-center">{{ budget[budgetSelected] }}</p>
-            <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
+            <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Number of Guests Next"
               @click="budgetSelected === budget.length - 1 ? budgetSelected = 0 : budgetSelected++" />
           </span>
         </div>
@@ -137,7 +137,7 @@ async function handleSubmit() {
   if (!formStore.eventValid) return;
   await $fetch('/api/events', {
     method: 'POST',
-    body: { 
+    body: {
       name: formStore.name,
       phone: formStore.phone,
       email: formStore.email,

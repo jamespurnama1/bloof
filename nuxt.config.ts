@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import { fileURLToPath } from 'node:url'
+import { ofetch } from 'ofetch'
 
 export const routes = [
   {
@@ -36,8 +37,13 @@ export const routes = [
   },
 ]
 
+const happenings = async () => {
+  const response: happeningsData = await ofetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=slug`);
+  return response.objects.map(x => `/happenings/${x.slug}`)
+}
+
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' ? true : false },
   experimental: {
     renderJsonPayloads: false
   },
@@ -114,6 +120,13 @@ export default defineNuxtConfig({
           }
         })
       })
+    },
+    async 'nitro:config'(nitroConfig) {
+      // if (nitroConfig.dev || !nitroConfig.prerender || !nitroConfig.prerender.routes) { return }
+      if (process.argv?.includes('generate')) {
+      const happeningsSlug = await happenings();
+      nitroConfig.prerender!.routes!.push(...happeningsSlug);
+      }
     }
   },
   image: {
@@ -131,7 +144,4 @@ export default defineNuxtConfig({
       }
     }
   },
-  // nitro: {
-  //   preset: "vercel",
-  // }
 })

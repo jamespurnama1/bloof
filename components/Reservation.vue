@@ -179,8 +179,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Pop v-if="terms" @close="terms = false" title="Information and Regulation"
-    :content="CMSStore.landingData.regulation" bird="fly">
+  <Pop v-if="terms" @close="terms = false" title="Information and Regulation" :content="CMSStore.landingData.regulation"
+    bird="fly">
     <button
       class="button_pink text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
       @click="submitReservation()">Reserve</button>
@@ -191,15 +191,15 @@ onMounted(async () => {
 
     <!-- Guests -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Guests Previous"
+      <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Guests Previous"
         @click="getGuests = '-'" />
       <p class="text-2xl xl:text-4xl text-center">{{ getGuests }}</p>
-      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Guests Next" @click="getGuests = '+'" />
+      <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Guests Next" @click="getGuests = '+'" />
     </span>
 
     <!-- Calendar -->
     <span class="flex items-center justify-center">
-      <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.svg"
+      <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.png"
         class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
       <VDropdown auto>
         <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
@@ -223,13 +223,13 @@ onMounted(async () => {
           </ClientOnly>
         </template>
       </VDropdown>
-      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto"
+      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto"
         alt="Date Next" />
     </span>
 
     <!-- Time -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Time Previous"
+      <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Time Previous"
         @click="onDateChange(getDate.getTime() - 1800000)" />
       <VDropdown>
         <p class="text-2xl xl:text-4xl text-center">
@@ -239,13 +239,12 @@ onMounted(async () => {
           <div class="p-5 grid grid-cols-2 gap-1 w-max">
             <button
               @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()"
-              v-for="time in times"
-              class="text-sm xl:text-lg font-bold font-serif"
+              v-for="time in times" class="text-sm xl:text-lg font-bold font-serif"
               :disabled="!timeAvail.find(x => x === time)">{{ time }}</button>
           </div>
         </template>
       </VDropdown>
-      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next"
+      <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next"
         @click="onDateChange(getDate.getTime() + 1800000)" />
     </span>
 
@@ -263,10 +262,10 @@ onMounted(async () => {
       label="private" placeholder="Private Room" />
     <!-- <label for="private">Private Room</label> -->
     <span v-if="privateRoom.checked" class="flex items-center justify-center">
-      <img src="/images/caret.svg" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous"
+      <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous"
         @click="handlePrivateRoom(true)" />
       <p class="text-2xl xl:text-4xl text-center">{{ privateRoom.name[privateRoom.index] }}</p>
-      <img src="/images/caret.svg" class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
+      <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
     </span>
     <!-- Minimum Purchase -->
     <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.</p>
@@ -274,9 +273,7 @@ onMounted(async () => {
     <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 outline-4 outline">Please fill the form&nbsp;correctly.</p>
 
     <!-- Submit -->
-    <button
-      class="button_pink text-xl xl:text-3xl my-2 small"
-      type="submit" :disabled="tried && !formStore.valid"
+    <button class="button_pink text-xl xl:text-3xl my-2 small" type="submit" :disabled="tried && !formStore.valid"
       @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
   </form>
 

@@ -41,10 +41,10 @@
     <!-- Checkbox -->
     <span v-else-if="props.type === 'checkbox'" class="flex items-center gap-3">
       <div @click="value = !value; $emit('changeCheck', value)" class="bordered bg-warm-200 h-5 w-5 relative">
-        <img v-if="value" class="scale-[200%] origin-bottom" src="/images/check.svg" alt="checked" />
+        <img v-if="value" class="scale-[200%] origin-bottom" src="/images/check.png" alt="checked" />
       </div>
-      <input type="checkbox" :id="props.label" :name="props.label"
-        v-model="value" @change="(e) => {value = (e.currentTarget as HTMLInputElement).checked; $emit('changeCheck', value) }" />
+      <input type="checkbox" :id="props.label" :name="props.label" v-model="value"
+        @change="(e) => { value = (e.currentTarget as HTMLInputElement).checked; $emit('changeCheck', value) }" />
       <label class="text-lg font-bold font-serif" :for="props.label">{{ props.placeholder }}</label>
     </span>
     <!-- Others -->

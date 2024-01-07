@@ -47,12 +47,12 @@ h1, h2, h3, h4, h5, form p, form input, form button {
 
 .button_pink {
   @extend %button;
-  background-image: url("/images/button_pink.svg");
+  background-image: url("/images/button_pink.png");
 }
 
 .button_teal {
   @extend %button;
-  background-image: url("/images/button_teal.svg");
+  background-image: url("/images/button_teal.png");
 }
 
 .fade-enter-active,
