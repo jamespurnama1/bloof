@@ -77,6 +77,8 @@
 </template>
 
 <script setup lang="ts">
+import type { PostHog } from 'posthog-js';
+
 const submitted = ref(false);
 const modal = ref(false);
 const tried = ref(false);
@@ -133,8 +135,14 @@ function onDateChange(date: Date | number) {
 
 onDateChange(new Date(Date.now()));
 
+let posthog = null as null | PostHog
+
 async function handleSubmit() {
-  if (!formStore.eventValid) return;
+  if (!formStore.eventValid || !posthog) return;
+  posthog.identify(formStore.email, {
+    name: formStore.name,
+    phone: formStore.phone
+  })
   await $fetch('/api/events', {
     method: 'POST',
     body: {
@@ -151,4 +159,8 @@ async function handleSubmit() {
   submitted.value = true;
 }
 
+onMounted(() => {
+  const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
+})
 </script>

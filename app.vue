@@ -9,7 +9,7 @@ import type { PostHog } from 'posthog-js';
 //   ogImage: 'https://bloofbdg.com/cover.jpg',
 //   twitterCard: 'summary_large_image',
 // })
-const route = useRoute();
+
 const CMSStore = useCMSStore();
 if (process.server) {
   CMSStore.getLanding()
@@ -21,8 +21,7 @@ if (process.server) {
   CMSStore.getDrinks()
 }
 
-const { $posthog } = useNuxtApp()
-const posthog = $posthog() as PostHog
+let posthog = null as null | PostHog
 
 const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 const UIStore = useUIStore();
@@ -42,11 +41,13 @@ function updateWidth() {
 };
 
 async function handleNewsletter() {
-  if (!formStore.emailIsValid) {
+  if (!formStore.emailIsValid || !posthog) {
     newsletterTried.value = true;
     return
   }
   //submit to firebase
+  posthog.identify(formStore.email)
+
   pushDatabase(formStore.email)
   .then(() => {
     newsletterSubmitted.value = true;
@@ -85,6 +86,8 @@ function handleScroll() {
 }
 
 onMounted(() => {
+  const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
   UIStore.$subscribe((mutation, state) => {
     if (UIStore.loadingScreen || newsletterTried.value || newsletterSubmitted.value) return;
     setTimeout(() => {
@@ -96,19 +99,20 @@ onMounted(() => {
   updateWidth();
 });
 
-// watch(route, value => {
-//   if (!window) return;
-//   posthog.capture('Pageleave', {
-//     'max scroll percentage': maxPercentage.value,
-//     'max scroll pixels': maxPixels.value,
-//     'last scroll percentage': Math.min(
-//       1,
-//       (window.innerHeight + window.scrollY) / document.body.offsetHeight
-//     ),
-//     'last scroll pixels': window.innerHeight + window.scrollY,
-//     scrolled: maxPixels.value > 0
-//   });
-// }, { deep: true })
+watch(currentRoute, value => {
+  if (!window || !posthog) return;
+  console.log('test')
+  posthog.capture('Pageleave', {
+    'max scroll percentage': maxPercentage.value,
+    'max scroll pixels': maxPixels.value,
+    'last scroll percentage': Math.min(
+      1,
+      (window.innerHeight + window.scrollY) / document.body.offsetHeight
+    ),
+    'last scroll pixels': window.innerHeight + window.scrollY,
+    scrolled: maxPixels.value > 0
+  });
+}, { deep: true })
 </script>
 
 <template>
