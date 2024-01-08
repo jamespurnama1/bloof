@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { PostHog } from 'posthog-js';
+
 const UIStore = useUIStore();
 const formStore = useFormStore();
 const CMSStore = useCMSStore();
@@ -23,6 +25,8 @@ const max = computed(() => privateRoom.value.checked && privateRoom.value.name[p
 const minDate = new Date(Date.now()).getTime() + 3600000;
 
 const noMondays = ref([] as Date[]);
+const { $posthog } = useNuxtApp()
+const posthog = $posthog() as PostHog
 
 for (let i = 0; i <= 5; i++) {
   const d = new Date(Date.now());
@@ -130,6 +134,10 @@ onDateChange(new Date(Date.now()));
 async function submitReservation() {
   terms.value = false
   if (!formStore.valid) return;
+  posthog.identify(formStore.email, {
+    name: formStore.name,
+    phone: formStore.phone
+  })
   await $fetch(`${config.public.ESB_URL}/reservation/transaction/`, {
     headers,
     method: 'POST',
@@ -145,6 +153,7 @@ async function submitReservation() {
       "notes": formStore.notes + privateRoom.value.checked ? `Reservation for private room: ${privateRoom.value.name[privateRoom.value.index]}` : ''
     }
   }).then(res => {
+    posthog.capture('reserve')
     submitted.value = true;
     modal.value = true;
   }, error => {

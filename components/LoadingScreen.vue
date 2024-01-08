@@ -7,6 +7,7 @@ const lottieAnimation = ref(null) as Ref<null | LottieProps>;
 const UIStore = useUIStore();
 const loop = ref(true);
 const logo = ref(true);
+const route = useRoute()
 const takingLonger = ref(false);
 const { currentRoute } = useRouter();
 
@@ -15,9 +16,7 @@ function loadIn() {
   // @ts-ignore
   lottieAnimation.value?.playSegments([300, 360], false);
   loop.value = false;
-  setTimeout(() => {
-    logo.value = false
-  }, 3000)
+  logo.value = false
 }
 
 UIStore.$subscribe((mutation, state) => {
@@ -43,7 +42,8 @@ onMounted(async () => {
   }, 10000)
   await new Promise(resolve => setTimeout(resolve, 10));
   // await nextTick()
-  window.scrollTo(0, 0)
+  console.log(route.hash)
+  if(!route.hash) window.scrollTo(0, 0)
   // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
   loadIn()
