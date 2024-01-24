@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import type { VTooltip } from 'floating-vue';
+// import type { VTooltip } from 'floating-vue';
 
 type label = 'name' | 'title' | 'email' | 'phone' | 'notes' | 'date' | 'guests'
 

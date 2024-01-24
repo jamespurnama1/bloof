@@ -184,14 +184,14 @@ onUnmounted(() => {
         <div class="bordered bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
         </div>
-        <Transition name="fade" class="absolute overflow-hidden">
-          <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0" loading="lazy" :placeholder="[50, 25, 75, 5]"
+        <Transition name="fade">
+          <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy" :placeholder="[50, 25, 75, 5]"
             :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg" alt="Bloof Pattern" />
-          <NuxtPicture v-else-if="privateRoom === 'bloof_belly'" class="absolute w-full h-full top-0 left-0" loading="lazy"
+          <NuxtPicture v-else-if="privateRoom === 'bloof_belly'" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_belly.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Belly" />
-          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0" loading="lazy"
+          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Eye" />
