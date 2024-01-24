@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { PostHog } from 'posthog-js';
+
 const UIStore = useUIStore();
 const formStore = useFormStore();
 const CMSStore = useCMSStore();
@@ -23,6 +25,7 @@ const max = computed(() => privateRoom.value.checked && privateRoom.value.name[p
 const minDate = new Date(Date.now()).getTime() + 3600000;
 
 const noMondays = ref([] as Date[]);
+let posthog = null as null | PostHog
 
 for (let i = 0; i <= 5; i++) {
   const d = new Date(Date.now());
@@ -129,7 +132,11 @@ onDateChange(new Date(Date.now()));
 
 async function submitReservation() {
   terms.value = false
-  if (!formStore.valid) return;
+  if (!formStore.valid || !posthog) return;
+  posthog.identify(formStore.email, {
+    name: formStore.name,
+    phone: formStore.phone
+  })
   await $fetch(`${config.public.ESB_URL}/reservation/transaction/`, {
     headers,
     method: 'POST',
@@ -145,9 +152,16 @@ async function submitReservation() {
       "notes": formStore.notes + privateRoom.value.checked ? `Reservation for private room: ${privateRoom.value.name[privateRoom.value.index]}` : ''
     }
   }).then(res => {
+    if (posthog) posthog.capture('reserve', {
+      success: true
+    })
     submitted.value = true;
     modal.value = true;
   }, error => {
+    if (posthog) posthog.capture('reserve', {
+      success: false,
+      error
+    })
     console.error(error);
   })
 }
@@ -155,6 +169,8 @@ async function submitReservation() {
 const timeData = ref()
 
 onMounted(async () => {
+  const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
   // get dates
   await Promise.all([$fetch(`${config.public.ESB_URL}/reservation/time/?reservationDate=${date.value.toISOString().substring(0, 10)}`, {
     headers,
@@ -270,11 +286,11 @@ onMounted(async () => {
     <!-- Minimum Purchase -->
     <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.</p>
     <p v-else-if="guests >= 5"><sup>*</sup>A minimum purchase of Rp. 500.000++ is required for this&nbsp;booking.</p>
-    <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 outline-4 outline">Please fill the form&nbsp;correctly.</p>
+    <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 bordered">Please fill the form&nbsp;correctly.</p>
 
     <!-- Submit -->
     <button class="button_pink text-xl xl:text-3xl my-2 small" type="submit" :disabled="tried && !formStore.valid"
-      @click.prevent="formStore.valid ? terms = true : tried = true">Submit</button>
+      @click.prevent="formStore.valid ? terms = true : (tried = true, posthog?.capture('reserve', {success: false}))">Submit</button>
   </form>
 
   <div v-else-if="submitted">

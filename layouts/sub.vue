@@ -4,8 +4,7 @@
       <h1 v-if="route.name" class="md:px-10 text-5xl md:text-7xl xl:text-9xl text-center md:text-left">{{
         route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
       <ClientOnly v-if="route.path === '/happenings'">
-        <Vue3Lottie class="sub" ref="lottieAnimation" :animationData="super1" :auto-play="false"
-          @on-animation-loaded="onLoad" />
+        <dotlottie-player class="sub" preserveAspectRatio="xMidYMid slice" :segment="[0, 300]" ref="lottieAnimation" src="/animations/super1.lottie" />
       </ClientOnly>
       <NuxtPicture class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full"
         :imgAttrs="{ class: 'pattern3 object-cover absolute top-0 right-0 scale-150 w-full' }"
@@ -24,14 +23,7 @@
 const { $gsap: gsap } = useNuxtApp();
 const route = useRoute();
 const lottieAnimation = ref();
-import super1 from '~/assets/super1.json';
 const ctx = ref();
-
-function onLoad() {
-  document.querySelector('.sub svg')?.setAttribute('preserveAspectRatio', 'xMidYMid slice')
-  // @ts-ignore
-  lottieAnimation.value!.playSegments([0, 300], true)
-}
 
 onMounted(() => {
   ctx.value = gsap.context((self) => {

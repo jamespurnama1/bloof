@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { PostHog } from 'posthog-js';
+
 // useSeoMeta({
 //   title: 'Bloof',
 //   ogTitle: 'Bloof',
@@ -8,7 +10,7 @@
 //   twitterCard: 'summary_large_image',
 // })
 
-const CMSStore = useCMSStore()
+const CMSStore = useCMSStore();
 if (process.server) {
   CMSStore.getLanding()
   CMSStore.getMenu()
@@ -18,6 +20,8 @@ if (process.server) {
   CMSStore.getFood()
   CMSStore.getDrinks()
 }
+
+let posthog = null as null | PostHog
 
 const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 const UIStore = useUIStore();
@@ -37,11 +41,13 @@ function updateWidth() {
 };
 
 async function handleNewsletter() {
-  if (!formStore.emailIsValid) {
+  if (!formStore.emailIsValid || !posthog) {
     newsletterTried.value = true;
     return
   }
   //submit to firebase
+  posthog.identify(formStore.email)
+
   pushDatabase(formStore.email)
   .then(() => {
     newsletterSubmitted.value = true;
@@ -60,20 +66,52 @@ function req() {
   }
 }
 
+const maxPercentage = ref(0);
+const maxPixels = ref(0);
+
+function handleScroll() {
+      bottom.value = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
+  const lastPercentage = Math.min(
+    1,
+    (window.innerHeight + window.scrollY) / document.body.offsetHeight
+  );
+  const lastPixels = window.innerHeight + window.scrollY;
+  if (lastPercentage > maxPercentage.value) {
+    maxPercentage.value = lastPercentage;
+  }
+
+  if (lastPixels > maxPixels.value) {
+    maxPixels.value = lastPixels;
+  }
+}
+
 onMounted(() => {
+  const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
   UIStore.$subscribe((mutation, state) => {
     if (UIStore.loadingScreen || newsletterTried.value || newsletterSubmitted.value) return;
     setTimeout(() => {
       newsletter.value = true;
     }, 1500);
   })
-
-  document.addEventListener('scroll', () => {
-    bottom.value = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
-  });
+  window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', updateWidth);
   updateWidth();
 });
+
+watch(currentRoute, value => {
+  if (!window || !posthog) return;
+  posthog.capture('Pageleave', {
+    'max scroll percentage': maxPercentage.value,
+    'max scroll pixels': maxPixels.value,
+    'last scroll percentage': Math.min(
+      1,
+      (window.innerHeight + window.scrollY) / document.body.offsetHeight
+    ),
+    'last scroll pixels': window.innerHeight + window.scrollY,
+    scrolled: maxPixels.value > 0
+  });
+}, { deep: true })
 </script>
 
 <template>

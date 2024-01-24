@@ -81,12 +81,12 @@ export default defineNuxtConfig({
       isTokenAutoRefreshEnabled: true,
       provider: 'ReCaptchaV3',
       // Find the instructions in the Firebase documentation, link above
-      key: process.env.RECAPTCHA_SITE_KEY,
+      key: process.env.RECAPTCHA_SITE_KEY as string,
     },
   },
     vue: {  
     compilerOptions: {
-      isCustomElement: (tag) => tag.startsWith('swiper-'),
+      isCustomElement: (tag) => tag.startsWith('swiper-') || tag.startsWith('dotlottie-player'),
     },
   },
   runtimeConfig: {
@@ -95,6 +95,8 @@ export default defineNuxtConfig({
       ESB_URL: process.env.ESB_URL,
       ESB_BRANCH_CODE: process.env.ESB_BRANCH_CODE,
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+      POSTHOG_KEY: process.env.POSTHOG_KEY,
+      POSTHOG_URL: process.env.POSTHOG_URL
     },
     COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
     GMAIL_SEND: process.env.GMAIL_SEND,
