@@ -81,12 +81,12 @@ export default defineNuxtConfig({
       isTokenAutoRefreshEnabled: true,
       provider: 'ReCaptchaV3',
       // Find the instructions in the Firebase documentation, link above
-      key: process.env.RECAPTCHA_SITE_KEY,
+      key: process.env.RECAPTCHA_SITE_KEY as string,
     },
   },
     vue: {  
     compilerOptions: {
-      isCustomElement: (tag) => tag.startsWith('swiper-'),
+      isCustomElement: (tag) => tag.startsWith('swiper-') || tag.startsWith('dotlottie-player'),
     },
   },
   runtimeConfig: {

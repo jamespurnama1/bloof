@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useUIStore } from '~/stores/UI'
 import { useCMSStore } from '~/stores/fetch'
-import super1 from '~/assets/super1.json'
 
 const main = ref();
 const ctx = ref();
@@ -11,14 +10,14 @@ const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
 const lottieAnimation = ref();
+const segment = ref([0,360]);
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
 function onLoad(index: number) {
-  document.querySelector(`.lottie-${index} svg`)?.setAttribute('preserveAspectRatio', 'xMidYMid slice')
   const anim = lottieAnimation.value![index]
-  anim.goToAndStop(360, true);
-  anim.play()
+  anim.seek(360);
+  anim.play();
 }
 
 onMounted(async () => {
@@ -149,12 +148,12 @@ onUnmounted(() => {
               <h4 class="text-4xl">{{ key }}</h4>
             </div>
             <ClientOnly>
-              <Vue3Lottie ref="lottieAnimation" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
-                :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" :animationData="super1"
-                :noMargin="true" :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
-                :auto-play="false" :loop="false" direction="reverse" @mouseenter="onLoad(index)"
-                @mouseleave="lottieAnimation[index].stop()" @on-complete="() => {
-                  lottieAnimation[index].playSegments([0, 300], true);
+              <dotlottie-player ref="lottieAnimation" preserveAspectRatio="xMidYMid slice" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
+                :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" src="/animations/super1.lottie"
+                :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
+                direction="-1" @mouseenter="onLoad(index)" :segment="segment"
+                @mouseleave="lottieAnimation[index].stop()" @complete="() => {
+                  segment = [0, 300]
                 }" />
             </ClientOnly>
           </div>
@@ -185,10 +184,6 @@ onUnmounted(() => {
         <div class="bordered bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
         </div>
-        <!-- <ClientOnly>
-          <Vue3Lottie ref="lottieReservations" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
-            :animationData="super1" :noMargin="true" width="50%" height="100%" :auto-play="true" />
-        </ClientOnly> -->
         <Transition name="fade" class="absolute overflow-hidden">
           <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0" loading="lazy" :placeholder="[50, 25, 75, 5]"
             :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg" alt="Bloof Pattern" />

@@ -101,7 +101,6 @@ onMounted(() => {
 
 watch(currentRoute, value => {
   if (!window || !posthog) return;
-  console.log('test')
   posthog.capture('Pageleave', {
     'max scroll percentage': maxPercentage.value,
     'max scroll pixels': maxPixels.value,

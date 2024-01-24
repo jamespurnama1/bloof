@@ -1,48 +1,47 @@
 <script setup lang="ts">
-import { Vue3Lottie, type LottieProps } from 'vue3-lottie';
-import super1 from '~/assets/super1.json'
 import { useUIStore } from '~/stores/UI'
+import type { DotLottiePlayer } from '@aarsteinmedia/dotlottie-player-light'
 
-const lottieAnimation = ref(null) as Ref<null | LottieProps>;
+const lottieAnimation = ref(null) as Ref<null | DotLottiePlayer>;
 const UIStore = useUIStore();
 const loop = ref(true);
 const logo = ref(true);
 const route = useRoute()
 const takingLonger = ref(false);
 const { currentRoute } = useRouter();
+const segment = ref([0, 300])
 
 function loadIn() {
   if (UIStore.loading) return;
   // @ts-ignore
-  lottieAnimation.value?.playSegments([300, 360], false);
+  // lottieAnimation.value!.play();
+    segment.value = [300, 360]
+  lottieAnimation.value!.seek(300);
+  lottieAnimation.value!.setLooping(false);
   loop.value = false;
-  logo.value = false
+  setTimeout(() => {
+    logo.value = false
+  }, 3000);
 }
 
 UIStore.$subscribe((mutation, state) => {
   loadIn()
 })
 
-function onLottieLoop(x: boolean) {
-  if (x) return;
-  // @ts-ignore
-  lottieAnimation.value!.stop();
+function onLottieLoop() {
+  console.log('loop finish', loop.value)
+  if (loop.value) return;
+  // lottieAnimation.value!.stop();
   UIStore.loadingScreen = false;
 }
 
-function onLoad() {
-  document.querySelector('.loading svg')?.setAttribute('preserveAspectRatio', 'xMidYMid slice')
-  // @ts-ignore
-  lottieAnimation.value!.playSegments([0, 300], true)
-}
-
 onMounted(async () => {
+
   setTimeout(() => {
     takingLonger.value = true
   }, 10000)
   await new Promise(resolve => setTimeout(resolve, 10));
   // await nextTick()
-  console.log(route.hash)
   if(!route.hash) window.scrollTo(0, 0)
   // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
@@ -51,7 +50,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   // @ts-ignore
-  lottieAnimation.value?.destroy();
+  lottieAnimation.value ? lottieAnimation.value.destroy() : null;
   document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
@@ -67,9 +66,8 @@ onUnmounted(() => {
     <Transition name="fade">
       <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" class="h-72 w-auto absolute z-10" />
     </Transition>
-    <Vue3Lottie ref="lottieAnimation" class="loading min-h-full min-w-full overflow-hidden" :animationData="super1"
-      :noMargin="true" width="100%" height="100%" :auto-play="false" @on-animation-loaded="onLoad"
-      @on-loop-complete="onLottieLoop(loop)" />
+    <dotlottie-player :key="segment" ref="lottieAnimation" autoplay="true" loop="true" class="loading min-h-full min-w-full overflow-hidden" src="/animations/super1.lottie"
+      width="100%" height="100%" :segment="segment" PreserveAspectRatio="xMidYMid slice" @frame="frameCount" @loop="onLottieLoop" />
   </div>
 </template>
 
