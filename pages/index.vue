@@ -88,10 +88,10 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix" :imgAttrs="{ class: 'object-cover' }"
+      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix" :imgAttrs="{ class: 'object-cover flex h-full w-full' }"
         :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
         densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :placeholder="[50, 25, 75, 5]" class="flex absolute -z-20 h-full w-full top-0 left-0" />
+        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 top-0 left-0 h-full w-full overflow-hidden" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
@@ -129,8 +129,8 @@ onUnmounted(() => {
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="flex zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
-        :imgAttrs="{ class: 'object-cover' }" densities="x1 x2"
+      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
+        :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
