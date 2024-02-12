@@ -72,6 +72,7 @@ declare global {
   declare type happening = {
     slug: string;
     title: string;
+    published_at?: date;
     metadata: {
       thumbnail: media;
       type: {
