@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <section class="flex flex-col gap-12 h-[100dvh] pt-24 md:ml-[100px] relative">
+    <section class="flex flex-col gap-12 h-[100dvh] pt-24 md:ml-[100px] relative overflow-hidden">
       <h1 v-if="route.name" class="md:px-10 text-5xl md:text-7xl xl:text-9xl text-center md:text-left">{{
         route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
       <canvas v-if="route.path === '/happenings'" ref="canvas" class="w-full h-full" />

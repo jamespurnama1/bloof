@@ -141,14 +141,13 @@ onUnmounted(() => {
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-96 h-full' }" provider="imgix"
-          v-for="image in CMSStore.getFirstRow" width="384" height="auto" fit="cover" quality="75" auto="compress"
-          sizes="384px" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getFirstRow" height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-96 h-full' }" provider="imgix"
-          v-for="image in CMSStore.getSecondRow" width="384" height="auto" fit="cover" quality="75" auto="compress"
-          sizes="384px" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getSecondRow" height="auto" fit="cover" quality="75" auto="compress"
+         :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
     </section>
     <!-- Menu --->
