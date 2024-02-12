@@ -1,23 +1,33 @@
 <script setup lang="ts">
+import type { Rive as RiveType, StateMachineInput } from '@rive-app/canvas-lite';
 import { useUIStore } from '~/stores/UI'
-import type { DotLottiePlayer } from '@aarsteinmedia/dotlottie-player-light'
 
-const lottieAnimation = ref(null) as Ref<null | DotLottiePlayer>;
+const { $Rive: Rive, $Fit: Fit, $Layout: Layout } = useNuxtApp();
+let riveInstance: RiveType;
+const canvas = ref(null) as Ref<null | HTMLCanvasElement>;
 const UIStore = useUIStore();
 const loop = ref(true);
 const logo = ref(true);
 const route = useRoute()
 const takingLonger = ref(false);
 const { currentRoute } = useRouter();
-const segment = ref([0, 300])
 
 function loadIn() {
-  if (UIStore.loading) return;
-  // @ts-ignore
-  // lottieAnimation.value!.play();
-    segment.value = [300, 360]
-  lottieAnimation.value!.seek(300);
-  lottieAnimation.value!.setLooping(false);
+  if (UIStore.loading || !riveInstance) return;
+  const inputs = riveInstance.stateMachineInputs('Loading');
+  if (!inputs) return
+  // Find the input you want to set a value for, or trigger
+  inputs.forEach(i => {
+    const inputName = i.name;
+    switch (inputName) {
+      case 'Finish':
+        i.value = true;
+        break;
+    }
+  })
+  // // segment.value = [300, 360]
+  // // lottieAnimation.value!.seek(300);
+  // // lottieAnimation.value!.setLooping(false);
   loop.value = false;
   setTimeout(() => {
     logo.value = false
@@ -28,21 +38,33 @@ UIStore.$subscribe((mutation, state) => {
   loadIn()
 })
 
-function onLottieLoop() {
-  console.log('loop finish', loop.value)
-  if (loop.value) return;
-  // lottieAnimation.value!.stop();
-  UIStore.loadingScreen = false;
-}
-
 onMounted(async () => {
+  riveInstance = new Rive({
+    canvas: canvas.value as HTMLCanvasElement,
+    src: '/animations/bloof.riv',
+    autoplay: true,
+    stateMachines: 'Loading',
+    layout: new Layout({
+      fit: Fit.Cover,
+    }),
+    onLoad: () => {
+      riveInstance.resizeDrawingSurfaceToCanvas()
+      // Get the inputs via the name of the state machine
+      setTimeout(() => {
+        loadIn();
+      }, 3000)
+    },
+    onStateChange: (e) => {
+      if (!loop.value && (e.data as string[])[0] === 'exit') UIStore.loadingScreen = false;
+    }
+  })
 
   setTimeout(() => {
     takingLonger.value = true
   }, 10000)
   await new Promise(resolve => setTimeout(resolve, 10));
   // await nextTick()
-  if(!route.hash) window.scrollTo(0, 0)
+  if (!route.hash) window.scrollTo(0, 0)
   // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
   loadIn()
@@ -50,7 +72,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   // @ts-ignore
-  lottieAnimation.value ? lottieAnimation.value.destroy() : null;
+  // lottieAnimation.value ? lottieAnimation.value.destroy() : null;
   document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
@@ -66,17 +88,10 @@ onUnmounted(() => {
     <Transition name="fade">
       <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" class="h-72 w-auto absolute z-10" />
     </Transition>
-    <dotlottie-player :key="segment" ref="lottieAnimation" autoplay="true" loop="true" class="loading min-h-full min-w-full overflow-hidden" src="/animations/super1.lottie"
-      width="100%" height="100%" :segment="segment" PreserveAspectRatio="xMidYMid slice" @frame="frameCount" @loop="onLottieLoop" />
+    <canvas ref="canvas" class="w-full h-full" />
+    <!-- <dotlottie-player :key="segment" ref="lottieAnimation" autoplay="true" loop="true" class="loading min-h-full min-w-full overflow-hidden" src="/animations/super1.lottie"
+      width="100%" height="100%" :segment="segment" PreserveAspectRatio="xMidYMid slice" @frame="frameCount" @loop="onLottieLoop" /> -->
   </div>
 </template>
 
-<style>
-.loading svg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%
-}
-</style>
+<style></style>

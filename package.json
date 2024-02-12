@@ -37,10 +37,10 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@aarsteinmedia/dotlottie-player-light": "^2.2.7",
     "@firebase/app-types": "^0.9.0",
     "@nuxt/image": "^1.0.0",
     "@pinia/nuxt": "^0.5.1",
+    "@rive-app/canvas-lite": "^2.9.3",
     "@yeger/vue-masonry-wall": "^5.0.3",
     "firebase": "^10.7.1",
     "firebase-admin": "^11.11.1",

@@ -96,6 +96,4 @@ declare global {
   };
 };
 
-declare module '@lottiefiles/vue-lottie-player';
-
 export {};

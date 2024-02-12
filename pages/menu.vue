@@ -69,11 +69,11 @@ onMounted(() => {
     <!-- <img class="w-full h-auto object-cover" src="/menu.jpg" alt="menu"> -->
     <ClientOnly v-if="CMSStore.drinks.length && CMSStore.food.length">
       <flipbook @flip-left-start="hint = false" @flip-right-start="hint = false" :zooms="[1, 2]"
-        class="flipbook w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
+        class="flipbook mx-auto md:w-2/3 w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
         :class="[sel === 'food' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.food"
         :pagesHiRes="CMSStore.food_highres"></flipbook>
       <flipbook @flip-left-start="hint = false" @flip-right-start="hint = false" :zooms="[1, 2]"
-        class="flipbook w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
+        class="flipbook mx-auto md:w-2/3 w-full px-12 self-center absolute transition-opacity top-60 md:top-48 xl:top-60"
         :class="[sel === 'drinks' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.drinks"
         :pagesHiRes="CMSStore.drinks_highres"></flipbook>
     </ClientOnly>
