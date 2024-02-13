@@ -77,7 +77,7 @@ async function getMenu() {
 async function getHappenings() {
   if (!happeningsData.value) {
     try{
-      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`, {
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,published_at,`, {
         transform(data: happeningsData) { return data.objects }
     });
     if (data.value) {

@@ -56,7 +56,7 @@ export default defineNuxtConfig({
       '/api/__sitemap__/urls',
     ]
   },
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire', 'floating-vue/nuxt'],
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {

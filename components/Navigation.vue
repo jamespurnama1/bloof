@@ -2,10 +2,10 @@
   <!-- Desktop -->
   <div v-if="UIStore.width >= 768" class="h-full fixed transition-colors" @mouseenter="showNav = true"
     @mouseleave="showNav = false" @click="showFullNav = !showFullNav"
-    :class="[showFullNav ? 'z-30 -translate-x-0 bg-white opacity-30 w-full' : 'w-2/3 z-50 -translate-x-[calc(66.666667vw-100px)] bg-transparent']" />
+    :class="[showFullNav ? 'z-30 -translate-x-0 bg-white opacity-30 w-full' : 'w-2/3 z-40 -translate-x-[calc(66.666667vw-100px)] bg-transparent']" />
   <nav v-if="UIStore.width >= 768"
     :class="[nav && !showFullNav ? '!-translate-x-[calc(66.666667vw-100px)]' : '', showFullNav ? '!translate-x-0' : '']"
-    class="outline-[5px] outline outline-black fixed w-2/3 h-[100dvh] z-40 left-0 top-0 bg-teal-600 transition ease-in-out -translate-x-full duration-500 flex justify-center"
+    class="outline-[5px] outline outline-black fixed w-2/3 h-[100dvh] z-30 left-0 top-0 bg-teal-600 transition ease-in-out -translate-x-full duration-500 flex justify-center"
     @click="showFullNav = !showFullNav">
     <TransitionGroup tag="ul" mode="out-in" :css="false" @enter="onEnter" @leave="onLeave" name="slideLeft"
       class="m-5 flex items-start justify-center flex-col gap-6">

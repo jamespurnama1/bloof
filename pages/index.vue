@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Rive as RiveType, StateMachineInput } from '@rive-app/canvas-lite';
 import { useUIStore } from '~/stores/UI'
 import { useCMSStore } from '~/stores/fetch'
 
@@ -9,16 +10,49 @@ const privateRoom = ref('');
 const { $gsap: gsap, $ScrollTrigger: ScrollTrigger } = useNuxtApp();
 const UIStore = useUIStore();
 const CMSStore = useCMSStore();
-const lottieAnimation = ref();
-const segment = ref([0,360]);
+const { $Rive: Rive, $Fit: Fit, $Layout: Layout } = useNuxtApp();
+const riveInstance: RiveType[] = [];
+const canvas = ref([]) as Ref<HTMLCanvasElement[]>;
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
-function onLoad(index: number) {
-  const anim = lottieAnimation.value![index]
-  anim.seek(360);
-  anim.play();
-}
+// function onLoad(index: number) {
+//   const anim = lottieAnimation.value![index]
+//   anim.seek(360);
+//   anim.play();
+// }
+
+// CMSStore.$subscribe((mutation, state) => {
+//   console.log('tst',CMSStore.landingData.socials)
+
+// })
+
+watch(
+  () => canvas,
+  () => {
+    if (canvas.value.length < 3) return
+    console.log(canvas.value.length)
+    for (let i = 0; i < canvas.value.length; i++) {
+      riveInstance.push(new Rive({
+        canvas: canvas.value[i] as HTMLCanvasElement,
+        src: '/animations/bloof.riv',
+        autoplay: true,
+        stateMachines: 'Hover',
+        layout: new Layout({
+          fit: Fit.Cover,
+        }),
+        onLoad: () => {
+          riveInstance[i].resizeDrawingSurfaceToCanvas()
+          window.addEventListener('resize', () => {
+            riveInstance[i].resizeDrawingSurfaceToCanvas()
+          })
+        }
+      })
+      )
+    }
+  },
+  { deep: true }
+)
 
 onMounted(async () => {
   await nextTick()
@@ -88,10 +122,11 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix" :imgAttrs="{ class: 'object-cover' }"
+      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix"
+        :imgAttrs="{ class: 'object-cover flex h-full w-full' }"
         :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
         densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :placeholder="[50, 25, 75, 5]" class="flex absolute -z-20 h-full w-full top-0 left-0" />
+        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 top-0 left-0 h-full w-full overflow-hidden" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
@@ -109,14 +144,14 @@ onUnmounted(() => {
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-96 h-full' }" provider="imgix"
-          v-for="image in CMSStore.getFirstRow" width="384" height="auto" fit="cover" quality="75" auto="compress"
-          sizes="384px" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getFirstRow" height="auto" fit="cover" quality="75" auto="compress"
+          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-96 h-full' }" provider="imgix"
-          v-for="image in CMSStore.getSecondRow" width="384" height="auto" fit="cover" quality="75" auto="compress"
-          sizes="384px" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getSecondRow" height="auto" fit="cover" quality="75" auto="compress"
+          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
     </section>
     <!-- Menu --->
@@ -129,8 +164,8 @@ onUnmounted(() => {
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="flex zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
-        :imgAttrs="{ class: 'object-cover' }" densities="x1 x2"
+      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
+        :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
@@ -148,13 +183,14 @@ onUnmounted(() => {
               <h4 class="text-4xl">{{ key }}</h4>
             </div>
             <ClientOnly>
-              <dotlottie-player ref="lottieAnimation" preserveAspectRatio="xMidYMid slice" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
+              <canvas ref="canvas" class="w-full h-full absolute z-0" />
+              <!-- <dotlottie-player ref="lottieAnimation" preserveAspectRatio="xMidYMid slice" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" src="/animations/super1.lottie"
                 :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
                 direction="-1" @mouseenter="onLoad(index)" :segment="segment"
                 @mouseleave="lottieAnimation[index].stop()" @complete="() => {
                   segment = [0, 300]
-                }" />
+                }" /> -->
             </ClientOnly>
           </div>
         </NuxtLink>
@@ -184,15 +220,19 @@ onUnmounted(() => {
         <div class="bordered bg-warm-200 px-4 py-2 relative z-10">
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
         </div>
-        <Transition name="fade" class="absolute overflow-hidden">
-          <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0" loading="lazy" :placeholder="[50, 25, 75, 5]"
-            :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg" alt="Bloof Pattern" />
-          <NuxtPicture v-else-if="privateRoom === 'bloof_belly'" class="absolute w-full h-full top-0 left-0" loading="lazy"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix" :placeholder="[50, 25, 75, 5]"
+        <Transition name="fade">
+          <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
+            :placeholder="[50, 25, 75, 5]" :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }"
+            src="/images/super2.jpg" alt="Bloof Pattern" />
+          <NuxtPicture v-else-if="privateRoom === 'bloof_belly'"
+            class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
+            :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix"
+            :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_belly.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Belly" />
-          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0" loading="lazy"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix" :placeholder="[50, 25, 75, 5]"
+          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0 overflow-hidden"
+            loading="lazy" :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix"
+            :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Eye" />
         </Transition>
@@ -241,4 +281,5 @@ onUnmounted(() => {
   border-bottom-right-radius: 245px 15px;
   border-bottom-left-radius: 15px 301px;
   @apply outline-[6px] outline outline-black
-}</style>
+}
+</style>

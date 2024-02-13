@@ -72,6 +72,7 @@ declare global {
   declare type happening = {
     slug: string;
     title: string;
+    published_at?: date;
     metadata: {
       thumbnail: media;
       type: {
@@ -95,7 +96,5 @@ declare global {
     };
   };
 };
-
-declare module '@lottiefiles/vue-lottie-player';
 
 export {};
