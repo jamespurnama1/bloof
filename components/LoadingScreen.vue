@@ -28,6 +28,7 @@ function loadIn() {
   // // segment.value = [300, 360]
   // // lottieAnimation.value!.seek(300);
   // // lottieAnimation.value!.setLooping(false);
+  window.removeEventListener('resize', resize)
   loop.value = false;
   logo.value = false
 }
@@ -35,6 +36,11 @@ function loadIn() {
 UIStore.$subscribe((mutation, state) => {
   loadIn()
 })
+
+function resize() {
+  if(!riveInstance) return;
+  riveInstance.resizeDrawingSurfaceToCanvas()
+}
 
 onMounted(async () => {
   riveInstance = new Rive({
@@ -46,7 +52,8 @@ onMounted(async () => {
       fit: Fit.Cover,
     }),
     onLoad: () => {
-      riveInstance.resizeDrawingSurfaceToCanvas()
+      resize()
+      window.addEventListener('resize', resize)
       // Get the inputs via the name of the state machine
       setTimeout(() => {
         loadIn();

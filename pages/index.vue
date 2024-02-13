@@ -43,6 +43,9 @@ watch(
         }),
         onLoad: () => {
           riveInstance[i].resizeDrawingSurfaceToCanvas()
+          window.addEventListener('resize', () => {
+            riveInstance[i].resizeDrawingSurfaceToCanvas()
+          })
         }
       })
       )
