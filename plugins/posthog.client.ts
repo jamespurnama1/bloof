@@ -6,6 +6,9 @@ export default defineNuxtPlugin(nuxtApp => {
     api_host: runtimeConfig.public.POSTHOG_URL,
     loaded: (posthog) => {
       if (import.meta.env.MODE === 'development') posthog.debug();
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "[::]") {
+        posthog.opt_out_capturing()
+      }
     }
   })
 

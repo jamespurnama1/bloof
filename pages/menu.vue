@@ -1,46 +1,23 @@
 <script setup lang="ts">
+import type { PostHog } from 'posthog-js';
+
 const CMSStore = useCMSStore();
 const sel = ref('food')
 const hint = ref(true);
+let posthog = null as null | PostHog
 
-// if (process.server) {
-//   CMSStore.getMenuPDF()
-// }
-
-// const props = withDefaults(
-//   defineProps<{
-//     url?: string;
-//     scale?: number;
-//   }>(),
-//   {}
-// );
-
-// let pdf = ref();
-// let pages = ref(0);
-// let info = ref();
-
-// watch(
-//   () => props.url,
-//   () => {
-//     if (!props.url) {
-//       return;
-//     }
-//     const { pdf: _pdf, pages: _pages, info: _info } = $usePDF(props.url, {});
-//     pdf = _pdf;
-//     pages = _pages;
-//     info = _info;
-//   },
-//   { immediate: true }
-// );
+function flip(direction: string, type: string) {
+  if (posthog) posthog.capture('reserve', {
+    direction,
+    type
+  })
+  hint.value = false
+}
 
 
 onMounted(() => {
-  // CMSStore.$subscribe((mutation, state) => {
-  //   if (!CMSStore.galleryData) return;
-  //   images.value = CMSStore.galleryData.media.map(x => {
-  //     return x.imgix_url
-  //   })
-  // })
+    const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
 })
 </script>
 
@@ -68,11 +45,11 @@ onMounted(() => {
       </div>
     </Transition>
     <ClientOnly v-if="CMSStore.drinks.length && CMSStore.food.length">
-      <flipbook @flip-left-start="hint = false" @flip-right-start="hint = false" :zooms="[1, 2]" :nPolygons="20"
+      <flipbook @flip-left-start="flip('backwards', 'food')" @flip-right-start="flip('forwards', 'food')" :zooms="[1, 2]" :nPolygons="20"
         class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'food' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.food"
         :pagesHiRes="CMSStore.food_highres"></flipbook>
-      <flipbook @flip-left-start="hint = false" @flip-right-start="hint = false" :zooms="[1, 2]" :nPolygons="20"
+      <flipbook @flip-left-start="flip('backwards', 'drinks')" @flip-right-start="flip('forwards', 'drinks')" :zooms="[1, 2]" :nPolygons="20"
         class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'drinks' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.drinks"
         :pagesHiRes="CMSStore.drinks_highres"></flipbook>
@@ -84,9 +61,9 @@ onMounted(() => {
 .flipbook,
 .invisible {
   @media (min-width: 768px) {
-    height: calc((25.5 * (100vw - 196px)) / 36);
+    height: calc((25.5 * (100vw)) / 36);
   }
 
-  height: calc((25.5 * (90vw - 32px)) / 18);
+  height: calc((25.5 * (90vw)) / 18);
 }
 </style>
