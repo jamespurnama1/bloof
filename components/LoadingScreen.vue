@@ -29,9 +29,7 @@ function loadIn() {
   // // lottieAnimation.value!.seek(300);
   // // lottieAnimation.value!.setLooping(false);
   loop.value = false;
-  setTimeout(() => {
-    logo.value = false
-  }, 3000);
+  logo.value = false
 }
 
 UIStore.$subscribe((mutation, state) => {
@@ -55,7 +53,9 @@ onMounted(async () => {
       }, 3000)
     },
     onStateChange: (e) => {
-      if (!loop.value && (e.data as string[])[0] === 'exit') UIStore.loadingScreen = false;
+      if (!loop.value && (e.data as string[])[0] === 'exit') {
+        UIStore.loadingScreen = false;
+      }
     }
   })
 
@@ -86,7 +86,8 @@ onUnmounted(() => {
       </p>
     </Transition>
     <Transition name="fade">
-      <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" class="h-72 w-auto absolute z-10" />
+      <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo"
+        class="h-48 md:h-72 w-auto absolute z-10" />
     </Transition>
     <canvas ref="canvas" class="w-full h-full" />
     <!-- <dotlottie-player :key="segment" ref="lottieAnimation" autoplay="true" loop="true" class="loading min-h-full min-w-full overflow-hidden" src="/animations/super1.lottie"
