@@ -144,16 +144,16 @@ onUnmounted(() => {
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
           v-for="image in CMSStore.getFirstRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
           height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
-          sizes="20vw" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
           v-for="image in CMSStore.getSecondRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
           height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
-          sizes="20vw" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
     </section>
     <!-- Menu --->
@@ -284,4 +284,5 @@ onUnmounted(() => {
   border-bottom-right-radius: 245px 15px;
   border-bottom-left-radius: 15px 301px;
   @apply outline-[6px] outline outline-black
-}</style>
+}
+</style>
