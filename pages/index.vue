@@ -31,7 +31,6 @@ watch(
   () => canvas,
   () => {
     if (canvas.value.length < 3) return
-    console.log(canvas.value.length)
     for (let i = 0; i < canvas.value.length; i++) {
       riveInstance.push(new Rive({
         canvas: canvas.value[i] as HTMLCanvasElement,
@@ -134,9 +133,10 @@ onUnmounted(() => {
     <section class="flex min-h-screen bg-warm-200 items-center justify-center">
       <h2 class="xl:text-7xl xl:leading-none lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">Perched
         atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.png" alt="Bloof" />
-        is a rooftop haven boasting stunning skyline views <img class="inline-block align-middle h-8 md:h-12 xl:h-20"
-          src="/images/pattern1.png" alt="pattern 1" /> and an innovative cocktail program. <img
-          class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto" src="/images/pattern2.png" alt="pattern 2" />
+        (Bloof) is a rooftop haven boasting stunning skyline views <img
+          class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern1.png" alt="pattern 1" /> and an
+        innovative cocktail program. <img class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto"
+          src="/images/pattern2.png" alt="pattern 2" />
         Discover an <span class="circle py-3 -my-3 md:py-7 md:-my-7">enchanting</span> blend of indoor-outdoor spaces
         adorned by a sculptural bar, seamlessly <img class="inline-block align-middle h-8 md:h-12 xl:h-20"
           src="/images/pattern3.png" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
