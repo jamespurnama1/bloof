@@ -25,8 +25,8 @@
     <!-- Purpose -->
     <VTooltip class="w-full" theme="grid" v-else-if="props.type === 'purpose'" auto borderless>
       <span class="flex items-center justify-center">
-        <input @input="e => onInput(e)" class="p-3 w-full placeholder:text-warm-600" v-model="value"
-          :placeholder="props.placeholder" :required="props.required" />
+        <input @input="e => onInput(e)" class="p-3 w-full placeholder:text-warm-600" id="purpose" name="purpose"
+          v-model="value" :placeholder="props.placeholder" :required="props.required" />
       </span>
       <template #popper="{ hide }">
         <div class="py-2 px-3 grid grid-cols-2 gap-1">
@@ -49,8 +49,8 @@
     </span>
     <!-- Others -->
     <input v-else @input="e => onInput(e)" class="p-3 w-full placeholder:text-warm-600" :type="props.type"
-      :label="props.label" :id="props.label" :name="props.label" v-model="value" :required="props.required"
-      :placeholder="props.placeholder" />
+      :label="props.label" :id="props.label" :autocomplete="props.autocomplete ? 'on' : 'off'" :name="props.label"
+      v-model="value" :required="props.required" :placeholder="props.placeholder" />
   </div>
 </template>
 
@@ -74,6 +74,7 @@ export interface Props {
   purposes?: purpose[]
   placeholder?: string
   required?: boolean
+  autocomplete?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {

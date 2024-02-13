@@ -6,10 +6,10 @@
       <canvas v-if="route.path === '/happenings'" ref="canvas" class="w-full h-full" />
       <NuxtPicture class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full"
         :imgAttrs="{ class: 'pattern3 object-cover absolute top-0 right-0 scale-150 w-full' }"
-        :placeholder="[50, 25, 75, 5]" v-else-if="route.path === '/contact'" src="/images/super3.jpg"
+        :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="100vw" v-else-if="route.path === '/contact'" src="/images/super3.jpg"
         alt="Bloof Pattern" />
       <NuxtPicture class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full"
-        :imgAttrs="{ class: 'object-cover absolute top-0 right-0 scale-150 w-full' }" :placeholder="[50, 25, 75, 5]"
+        :imgAttrs="{ class: 'object-cover absolute top-0 right-0 scale-150 w-full' }" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="100vw"
         v-else-if="route.path === '/events'" src="/images/super4.jpg" alt="Bloof Pattern" />
     </section>
     <slot />

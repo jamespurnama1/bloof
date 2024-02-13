@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Rive as RiveType, StateMachineInput } from '@rive-app/canvas-lite';
+import type { Rive as RiveType } from '@rive-app/canvas-lite';
 import { useUIStore } from '~/stores/UI'
 
 const { $Rive: Rive, $Fit: Fit, $Layout: Layout } = useNuxtApp();
@@ -25,9 +25,6 @@ function loadIn() {
         break;
     }
   })
-  // // segment.value = [300, 360]
-  // // lottieAnimation.value!.seek(300);
-  // // lottieAnimation.value!.setLooping(false);
   window.removeEventListener('resize', resize)
   loop.value = false;
   logo.value = false
@@ -70,16 +67,12 @@ onMounted(async () => {
     takingLonger.value = true
   }, 10000)
   await new Promise(resolve => setTimeout(resolve, 10));
-  // await nextTick()
   if (!route.hash) window.scrollTo(0, 0)
-  // await new Promise(resolve => setTimeout(resolve, 100));
   document.querySelector('body')!.style.overflow = 'hidden'
   loadIn()
 })
 
 onUnmounted(() => {
-  // @ts-ignore
-  // lottieAnimation.value ? lottieAnimation.value.destroy() : null;
   document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
@@ -93,12 +86,10 @@ onUnmounted(() => {
       </p>
     </Transition>
     <Transition name="fade">
-      <img v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo"
-        class="h-48 md:h-72 w-auto absolute z-10" />
+      <NuxtPicture v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" densities="x1 x2"
+        class="h-48 md:h-72 w-auto absolute z-10" sizes="144px md:288px" />
     </Transition>
     <canvas ref="canvas" class="w-full h-full" />
-    <!-- <dotlottie-player :key="segment" ref="lottieAnimation" autoplay="true" loop="true" class="loading min-h-full min-w-full overflow-hidden" src="/animations/super1.lottie"
-      width="100%" height="100%" :segment="segment" PreserveAspectRatio="xMidYMid slice" @frame="frameCount" @loop="onLottieLoop" /> -->
   </div>
 </template>
 

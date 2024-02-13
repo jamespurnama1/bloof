@@ -267,10 +267,10 @@ onMounted(async () => {
     <!-- Personal Info -->
     <span class="flex gap-3 w-full my-2">
       <BloofInput placeholder="Title" type="radio" label="title" />
-      <BloofInput class="flex-1 w-full" placeholder="Name" type="text" label="name" />
+      <BloofInput class="flex-1 w-full" placeholder="Name" type="text" label="name" :autocomplete="true" />
     </span>
-    <BloofInput class="flex-1 w-full my-2" placeholder="E-mail" type="email" label="email" />
-    <BloofInput class="flex-1 w-full my-2" placeholder="Phone" type="tel" label="phone" />
+    <BloofInput class="flex-1 w-full my-2" placeholder="E-mail" type="email" label="email" :autocomplete="true" />
+    <BloofInput class="flex-1 w-full my-2" placeholder="Phone" type="tel" label="phone" :autocomplete="true" />
     <BloofInput class="flex-1 w-full my-2" placeholder="Purpose" type="purpose" label="purpose" :purposes="purposes"
       required />
     <BloofInput class="flex-1 w-full my-2" placeholder="Notes" type="text" label="notes" />

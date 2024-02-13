@@ -144,14 +144,16 @@ onUnmounted(() => {
     <!-- Gallery --->
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
-          v-for="image in CMSStore.getFirstRow" height="auto" fit="cover" quality="75" auto="compress"
-          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getFirstRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
+          height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
+          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
-          v-for="image in CMSStore.getSecondRow" height="auto" fit="cover" quality="75" auto="compress"
-          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
+          v-for="image in CMSStore.getSecondRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
+          height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
+          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
     </section>
     <!-- Menu --->
@@ -165,7 +167,7 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
-        :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2"
+        :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2" alt="Menu Chapter 1"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
@@ -206,7 +208,7 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtPicture :imgAttrs="{ class: 'flex zoom absolute top-0 left-0 w-full h-full -z-20 object-cover' }"
-        loading="lazy" provider="imgix" densities="x1 x2"
+        loading="lazy" provider="imgix" densities="x1 x2" alt="Bloof Rooftop"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
     </section>
@@ -222,17 +224,18 @@ onUnmounted(() => {
         </div>
         <Transition name="fade">
           <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
-            :placeholder="[50, 25, 75, 5]" :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }"
-            src="/images/super2.jpg" alt="Bloof Pattern" />
+            :placeholder="[50, 25, 75, 5]" sizes="sm:100vw md:50vw" densities="x1 x2"
+            :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg"
+            alt="Bloof Pattern" />
           <NuxtPicture v-else-if="privateRoom === 'bloof_belly'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
-            :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix"
-            :placeholder="[50, 25, 75, 5]"
+            :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
+            provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_belly.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Belly" />
           <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0 overflow-hidden"
-            loading="lazy" :imgAttrs="{ class: 'w-full h-full object-cover' }" width="720" provider="imgix"
-            :placeholder="[50, 25, 75, 5]"
+            loading="lazy" :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
+            provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Eye" />
         </Transition>
