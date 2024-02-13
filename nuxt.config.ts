@@ -106,6 +106,9 @@ export default defineNuxtConfig({
   app: {
     // pageTransition: { name: 'fade', mode: 'out-in' },
     head: {
+      htmlAttrs: {
+        lang: "en"
+      },
       title: "Bloof Bandung Rooftop Restaurant",
       link: [
         {rel: "apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png"},
