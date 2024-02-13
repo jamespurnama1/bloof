@@ -1,5 +1,5 @@
 <template>
-  <section class="flex items-center justify-center fixed top-0 left-0 w-full h-full z-50">
+  <section class="flex items-center justify-center fixed top-0 left-0 w-full h-full z-40">
     <dialog ref="dialog" :open="opened"
       class="bg-warm-200 relative outline outline-4 outline-black w-min md:min-w-[50%] min-w-[90%] scale-0 h-min overflow-hidden">
       <button class="absolute top-5 right-5 z-10" @click="close()"><img class="h-6 w-auto" src="/images/x.png"

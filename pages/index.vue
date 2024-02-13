@@ -142,12 +142,13 @@ onUnmounted(() => {
     <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
         <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
-          v-for="image in CMSStore.getFirstRow" height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+          v-for="image in CMSStore.getFirstRow" height="auto" fit="cover" quality="75" auto="compress"
+          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
       <div class="h-1/2 self-end flex w-max">
         <NuxtPicture :imgAttrs="{ class: 'object-cover w-[20vw] h-full' }" provider="imgix"
           v-for="image in CMSStore.getSecondRow" height="auto" fit="cover" quality="75" auto="compress"
-         :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+          :placeholder="[50, 25, 75, 5]" :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
       </div>
     </section>
     <!-- Menu --->
@@ -179,7 +180,7 @@ onUnmounted(() => {
               <h4 class="text-4xl">{{ key }}</h4>
             </div>
             <ClientOnly>
-              <canvas ref="canvas" class="w-full h-full absolute" />
+              <canvas ref="canvas" class="w-full h-full absolute z-0" />
               <!-- <dotlottie-player ref="lottieAnimation" preserveAspectRatio="xMidYMid slice" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" src="/animations/super1.lottie"
                 :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
