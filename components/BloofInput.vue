@@ -49,7 +49,8 @@
     </span>
     <!-- Others -->
     <input v-else @input="e => onInput(e)" class="p-3 w-full placeholder:text-warm-600" :type="props.type"
-      :label="props.label" v-model="value" :required="props.required" :placeholder="props.placeholder" />
+      :label="props.label" :id="props.label" :name="props.label" v-model="value" :required="props.required"
+      :placeholder="props.placeholder" />
   </div>
 </template>
 
