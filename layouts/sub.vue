@@ -4,13 +4,14 @@
       <h1 v-if="route.name" class="md:px-10 text-5xl md:text-7xl xl:text-9xl text-center md:text-left">{{
         route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
       <canvas v-if="route.path === '/happenings'" ref="canvas" class="w-full h-full" />
-      <NuxtPicture class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full"
-        :imgAttrs="{ class: 'pattern3 object-cover absolute top-0 right-0 scale-150 w-full' }"
-        :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="100vw" v-else-if="route.path === '/contact'" src="/images/super3.jpg"
-        alt="Bloof Pattern" />
-      <NuxtPicture class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full"
-        :imgAttrs="{ class: 'object-cover absolute top-0 right-0 scale-150 w-full' }" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="100vw"
-        v-else-if="route.path === '/events'" src="/images/super4.jpg" alt="Bloof Pattern" />
+      <div class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full" v-else-if="route.path === '/contact'">
+        <img class="pattern3 object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super3.jpg"
+          alt="Bloof Pattern" />
+      </div>
+      <div class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full" v-else-if="route.path === '/events'">
+        <img class="object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super4.jpg"
+          alt="Bloof Pattern" />
+      </div>
     </section>
     <slot />
   </div>
