@@ -123,16 +123,19 @@ onUnmounted(() => {
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
       <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix"
         :imgAttrs="{ class: 'object-cover flex h-full w-full' }"
-        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')" alt="Bloof Restaurant"
-        densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :placeholder="[50, 25, 75, 5]" class="absolute -z-20 top-0 left-0 h-full w-full overflow-hidden" />
+        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')"
+        alt="Bloof Restaurant" densities="x1 x2"
+        sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw" :placeholder="[50, 25, 75, 5]"
+        class="absolute -z-20 top-0 left-0 h-full w-full overflow-hidden" />
     </div>
   </header>
   <main v-if="CMSStore.landingData" class="md:ml-[100px]">
     <!-- Desc --->
     <section class="flex min-h-screen bg-warm-200 items-center justify-center">
-      <h2 class="xl:text-7xl xl:leading-none lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">Perched
-        atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.png" alt="Bloof" />
+      <h2 class="xl:text-7xl xl:leading-none lg:text-5xl text-3xl text-center mx-auto max-w-7xl p-5 inline-block">
+        Perched
+        atop Hemangini Hotel, <img class="inline-block align-middle h-8 md:h-20" src="/images/bird_fly.png"
+          alt="Bloof" />
         (Bloof) is a rooftop haven boasting stunning skyline views <img
           class="inline-block align-middle h-8 md:h-12 xl:h-20" src="/images/pattern1.png" alt="pattern 1" /> and an
         innovative cocktail program. <img class="inline-block align-middle h-8 md:h-12 xl:h-20 w-auto"
@@ -223,28 +226,28 @@ onUnmounted(() => {
           <h3 class="text-3xl md:text-5xl">Reservations</h3>
         </div>
         <Transition name="fade">
-          <NuxtPicture v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
-            :placeholder="[50, 25, 75, 5]" sizes="sm:100vw md:50vw" densities="x1 x2"
-            :imgAttrs="{ class: 'pattern2 w-auto h-full object-contain scale-[3]' }" src="/images/super2.jpg"
-            alt="Bloof Pattern" />
+          <div v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden">
+            <img class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg" alt="Bloof Pattern" />
+          </div>
           <NuxtPicture v-else-if="privateRoom === 'bloof_belly'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
             provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_belly.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Belly" />
-          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'" class="absolute w-full h-full top-0 left-0 overflow-hidden"
-            loading="lazy" :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
+          <NuxtPicture v-else-if="privateRoom === 'bloof_eye'"
+            class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
+            :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
             provider="imgix" :placeholder="[50, 25, 75, 5]"
             :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Eye" />
         </Transition>
-      </div>
-      <div class="flex items-center justify-center md:w-1/2 h-auto bg-teal-400 p-10">
-        <ClientOnly>
-          <LazyReservation @private-room="(e) => privateRoom = e" />
-        </ClientOnly>
-      </div>
+        </div>
+        <div class="flex items-center justify-center md:w-1/2 h-auto bg-teal-400 p-10">
+          <ClientOnly>
+            <LazyReservation @private-room="(e) => privateRoom = e" />
+          </ClientOnly>
+        </div>
     </section>
   </main>
 </template>
