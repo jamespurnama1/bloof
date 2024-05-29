@@ -145,7 +145,8 @@ onUnmounted(() => {
           src="/images/pattern3.png" alt="pattern 3" /> merging sophistication with a magnetic&nbsp;ambiance.</h2>
     </section>
     <!-- Gallery --->
-    <section class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
+    <section v-if="CMSStore.shuffled.length"
+      class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
         <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
           v-for="image in CMSStore.getFirstRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
@@ -242,12 +243,12 @@ onUnmounted(() => {
             :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
             alt="Bloof Eye" />
         </Transition>
-        </div>
-        <div class="flex items-center justify-center md:w-1/2 h-auto bg-teal-400 p-10">
-          <ClientOnly>
-            <LazyReservation @private-room="(e) => privateRoom = e" />
-          </ClientOnly>
-        </div>
+      </div>
+      <div class="flex items-center justify-center md:w-1/2 h-auto bg-teal-400 p-10">
+        <ClientOnly>
+          <LazyReservation @private-room="(e) => privateRoom = e" />
+        </ClientOnly>
+      </div>
     </section>
   </main>
 </template>

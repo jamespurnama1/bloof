@@ -13,6 +13,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        "yellow": "#FFCA05",
         "warm": {
           "800": "#111112",
           "600": '#6A6962',

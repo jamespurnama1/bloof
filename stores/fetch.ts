@@ -16,8 +16,11 @@ export const useCMSStore = defineStore('CMS-store', () => {
   const config = useRuntimeConfig();
   const food = ref([null] as (URL | null)[])
   const drinks = ref([null] as (URL | null)[])
+  const breakfast = ref([null] as (URL | null)[])
   const food_highres = ref([null] as (URL | null)[])
   const drinks_highres = ref([null] as (URL | null)[])
+  const breakfast_highres = ref([null] as (URL | null)[])
+  const shuffled = ref([] as media[])
   const numToReturn = 7;
 
   async function getLanding() {
@@ -101,6 +104,7 @@ async function getGallery() {
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,metadata`);
       if (data.value) {
         galleryData.value = data.value as photosData;
+        shuffled.value = galleryData.value && galleryData.value.media.length ? [...galleryData.value.media.sort(() => 0.5 - Math.random())] : [];
       } else {
       throw Error
     }
@@ -167,13 +171,41 @@ async function getDrinks() {
   }
 }
 
+async function getBreakfast() {
+  if (breakfast.value.length <= 1) {
+    try{
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22breakfast%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
+      if (data.value) {
+        data.value.media.sort((a, b) => {
+          // faster than localCompare()
+          // a.original_name?.localeCompare(b.original_name as string)
+          return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
+        });
+        breakfast.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1080&fm=webp` as unknown as URL
+        })
+        breakfast_highres.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1920&fm=webp` as unknown as URL
+        })
+        breakfast.value.unshift(null)
+        breakfast_highres.value.unshift(null)
+      } else {
+      throw Error
+    }
+    } catch (error) {
+      console.error(error)
+    }
+    return breakfast.value;
+  }
+}
+
   const getFirstRow = computed(() => {
-    if (galleryData.value && galleryData.value.total >= numToReturn) {
-    return galleryData.value.media.slice(0, numToReturn)
-    } else if (galleryData.value) {
-      const arr = galleryData.value.media
+    if (shuffled.value && shuffled.value.length >= numToReturn) {
+      return shuffled.value.slice(0, numToReturn)
+    } else if (shuffled) {
+      const arr = shuffled.value
       for (let i = numToReturn; arr.length > numToReturn && i;  i--) {
-        arr.push(galleryData.value.media[numToReturn - i])
+        arr.push(shuffled.value[numToReturn - i])
       }
       return arr
     } else {
@@ -182,12 +214,12 @@ async function getDrinks() {
   })
 
   const getSecondRow = computed(() => {
-    if (galleryData.value && galleryData.value.total >= numToReturn * 2) {
-    return galleryData.value.media.slice(numToReturn, numToReturn * 2)
-    } else if (galleryData.value) {
-      const arr = galleryData.value.media
+    if (shuffled && shuffled.value.length >= numToReturn * 2) {
+    return shuffled.value.slice(numToReturn, numToReturn * 2)
+    } else if (shuffled) {
+      const arr = shuffled.value
       for (let i = numToReturn * 2; arr.length > numToReturn * 2 && i;  i--) {
-        arr.push(galleryData.value.media[numToReturn * 2 - i])
+        arr.push(shuffled.value[numToReturn * 2 - i])
       }
       return arr.slice(numToReturn, numToReturn * 2)
     } else {
@@ -195,5 +227,5 @@ async function getDrinks() {
     }
   })
 
-  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks }
+  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, breakfast, breakfast_highres, shuffled, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks, getBreakfast }
 })
