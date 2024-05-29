@@ -20,6 +20,7 @@ export const useCMSStore = defineStore('CMS-store', () => {
   const food_highres = ref([null] as (URL | null)[])
   const drinks_highres = ref([null] as (URL | null)[])
   const breakfast_highres = ref([null] as (URL | null)[])
+  const shuffled = ref([] as media[])
   const numToReturn = 7;
 
   async function getLanding() {
@@ -103,6 +104,7 @@ async function getGallery() {
       const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22gallery%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=url,imgix_url,name,metadata`);
       if (data.value) {
         galleryData.value = data.value as photosData;
+        shuffled.value = galleryData.value && galleryData.value.media.length ? [...galleryData.value.media.sort(() => 0.5 - Math.random())] : [];
       } else {
       throw Error
     }
@@ -197,15 +199,13 @@ async function getBreakfast() {
   }
 }
 
-  const shuffled = computed(() => galleryData.value.media.sort(() => 0.5 - Math.random()));
-
   const getFirstRow = computed(() => {
-    if (galleryData.value && galleryData.value.total >= numToReturn) {
+    if (shuffled.value && shuffled.value.length >= numToReturn) {
       return shuffled.value.slice(0, numToReturn)
-    } else if (galleryData.value) {
-      const arr = galleryData.value.media
+    } else if (shuffled) {
+      const arr = shuffled.value
       for (let i = numToReturn; arr.length > numToReturn && i;  i--) {
-        arr.push(galleryData.value.media[numToReturn - i])
+        arr.push(shuffled.value[numToReturn - i])
       }
       return arr
     } else {
@@ -214,12 +214,12 @@ async function getBreakfast() {
   })
 
   const getSecondRow = computed(() => {
-    if (galleryData.value && galleryData.value.total >= numToReturn * 2) {
+    if (shuffled && shuffled.value.length >= numToReturn * 2) {
     return shuffled.value.slice(numToReturn, numToReturn * 2)
-    } else if (galleryData.value) {
-      const arr = galleryData.value.media
+    } else if (shuffled) {
+      const arr = shuffled.value
       for (let i = numToReturn * 2; arr.length > numToReturn * 2 && i;  i--) {
-        arr.push(galleryData.value.media[numToReturn * 2 - i])
+        arr.push(shuffled.value[numToReturn * 2 - i])
       }
       return arr.slice(numToReturn, numToReturn * 2)
     } else {
@@ -227,5 +227,5 @@ async function getBreakfast() {
     }
   })
 
-  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, breakfast, breakfast_highres, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks, getBreakfast }
+  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, breakfast, breakfast_highres, shuffled, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks, getBreakfast }
 })
