@@ -197,9 +197,11 @@ async function getBreakfast() {
   }
 }
 
+  const shuffled = computed(() => galleryData.value.media.sort(() => 0.5 - Math.random()));
+
   const getFirstRow = computed(() => {
     if (galleryData.value && galleryData.value.total >= numToReturn) {
-    return galleryData.value.media.slice(0, numToReturn)
+      return shuffled.value.slice(0, numToReturn)
     } else if (galleryData.value) {
       const arr = galleryData.value.media
       for (let i = numToReturn; arr.length > numToReturn && i;  i--) {
@@ -213,7 +215,7 @@ async function getBreakfast() {
 
   const getSecondRow = computed(() => {
     if (galleryData.value && galleryData.value.total >= numToReturn * 2) {
-    return galleryData.value.media.slice(numToReturn, numToReturn * 2)
+    return shuffled.value.slice(numToReturn, numToReturn * 2)
     } else if (galleryData.value) {
       const arr = galleryData.value.media
       for (let i = numToReturn * 2; arr.length > numToReturn * 2 && i;  i--) {
