@@ -16,8 +16,10 @@ export const useCMSStore = defineStore('CMS-store', () => {
   const config = useRuntimeConfig();
   const food = ref([null] as (URL | null)[])
   const drinks = ref([null] as (URL | null)[])
+  const breakfast = ref([null] as (URL | null)[])
   const food_highres = ref([null] as (URL | null)[])
   const drinks_highres = ref([null] as (URL | null)[])
+  const breakfast_highres = ref([null] as (URL | null)[])
   const numToReturn = 7;
 
   async function getLanding() {
@@ -167,6 +169,34 @@ async function getDrinks() {
   }
 }
 
+async function getBreakfast() {
+  if (breakfast.value.length <= 1) {
+    try{
+      const { data } = await useFetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/media?pretty=true&query=%7B%22folder%22:%22breakfast%22%7D&read_key=${config.COSMIC_READ_KEY}&depth=1&props=imgix_url,original_name,`) as AsyncData<photosData, Error>;
+      if (data.value) {
+        data.value.media.sort((a, b) => {
+          // faster than localCompare()
+          // a.original_name?.localeCompare(b.original_name as string)
+          return (a.original_name! < b.original_name! ? -1 : (a.original_name! > b.original_name! ? 1 : 0));
+        });
+        breakfast.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1080&fm=webp` as unknown as URL
+        })
+        breakfast_highres.value = (data.value as photosData).media.map(x => {
+          return `${x.imgix_url}?w=1920&fm=webp` as unknown as URL
+        })
+        breakfast.value.unshift(null)
+        breakfast_highres.value.unshift(null)
+      } else {
+      throw Error
+    }
+    } catch (error) {
+      console.error(error)
+    }
+    return breakfast.value;
+  }
+}
+
   const getFirstRow = computed(() => {
     if (galleryData.value && galleryData.value.total >= numToReturn) {
     return galleryData.value.media.slice(0, numToReturn)
@@ -195,5 +225,5 @@ async function getDrinks() {
     }
   })
 
-  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks }
+  return { landingData, galleryData, eventsData, happeningsData, posts, menuData, getFirstRow, getSecondRow, food, food_highres, drinks, drinks_highres, breakfast, breakfast_highres, getLanding, getEvents, getMenu, getHappenings, getGallery, getFood, getDrinks, getBreakfast }
 })

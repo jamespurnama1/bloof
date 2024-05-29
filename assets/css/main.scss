@@ -55,6 +55,11 @@ h1, h2, h3, h4, h5, form p, form input, form button {
   background-image: url("/images/button_teal.png");
 }
 
+.button_yellow {
+  @extend %button;
+  background-image: url("/images/button_yellow.png");
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.4s;

@@ -19,6 +19,7 @@ if (process.server) {
   CMSStore.getGallery()
   CMSStore.getFood()
   CMSStore.getDrinks()
+  CMSStore.getBreakfast()
 }
 
 let posthog = null as null | PostHog

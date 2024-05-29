@@ -30,6 +30,8 @@ onMounted(() => {
           :class="[sel === 'food' ? '' : 'opacity-50']">food</button>
         <button @click="sel = 'drinks'" class="button_teal small hover:opacity-100"
           :class="[sel === 'drinks' ? '' : 'opacity-50']">drinks</button>
+        <button @click="sel = 'breakfast'" class="button_yellow small hover:opacity-100"
+          :class="[sel === 'breakfast' ? '' : 'opacity-50']">brunch</button>
       </div>
       <p class="md:text-base text-xs text-center md:text-start">Click on menu to zoom in &amp; out.</p>
     </div>
@@ -44,15 +46,19 @@ onMounted(() => {
         </figure>
       </div>
     </Transition>
-    <ClientOnly v-if="CMSStore.drinks.length && CMSStore.food.length">
-      <flipbook @flip-left-start="flip('backwards', 'food')" @flip-right-start="flip('forwards', 'food')" :zooms="[1, 2]" :nPolygons="20"
-        class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
+    <ClientOnly v-if="CMSStore.drinks.length && CMSStore.food.length && CMSStore.breakfast.length">
+      <flipbook @flip-left-start="flip('backwards', 'food')" @flip-right-start="flip('forwards', 'food')"
+        :zooms="[1, 2]" :nPolygons="20" class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'food' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.food"
         :pagesHiRes="CMSStore.food_highres"></flipbook>
-      <flipbook @flip-left-start="flip('backwards', 'drinks')" @flip-right-start="flip('forwards', 'drinks')" :zooms="[1, 2]" :nPolygons="20"
-        class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
+      <flipbook @flip-left-start="flip('backwards', 'drinks')" @flip-right-start="flip('forwards', 'drinks')"
+        :zooms="[1, 2]" :nPolygons="20" class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'drinks' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.drinks"
         :pagesHiRes="CMSStore.drinks_highres"></flipbook>
+      <flipbook @flip-left-start="flip('backwards', 'breakfast')" @flip-right-start="flip('forwards', 'breakfast')"
+        :zooms="[1, 2]" :nPolygons="20" class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
+        :class="[sel === 'breakfast' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.breakfast"
+        :pagesHiRes="CMSStore.breakfast_highres"></flipbook>
     </ClientOnly>
   </section>
 </template>
