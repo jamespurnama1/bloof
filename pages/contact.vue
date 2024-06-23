@@ -59,12 +59,12 @@ onMounted(async () => {
           </ul>
           <ul>
             <li>Closed</li>
-            <li>5-11PM</li>
-            <li>5-11PM</li>
-            <li>5-11PM</li>
-            <li>5-11PM</li>
-            <li>5-11PM</li>
-            <li>5-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
+            <li>7AM-1PM, 5PM-11PM</li>
           </ul>
         </div>
       </div>
