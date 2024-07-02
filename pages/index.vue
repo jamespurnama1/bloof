@@ -16,17 +16,6 @@ const canvas = ref([]) as Ref<HTMLCanvasElement[]>;
 
 const scrollDown = () => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 
-// function onLoad(index: number) {
-//   const anim = lottieAnimation.value![index]
-//   anim.seek(360);
-//   anim.play();
-// }
-
-// CMSStore.$subscribe((mutation, state) => {
-//   console.log('tst',CMSStore.landingData.socials)
-
-// })
-
 watch(
   () => canvas,
   () => {
