@@ -9,8 +9,11 @@ const privateRoom = ref({
   checked: false,
   index: 0,
 });
+const tandc = ref()
 const emit = defineEmits(['private-room'])
 const config = useRuntimeConfig()
+const timeData = ref([]) as Ref<reservationTime[] | []>
+const availableTime = ref([]) as Ref<reservationTime[] | []>
 const date = ref(new Date(new Date(Date.now()).setHours(new Date().getHours() + 1)));
 const guests = ref(1);
 const terms = ref(false);
@@ -32,6 +35,13 @@ for (let i = 0; i <= 5; i++) {
   //add 5 mondays
   const mon = d.setDate(d.getDate() + (1 + 7 - d.getDay()) % 7) + (i * 604800016.56);
   noMondays.value.push(new Date(mon));
+}
+
+function setTime(string: string) {
+  onDateChange(getDate.value.setHours(parseInt(string.split(':')[0]), parseInt(string.split(':')[1])))
+  const index = availableTime.value.findIndex(x => x.time === string);
+  // Safety if not found change to 0
+  timeIndex.value = index > 0 ? index : 0;
 }
 
 function handlePrivateRoom(checked: boolean) {
@@ -69,15 +79,9 @@ const headers = {
   'Data-Branch': config.public.ESB_BRANCH_CODE as string
 }
 
-const times = ref([]) as Ref<String[]>
-
-for (let i = 17; i <= 22; i++) {
-  const time = i.toString()
-  times.value.push(time + ':' + '00');
-  times.value.push(time + ':' + '30');
-}
-
 // Calendar
+
+const timeInString = computed(() => getDate.value.getHours().toString().padStart(2, '0') + ":" + getDate.value.getMinutes().toString().padStart(2, '0'))
 
 const getDate = computed({
   get() {
@@ -86,6 +90,7 @@ const getDate = computed({
   set(val) {
     let computedVal = val.getTime();
     // reset time to 17:00 if more than 1 day
+    // TODO ESB
     if (Math.abs(computedVal - date.value.getTime()) >= 86400000) {
       computedVal = new Date(computedVal).setHours(17, 0);
     }
@@ -102,11 +107,9 @@ const getDate = computed({
 
     date.value = new Date(computedVal);
     formStore.date = date.value;
+    formStore.dateAvailability = timeData.value.find(x => x.time === timeInString.value)?.available
   }
-  // if hours available
-  // none are available
 })
-
 
 const attributes = computed(() =>
   [{
@@ -114,19 +117,19 @@ const attributes = computed(() =>
     dates: date.value,
   }]);
 
-// Avail time
-const timeAvail = ref([]) as Ref<String[]>
-// const { data, error, pending } = await fetchTime(new Date(new Date(Date.now()).setDate(new Date(Date.now()).getDate() + 1)));
+const timeIndex = ref(0);
 
 formStore.reset()
 
-function onDateChange(date: Date | number) {
+async function onDateChange(date: Date | number) {
   if (typeof date === 'number') {
     getDate.value = new Date(date);
   } else {
     getDate.value = date;
   }
-}
+  await getTime()
+  if (!timeData.value.length) onDateChange(getDate.value.getTime() + 86400000)
+};
 
 onDateChange(new Date(Date.now()));
 
@@ -137,6 +140,7 @@ async function submitReservation() {
     name: formStore.name,
     phone: formStore.phone
   })
+
   await $fetch(`${config.public.ESB_URL}/reservation/transaction/`, {
     headers,
     method: 'POST',
@@ -166,12 +170,7 @@ async function submitReservation() {
   })
 }
 
-const timeData = ref()
-
-onMounted(async () => {
-  const { $posthog } = useNuxtApp()
-  posthog = $posthog() as PostHog
-  // get dates
+async function getTime() {
   await Promise.all([$fetch(`${config.public.ESB_URL}/reservation/time/?reservationDate=${date.value.toISOString().substring(0, 10)}`, {
     headers,
     server: false,
@@ -181,22 +180,36 @@ onMounted(async () => {
   })]).then(res => {
     if (res.length) {
       //TODO: Add logic when no date is not available to find next date
-      timeData.value = res[0];
+      // timeData.value = (res[0] as reservationTimes).reservationTime;
       purposes.value = (res[1] as reservationPurpose).reservationPurpose;
+      timeData.value = [];
+      availableTime.value = [];
       (res[0] as reservationTimes).reservationTime.forEach(x => {
-        if (x.available) timeAvail.value.push(x.time)
+        (timeData.value as reservationTime[]).push(x);
+        if (x.available) {
+          (availableTime.value as reservationTime[]).push(x);
+        }
       })
       UIStore.fetch = false;
     }
   }, error => {
     console.error(error);
   })
+}
+
+onMounted(async () => {
+  const { $posthog } = useNuxtApp()
+  posthog = $posthog() as PostHog
+  getTime()
 })
 </script>
 
 <template>
-  <Pop v-if="terms" @close="terms = false" title="Information and Regulation" :content="CMSStore.landingData.regulation"
-    bird="fly">
+  <Pop ref="tandc" v-if="terms" @close="terms = false" title="Information and Regulation"
+    :content="CMSStore.landingData.regulation" bird="fly">
+    <button @click="tandc.scrollTop = tandc.scrollHeight">
+      <img src="/images/arrow.png" alt="Arrow Up" aria-label="Arrow-Up" class="h-8 md:h-12 w-auto fixed right-0 bottom-5" />
+    </button>
     <button
       class="button_pink text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
       @click="submitReservation()">Reserve</button>
@@ -215,13 +228,16 @@ onMounted(async () => {
 
     <!-- Calendar -->
     <span class="flex items-center justify-center">
-      <img @click="onDateChange(getDate.getTime() - 86400000)" src="/images/caret.png"
-        class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
+      <button class="disabled:opacity-50" type="button"
+        :disabled="date.toDateString() === new Date(minDate).toDateString()">
+        <img @click="onDateChange(getDate.getTime() - 86400000)" src=" /images/caret.png"
+          class="rotate-180 p-2 h-10 md:h-12 w-auto" alt="Date Previous" />
+      </button>
       <VDropdown auto>
         <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
           weekday:
-            "long", month: "short", day: "numeric"
-        }) }}</p>
+          "long", month: "short", day: "numeric"
+          }) }}</p>
         <template #popper="{ hide }">
           <ClientOnly>
             <VCalendar v-model="getDate" :locale="{ id: 'en', firstDayOfWeek: 1 }" :attributes="attributes" borderless
@@ -239,29 +255,37 @@ onMounted(async () => {
           </ClientOnly>
         </template>
       </VDropdown>
-      <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto"
-        alt="Date Next" />
+      <button class="disabled:opacity-50" type="button"
+        :disabled="date.toDateString() === new Date(maxDate).toDateString()">
+        <img @click="onDateChange(getDate.getTime() + 86400000)" src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto"
+          alt="Date Next" />
+      </button>
     </span>
 
     <!-- Time -->
     <span class="flex items-center justify-center">
-      <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Time Previous"
-        @click="onDateChange(getDate.getTime() - 1800000)" />
+      <!-- Check timeIndex is 0 & if timeData is available -->
+      <button type="button" class="disabled:opacity-50"
+        @click="timeIndex ? setTime(availableTime[timeIndex - 1].time) : null" :disabled="!timeIndex">
+        <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Time Previous" />
+      </button>
       <VDropdown>
         <p class="text-2xl xl:text-4xl text-center">
-          {{ getDate.getHours().toString().padStart(2, '0') + ":" + getDate.getMinutes().toString().padStart(2, '0') }}
+          {{ availableTime[timeIndex] ? availableTime[timeIndex].time : '...' }}
         </p>
         <template #popper="{ hide }" class="w-max">
           <div class="p-5 grid grid-cols-2 gap-1 w-max">
-            <button
-              @click="onDateChange(getDate.setHours(parseInt(time.split(':')[0], parseInt(time.split(':')[1])))); hide()"
-              v-for="time in times" class="text-sm xl:text-lg font-bold font-serif"
-              :disabled="!timeAvail.find(x => x === time)">{{ time }}</button>
+            <button :disabled="!time.available" @click="setTime(time.time); hide()" v-for="time in timeData"
+              class="text-sm xl:text-lg font-bold font-serif disabled:opacity-50">{{ time.time }}</button>
           </div>
         </template>
       </VDropdown>
-      <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next"
-        @click="onDateChange(getDate.getTime() + 1800000)" />
+      <button type="button" class="disabled:opacity-50" :disabled="timeIndex === availableTime.length - 1"
+        @click="timeIndex === availableTime.length - 1 ? null : setTime(availableTime[timeIndex + 1].time)">
+        <img src=" /images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next" />
+      </button>
+      <!-- <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Time Next"
+        @click="onDateChange(getDate.getTime() + 1800000)" /> -->
     </span>
 
     <!-- Personal Info -->
@@ -274,8 +298,8 @@ onMounted(async () => {
     <BloofInput class="flex-1 w-full my-2" placeholder="Purpose" type="purpose" label="purpose" :purposes="purposes"
       required />
     <BloofInput class="flex-1 w-full my-2" placeholder="Notes" type="text" label="notes" />
-    <BloofInput @change-check="(e) => { privateRoom.checked = e; handlePrivateRoom(privateRoom.checked) }" type="checkbox"
-      label="private" placeholder="Private Room" />
+    <BloofInput @change-check="(e) => { privateRoom.checked = e; handlePrivateRoom(privateRoom.checked) }"
+      type="checkbox" label="private" placeholder="Private Room" />
     <!-- <label for="private">Private Room</label> -->
     <span v-if="privateRoom.checked" class="flex items-center justify-center">
       <img src="/images/caret.png" class="rotate-180 p-2 h-10 xl:h-12 w-auto" alt="Date Previous"
@@ -284,13 +308,14 @@ onMounted(async () => {
       <img src="/images/caret.png" class="p-2 h-10 xl:h-12 w-auto" alt="Date Next" @click="handlePrivateRoom(true)" />
     </span>
     <!-- Minimum Purchase -->
-    <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.</p>
+    <p v-if="privateRoom.checked"><sup>*</sup>A minimum purchase of Rp. 2.000.000++ is required for this&nbsp;booking.
+    </p>
     <p v-else-if="guests >= 5"><sup>*</sup>A minimum purchase of Rp. 500.000++ is required for this&nbsp;booking.</p>
     <p v-if="tried && !formStore.valid" class="bg-pink-400 p-2 bordered">Please fill the form&nbsp;correctly.</p>
 
     <!-- Submit -->
     <button class="button_pink text-xl xl:text-3xl my-2 small" type="submit" :disabled="tried && !formStore.valid"
-      @click.prevent="formStore.valid ? terms = true : (tried = true, posthog?.capture('reserve', {success: false}))">Submit</button>
+      @click.prevent="formStore.valid ? terms = true : (tried = true, posthog?.capture('reserve', { success: false }))">Submit</button>
   </form>
 
   <div v-else-if="submitted">

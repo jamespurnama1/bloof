@@ -7,6 +7,7 @@ export const useFormStore = defineStore('form-store', () => {
   const phone = ref();
   const notes = ref();
   const date = ref();
+  const dateAvailability = ref();
   const guests = ref(1);
   const purpose = ref();
 
@@ -17,6 +18,7 @@ function reset() {
   phone.value = null
   notes.value = ''
   date.value = null
+  dateAvailability.value = null
   guests.value = 1
   purpose.value = ''
 }
@@ -49,12 +51,7 @@ const nameIsValid = computed(() => {
   })
 
   const dateIsValid = computed(() => {
-    //   // if hours available
-//   // set minimum 1 hour from now
-//   // if hours not available
-//   // set maximum 1 month from now
-//   // none are available
-    return true;
+    return (new Date(Date.now()).getTime() + 3600000 < date.value && date.value < new Date(Date.now()).getTime() + 2629800000 && dateAvailability.value)
   })
 
   const valid = computed(() => {
@@ -90,5 +87,5 @@ const nameIsValid = computed(() => {
     return Boolean(nameIsValid.value && emailIsValid.value && phoneIsValid.value && dateIsValid.value && paxIsValid.value && budgetIsValid.value);
   })
 
-  return {reset, name, title, email, phone, notes, date, guests, purpose, valid, getTime, getDate, phoneIsValid, dateIsValid, emailIsValid, nameIsValid, titleIsValid, purposeIsValid, guestIsValid, eventValid, budgetIsValid, paxIsValid, pax, budget}
+  return {reset, name, title, email, phone, notes, date, dateAvailability, guests, purpose, valid, getTime, getDate, phoneIsValid, dateIsValid, emailIsValid, nameIsValid, titleIsValid, purposeIsValid, guestIsValid, eventValid, budgetIsValid, paxIsValid, pax, budget}
 })
