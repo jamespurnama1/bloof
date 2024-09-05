@@ -153,7 +153,7 @@ onUnmounted(() => {
     <section class="menu relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
       <NuxtLink to="/menu" class="md:mb-10">
         <h3 class="text-3xl md:text-5xl text-white text-center">Menu</h3>
-        <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">Chapter 1</p>
+        <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">{{CMSStore.menuData.subhead}}</p>
       </NuxtLink>
       <img src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
