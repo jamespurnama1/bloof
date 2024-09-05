@@ -41,12 +41,12 @@ const CMSStore = useCMSStore()
           </ul>
           <ul>
             <li>Closed</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
-            <li>7.00 - 13.00<span class="mx-3"> | </span>17.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
+            <li>7.00 - 13.00<span class="mx-3"> | </span>08.00 - 23.00</li>
           </ul>
         </div>
       </div>
