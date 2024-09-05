@@ -26,11 +26,14 @@ onMounted(() => {
     <div class="flex relative gap-2 px-4 py-4 md:px-12 md:py-8 flex-col z-[15]">
       <h1 class="text-center md:text-left text-5xl md:text-7xl xl:text-9xl">Menu</h1>
       <div class="flex justify-center md:justify-start gap-2">
-        <button @click="sel = 'food'" class="button_pink small hover:opacity-100"
-          :class="[sel === 'food' ? '' : 'opacity-50']">food</button>
-        <button @click="sel = 'drinks'" class="button_teal small hover:opacity-100"
-          :class="[sel === 'drinks' ? '' : 'opacity-50']">drinks</button>
-        <button @click="sel = 'breakfast'" class="button_yellow small hover:opacity-100"
+        <button v-if="CMSStore.drinks.length > 1" @click="sel = 'food'"
+          class="button_pink small hover:opacity-100" :class="[sel === 'food' ? '' : 'opacity-50']">food</button>
+        <button v-if="CMSStore.drinks.length > 1" @click="sel = 'drinks'"
+          class="button_teal small hover:opacity-100" :class="[sel === 'drinks' ? '' : 'opacity-50']">drinks</button>
+        <button v-else @click="sel = 'food'" class="button_pink small hover:opacity-100"
+          :class="[sel === 'food' ? '' : 'opacity-50']">food &amp; drinks</button>
+        <button v-if="CMSStore.breakfast.length > 1" @click="sel = 'breakfast'"
+          class="button_yellow small hover:opacity-100"
           :class="[sel === 'breakfast' ? '' : 'opacity-50']">brunch</button>
       </div>
       <p class="md:text-base text-xs text-center md:text-start">Click on menu to zoom in &amp; out.</p>
