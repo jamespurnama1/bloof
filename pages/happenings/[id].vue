@@ -53,6 +53,13 @@ onMounted(() => {
   border-top-right-radius: 15px 278px;
   border-bottom-right-radius: 245px 15px;
   border-bottom-left-radius: 15px 301px;
-  @apply outline-4 outline outline-black
+  @apply outline-4 outline outline-black;
+}
+</style>
+
+<style lang="scss">
+article a {
+  text-decoration: underline !important;
+  color: #91d2c9 !important;
 }
 </style>
