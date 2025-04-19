@@ -35,9 +35,9 @@ onMounted(() => {
           :class="[sel === 'drinks' ? '' : 'opacity-50']">drinks</button>
         <button v-else @click="sel = 'food'" class="button_pink small hover:opacity-100"
           :class="[sel === 'food' ? '' : 'opacity-50']">food &amp; drinks</button>
-        <button v-if="CMSStore.breakfast.length > 1" @click="sel = 'breakfast'"
+        <!-- <button v-if="CMSStore.breakfast.length > 1" @click="sel = 'breakfast'"
           class="button_yellow small hover:opacity-100"
-          :class="[sel === 'breakfast' ? '' : 'opacity-50']">brunch</button>
+          :class="[sel === 'breakfast' ? '' : 'opacity-50']">brunch</button> -->
       </div>
       <p class="md:text-base text-xs text-center md:text-start">Click on menu to zoom in &amp; out.</p>
     </div>
@@ -61,10 +61,10 @@ onMounted(() => {
         :zooms="[1, 2]" :nPolygons="20" class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'drinks' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.drinks"
         :pagesHiRes="CMSStore.drinks_highres"></flipbook>
-      <flipbook @flip-left-start="flip('backwards', 'breakfast')" @flip-right-start="flip('forwards', 'breakfast')"
+      <!-- <flipbook @flip-left-start="flip('backwards', 'breakfast')" @flip-right-start="flip('forwards', 'breakfast')"
         :zooms="[1, 2]" :nPolygons="20" class="flipbook w-full px-12 self-center absolute transition-opacity top-64"
         :class="[sel === 'breakfast' ? 'opacity-100' : 'opacity-0 pointer-events-none']" :pages="CMSStore.breakfast"
-        :pagesHiRes="CMSStore.breakfast_highres"></flipbook>
+        :pagesHiRes="CMSStore.breakfast_highres"></flipbook> -->
     </ClientOnly>
   </section>
 </template>
