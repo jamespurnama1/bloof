@@ -177,7 +177,7 @@ onUnmounted(() => {
               <h4 class="text-4xl">{{ key }}</h4>
             </div>
             <ClientOnly>
-              <canvas ref="canvas" class="w-full h-full absolute z-0" />
+              <canvas ref="canvas" class="w-full h-full absolute z-0 touch-pan-y" />
               <!-- <dotlottie-player ref="lottieAnimation" preserveAspectRatio="xMidYMid slice" class="min-h-full min-w-full absolute overflow-hidden transition-opacity"
                 :class="[socialsHover === index ? 'opacity-100' : 'opacity-0', `lottie-${index}`]" src="/animations/super1.lottie"
                 :width="1 / Object.keys(CMSStore.landingData.socials).length" height="100%"
