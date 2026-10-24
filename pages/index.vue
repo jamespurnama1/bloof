@@ -110,7 +110,7 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtPicture v-if="CMSStore.landingData?.heroImage?.url" preload provider="none"
+      <NuxtPicture v-if="CMSStore.landingData?.heroImage?.url" preload
         :imgAttrs="{ class: 'object-cover flex h-full w-full' }" :src="CMSStore.landingData.heroImage.url"
         alt="Bloof Restaurant" densities="x1 x2"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw" :placeholder="[50, 25, 75, 5]"
@@ -136,13 +136,13 @@ onUnmounted(() => {
     <section v-if="CMSStore.shuffled.length"
       class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="none"
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }"
           v-for="image in CMSStore.getFirstRow" :alt="image.alt || image.name || 'Bloof Rooftop'" height="auto"
           fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="50vw md:20vw"
           preload :src="image.url || ''" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="none"
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }"
           v-for="image in CMSStore.getSecondRow" :alt="image.alt || image.name || 'Bloof Rooftop'" height="auto"
           fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="50vw md:20vw"
           preload :src="image.url || ''" />
@@ -158,7 +158,7 @@ onUnmounted(() => {
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="none"
+      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy"
         :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2" alt="Menu Chapter 1"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.menuData.coverImage?.url || ''" />
@@ -200,7 +200,7 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtPicture :imgAttrs="{ class: 'flex zoom absolute top-0 left-0 w-full h-full -z-20 object-cover' }"
-        loading="lazy" provider="none" densities="x1 x2" alt="Bloof Rooftop"
+        loading="lazy" densities="x1 x2" alt="Bloof Rooftop"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
         :src="CMSStore.landingData.featuredHappening?.thumbnail?.url || ''" />
     </section>
@@ -216,17 +216,18 @@ onUnmounted(() => {
         </div>
         <Transition name="fade">
           <div v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden">
-            <img class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg" alt="Bloof Pattern" />
+            <NuxtImg class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg"
+              alt="Bloof Pattern" format="webp" quality="70" />
           </div>
           <NuxtPicture v-else-if="privateRoom === 'bloof_belly'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
-            provider="none" :placeholder="[50, 25, 75, 5]"
-            :src="CMSStore.landingData.privateRooms?.bloofBelly?.url || ''" alt="Bloof Belly" />
+            :placeholder="[50, 25, 75, 5]" :src="CMSStore.landingData.privateRooms?.bloofBelly?.url || ''"
+            alt="Bloof Belly" />
           <NuxtPicture v-else-if="privateRoom === 'bloof_eye'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
-            provider="none" :placeholder="[50, 25, 75, 5]" :src="CMSStore.landingData.privateRooms?.bloofEye?.url || ''"
+            :placeholder="[50, 25, 75, 5]" :src="CMSStore.landingData.privateRooms?.bloofEye?.url || ''"
             alt="Bloof Eye" />
         </Transition>
       </div>

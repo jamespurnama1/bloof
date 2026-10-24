@@ -167,8 +167,10 @@ export default defineNuxtConfig({
     }
   },
   image: {
-    provider: 'none',
+    provider: 'ipx',
+    domains: ['cdn.sanity.io'],
     format: ['avif', 'webp', 'jpg'],
+    quality: 80,
   },
   vite: {
     vue: {

@@ -5,12 +5,12 @@
         route.name?.toString().charAt(0).toUpperCase() + route.name?.toString().slice(1) }}</h1>
       <canvas v-if="route.path === '/happenings'" ref="canvas" class="w-full h-full" />
       <div class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full" v-else-if="route.path === '/contact'">
-        <img class="pattern3 object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super3.jpg"
-          alt="Bloof Pattern" />
+        <NuxtImg class="pattern3 object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super3.jpg"
+          alt="Bloof Pattern" format="webp" quality="70" />
       </div>
       <div class="absolute bottom-0 right-0 overflow-hidden h-2/3 w-full" v-else-if="route.path === '/events'">
-        <img class="object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super4.jpg"
-          alt="Bloof Pattern" />
+        <NuxtImg class="object-cover absolute top-0 right-0 scale-150 w-full" src="/images/super4.jpg"
+          alt="Bloof Pattern" format="webp" quality="70" />
       </div>
     </section>
     <slot />
