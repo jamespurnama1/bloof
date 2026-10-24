@@ -206,9 +206,10 @@ onMounted(async () => {
 
 <template>
   <Pop ref="tandc" v-if="terms" @close="terms = false" title="Information and Regulation"
-    :content="CMSStore.landingData.regulation" bird="fly">
+    :content="CMSStore.landingData?.regulation" bird="fly">
     <button @click="tandc.scrollTop = tandc.scrollHeight">
-      <img src="/images/arrow.png" alt="Arrow Up" aria-label="Arrow-Up" class="h-8 md:h-12 w-auto fixed right-0 bottom-5" />
+      <img src="/images/arrow.png" alt="Arrow Up" aria-label="Arrow-Up"
+        class="h-8 md:h-12 w-auto fixed right-0 bottom-5" />
     </button>
     <button
       class="button_pink text-3xl my-2 transition-transform duration-75 hover:scale-110 active:duration-0 active:translate-x-2 active:translate-y-2"
@@ -236,8 +237,8 @@ onMounted(async () => {
       <VDropdown auto>
         <p class="text-2xl xl:text-4xl text-center">{{ date.toLocaleDateString('en-us', {
           weekday:
-          "long", month: "short", day: "numeric"
-          }) }}</p>
+            "long", month: "short", day: "numeric"
+        }) }}</p>
         <template #popper="{ hide }">
           <ClientOnly>
             <VCalendar v-model="getDate" :locale="{ id: 'en', firstDayOfWeek: 1 }" :attributes="attributes" borderless

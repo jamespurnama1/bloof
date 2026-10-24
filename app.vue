@@ -11,15 +11,13 @@ import type { PostHog } from 'posthog-js';
 // })
 
 const CMSStore = useCMSStore();
-if (process.server) {
-  CMSStore.getLanding()
-  CMSStore.getMenu()
-  CMSStore.getEvents()
-  CMSStore.getHappenings()
-  CMSStore.getGallery()
-  CMSStore.getFood()
-  CMSStore.getDrinks()
-  // CMSStore.getBreakfast()
+const route = useRoute();
+if (!route.path.startsWith('/studio')) await CMSStore.load();
+
+function updateStudioCursor() {
+  if (import.meta.client) {
+    document.documentElement.classList.toggle('studio-route', route.path.startsWith('/studio'));
+  }
 }
 
 let posthog = null as null | PostHog
@@ -50,12 +48,12 @@ async function handleNewsletter() {
   posthog.identify(formStore.email)
 
   pushDatabase(formStore.email)
-  .then(() => {
-    newsletterSubmitted.value = true;
-    modal.value = true;
-  }).catch(() => {
-    error.value = true;
-  })
+    .then(() => {
+      newsletterSubmitted.value = true;
+      modal.value = true;
+    }).catch(() => {
+      error.value = true;
+    })
   newsletter.value = false;
 }
 
@@ -71,7 +69,7 @@ const maxPercentage = ref(0);
 const maxPixels = ref(0);
 
 function handleScroll() {
-      bottom.value = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
+  bottom.value = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
   const lastPercentage = Math.min(
     1,
     (window.innerHeight + window.scrollY) / document.body.offsetHeight
@@ -87,6 +85,7 @@ function handleScroll() {
 }
 
 onMounted(() => {
+  updateStudioCursor();
   const { $posthog } = useNuxtApp()
   posthog = $posthog() as PostHog
   UIStore.$subscribe((mutation, state) => {
@@ -99,6 +98,8 @@ onMounted(() => {
   window.addEventListener('resize', updateWidth);
   updateWidth();
 });
+
+watch(() => route.path, updateStudioCursor);
 
 watch(currentRoute, value => {
   if (!window || !posthog) return;
@@ -128,13 +129,16 @@ watch(currentRoute, value => {
     <form class="flex items-center w-full gap-3 md:gap-5 justify-center flex-col md:flex-row">
       <BloofInput class="flex-1 max-w-xl" type="email" label="email" placeholder="Enter your e-mail here"
         :required="true" />
-      <button type="submit" class="button_pink text-xl md:text-3xl my-2" @click.prevent="handleNewsletter()">Submit</button>
+      <button type="submit" class="button_pink text-xl md:text-3xl my-2"
+        @click.prevent="handleNewsletter()">Submit</button>
     </form>
   </Pop>
   <LazyPop v-else-if="modal && !newsletter" @close="modal = false" @submit="modal = false; req()"
     :title="`We’ve sent an email to ${formStore.email}`" content="" bird="thank" />
-  <LazyPop v-else-if="!newsletter && error" @close="error = false" @submit="reloadNuxtApp()" title="Something went wrong" bird="thank" button="Reload Me" />
-  <NuxtLayout>
+  <LazyPop v-else-if="!newsletter && error" @close="error = false" @submit="reloadNuxtApp()"
+    title="Something went wrong" bird="thank" button="Reload Me" />
+  <NuxtPage v-if="route.path.startsWith('/studio')" />
+  <NuxtLayout v-else>
     <Cursor v-if="width > 768" />
     <Navigation />
     <NuxtPage />

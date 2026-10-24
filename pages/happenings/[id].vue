@@ -7,20 +7,21 @@
       <header class="flex pl-24 w-full flex-col md:pl-0">
         <h1 class="text-4xl md:text-9xl text-left">{{ post.title }}</h1>
         <div class="flex items-center gap-5">
-          <h2 class="bordered w-min whitespace-nowrap bg-teal-400 p-2 my-2 text-xs font-sans">{{ post.metadata.type.value
-          }}
+          <h2 class="bordered w-min whitespace-nowrap bg-teal-400 p-2 my-2 text-xs font-sans">{{
+            post.category.replace('_', ' ')
+            }}
           </h2>
-          <time :datetime="post.published_at">{{ new Date(post.published_at).toLocaleDateString() }}</time>
+          <time v-if="post.publishedAt" :datetime="post.publishedAt">{{ new Date(post.publishedAt).toLocaleDateString()
+            }}</time>
         </div>
       </header>
       <main>
         <article class="pt-4 md:pt-12 md:max-w-2xl px-8 md:px-0 w-full">
-          <NuxtPicture preload provider="imgix" :imgAttrs="{ class: 'object-cover' }"
-            :src="post.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" :alt="post.title"
-            densities="x1 x2" sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-            :placeholder="[50, 25, 75, 5]" />
+          <NuxtPicture preload provider="none" :imgAttrs="{ class: 'object-cover' }" :src="post.thumbnail?.url || ''"
+            :alt="post.thumbnail?.alt || post.title" densities="x1 x2"
+            sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw" :placeholder="[50, 25, 75, 5]" />
           <br>
-          <p v-html="article" />
+          <SanityRichText :value="post.body" />
         </article>
       </main>
     </div>
@@ -31,10 +32,8 @@
 const route = useRoute();
 const CMSStore = useCMSStore()
 const post = ref();
-const { $mdRenderer } = useNuxtApp()
 
 post.value = CMSStore.happeningsData.find(x => x.slug === route.params.id);
-const article = ref('')
 
 if (!post.value) {
   throw createError({
@@ -42,9 +41,6 @@ if (!post.value) {
   });
 };
 
-onMounted(() => {
-  article.value = $mdRenderer.render(post.value.metadata.post);
-})
 </script>
 
 <style scoped lang="scss">

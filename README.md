@@ -1,10 +1,10 @@
-# Nuxt 3 Minimal Starter
+# Bloof
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nuxt site with Sanity Studio served at `/studio`.
 
 ## Setup
 
-Make sure to install the dependencies:
+Install dependencies and configure the Sanity project:
 
 ```bash
 # npm
@@ -20,9 +20,18 @@ yarn install
 bun install
 ```
 
+Set these values in `.env` (`production` is the default dataset):
+
+```dotenv
+SANITY_PROJECT_ID=your-project-id
+SANITY_DATASET=production
+```
+
+The Studio and frontend use the same values. Add the local and production site origins under API > CORS origins in Sanity Manage, allowing credentials. The first Studio visit will ask you to sign in and authorize the project.
+
 ## Development Server
 
-Start the development server on `http://localhost:3000`:
+Start the development server on `http://localhost:3000`; open `http://localhost:3000/studio` to edit content:
 
 ```bash
 # npm

@@ -10,7 +10,7 @@
             <img class="h-12 w-auto" :src="`/images/bird_${props.bird}.png`" :alt="`bird ${props.bird}`" />
             <h2 class="text-center text-xl md:text-4xl">{{ props.title }}</h2>
           </div>
-          <p v-if="props.content" class="max-w-xl" v-html="$mdRenderer.render(props.content)" />
+          <SanityRichText v-if="props.content" class="max-w-xl" :value="props.content" />
         </div>
         <slot>
           <button class="button_pink text-xl md:text-3xl my-2" @click="$emit('submit')">{{ props.button }}</button>
@@ -29,15 +29,12 @@ const ctx = ref();
 const { $gsap: gsap } = useNuxtApp();
 const emit = defineEmits(['close', 'submit']);
 
-const props = defineProps({
-  title: String,
-  content: String,
-  bird: String,
-  button: {
-    type: String,
-    default: "Okay"
-  }
-});
+const props = withDefaults(defineProps<{
+  title?: string;
+  content?: CmsRichText | null;
+  bird?: string;
+  button?: string;
+}>(), { button: 'Okay' });
 
 
 onMounted(() => {

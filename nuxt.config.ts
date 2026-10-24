@@ -1,6 +1,6 @@
 import { defineNuxtConfig } from 'nuxt/config'
 import { fileURLToPath } from 'node:url'
-import { ofetch } from 'ofetch'
+import { createClient } from '@sanity/client'
 
 export const routes = [
   {
@@ -38,8 +38,17 @@ export const routes = [
 ]
 
 const happenings = async () => {
-  const response: happeningsData = await ofetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=slug`);
-  return response.objects.map(x => `/happenings/${x.slug}`)
+  const projectId = process.env.SANITY_PROJECT_ID
+  if (!projectId) return []
+
+  const client = createClient({
+    projectId,
+    dataset: process.env.SANITY_DATASET || 'production',
+    apiVersion: '2026-10-24',
+    useCdn: true,
+  })
+  const slugs = await client.fetch<string[]>(`*[_type == "happening" && defined(slug.current)].slug.current`)
+  return slugs.map(slug => `/happenings/${slug}`)
 }
 
 export default defineNuxtConfig({
@@ -56,7 +65,12 @@ export default defineNuxtConfig({
       '/api/__sitemap__/urls',
     ]
   },
-  modules: ['@pinia/nuxt', '@nuxt/image', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire', 'floating-vue/nuxt'],
+  modules: ['@pinia/nuxt', '@nuxt/image', '@nuxtjs/sanity', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire', 'floating-vue/nuxt'],
+  sanity: {
+    projectId: process.env.SANITY_PROJECT_ID || 'yourProjectId',
+    dataset: process.env.SANITY_DATASET || 'production',
+    apiVersion: '2026-10-24',
+  },
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
@@ -98,7 +112,6 @@ export default defineNuxtConfig({
       POSTHOG_KEY: process.env.POSTHOG_KEY,
       POSTHOG_URL: process.env.POSTHOG_URL
     },
-    COSMIC_READ_KEY: process.env.COSMIC_READ_KEY,
     GMAIL_SEND: process.env.GMAIL_SEND,
     GMAIL_RECEIVE: process.env.GMAIL_RECEIVE,
     GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
@@ -154,10 +167,7 @@ export default defineNuxtConfig({
     }
   },
   image: {
-   format: ['avif', 'webp', 'jpg'],
-     imgix: {
-      baseURL: 'https://imgix.cosmicjs.com'
-    }
+    format: ['avif', 'webp', 'jpg'],
   },
   vite: {
     vue: {

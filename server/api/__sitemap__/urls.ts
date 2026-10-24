@@ -1,12 +1,18 @@
 
 import { asSitemapUrl, defineSitemapEventHandler } from '#imports'
+import { createClient } from '@sanity/client'
 
 export default defineSitemapEventHandler(async () => {
-  const data = await $fetch(`https://api.cosmicjs.com/v3/buckets/bloof-production/objects?pretty=true&query=%7B%22type%22:%22happenings%22%7D&read_key=${process.env.COSMIC_READ_KEY}&depth=1&props=slug,title,metadata,`) as happeningsData;
+  const projectId = process.env.SANITY_PROJECT_ID
+  if (!projectId) return []
 
-  return [
-    ...data.objects.map((x) => asSitemapUrl({
-      loc: `happenings/${x.slug}`,
-    }))
-  ]
+  const client = createClient({
+    projectId,
+    dataset: process.env.SANITY_DATASET || 'production',
+    apiVersion: '2026-10-24',
+    useCdn: true,
+  })
+  const slugs = await client.fetch<string[]>(`*[_type == "happening" && defined(slug.current)].slug.current`)
+
+  return slugs.map(slug => asSitemapUrl({ loc: `happenings/${slug}` }))
 })

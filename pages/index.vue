@@ -110,9 +110,8 @@ onUnmounted(() => {
       <div class="absolute top-0 left-0 -z-10 w-full h-full bg-gradient-to-b from-transparent to-white opacity-40" />
       <img @click="scrollDown" src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="mt-5 h-20 lg:h-24 w-auto bottom-10 left-1/2 -translate-x-1/2 absolute" />
-      <NuxtPicture v-if="CMSStore.landingData" preload provider="imgix"
-        :imgAttrs="{ class: 'object-cover flex h-full w-full' }"
-        :src="CMSStore.landingData.hero_image.imgix_url.replace('https://imgix.cosmicjs.com', '')"
+      <NuxtPicture v-if="CMSStore.landingData?.heroImage?.url" preload provider="none"
+        :imgAttrs="{ class: 'object-cover flex h-full w-full' }" :src="CMSStore.landingData.heroImage.url"
         alt="Bloof Restaurant" densities="x1 x2"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw" :placeholder="[50, 25, 75, 5]"
         class="absolute -z-20 top-0 left-0 h-full w-full overflow-hidden" />
@@ -137,32 +136,32 @@ onUnmounted(() => {
     <section v-if="CMSStore.shuffled.length"
       class="gallery flex gap-5 h-[50dvh] min-h-[500px] w-full overflow-hidden flex-col my-5">
       <div class="h-1/2 flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
-          v-for="image in CMSStore.getFirstRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
-          height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
-          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="none"
+          v-for="image in CMSStore.getFirstRow" :alt="image.alt || image.name || 'Bloof Rooftop'" height="auto"
+          fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="50vw md:20vw"
+          preload :src="image.url || ''" />
       </div>
       <div class="h-1/2 self-end flex w-max">
-        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="imgix"
-          v-for="image in CMSStore.getSecondRow" :alt="image.metadata ? image.metadata.name : 'Bloof Rooftop'"
-          height="auto" fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2"
-          sizes="50vw md:20vw" preload :src="image.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        <NuxtPicture :imgAttrs="{ class: 'object-cover w-[50vw] md:w-[20vw] h-full' }" provider="none"
+          v-for="image in CMSStore.getSecondRow" :alt="image.alt || image.name || 'Bloof Rooftop'" height="auto"
+          fit="cover" quality="75" auto="compress" :placeholder="[50, 25, 75, 5]" densities="x1 x2" sizes="50vw md:20vw"
+          preload :src="image.url || ''" />
       </div>
     </section>
     <!-- Menu --->
     <section class="menu relative h-screen flex justify-start items-end p-4 md:p-10 overflow-hidden">
       <NuxtLink to="/menu" class="md:mb-10">
         <h3 class="text-3xl md:text-5xl text-white text-center">Menu</h3>
-        <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">{{CMSStore.menuData.subhead}}</p>
+        <p class="text-white text-center tracking-[0.3em] text-sm md:text-lg">{{ CMSStore.menuData.subhead }}</p>
       </NuxtLink>
       <img src="/images/arrow.png" alt="Arrow Down" aria-label="Arrow-Down"
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="imgix"
+      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy" provider="none"
         :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2" alt="Menu Chapter 1"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :src="CMSStore.landingData.menu.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        :src="CMSStore.menuData.coverImage?.url || ''" />
     </section>
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
@@ -201,9 +200,9 @@ onUnmounted(() => {
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
       <NuxtPicture :imgAttrs="{ class: 'flex zoom absolute top-0 left-0 w-full h-full -z-20 object-cover' }"
-        loading="lazy" provider="imgix" densities="x1 x2" alt="Bloof Rooftop"
+        loading="lazy" provider="none" densities="x1 x2" alt="Bloof Rooftop"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :src="CMSStore.landingData.happening.metadata.thumbnail.imgix_url.replace('https://imgix.cosmicjs.com', '')" />
+        :src="CMSStore.landingData.featuredHappening?.thumbnail?.url || ''" />
     </section>
     <!-- Maps --->
     <section class="h-[100dvh]">
@@ -222,14 +221,12 @@ onUnmounted(() => {
           <NuxtPicture v-else-if="privateRoom === 'bloof_belly'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
-            provider="imgix" :placeholder="[50, 25, 75, 5]"
-            :src="CMSStore.landingData.private_rooms.bloof_belly.imgix_url.replace('https://imgix.cosmicjs.com', '')"
-            alt="Bloof Belly" />
+            provider="none" :placeholder="[50, 25, 75, 5]"
+            :src="CMSStore.landingData.privateRooms?.bloofBelly?.url || ''" alt="Bloof Belly" />
           <NuxtPicture v-else-if="privateRoom === 'bloof_eye'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
             :imgAttrs="{ class: 'w-full h-full object-cover' }" sizes="sm:100vw md:50vw" densities="x1 x2"
-            provider="imgix" :placeholder="[50, 25, 75, 5]"
-            :src="CMSStore.landingData.private_rooms.bloof_eye.imgix_url.replace('https://imgix.cosmicjs.com', '')"
+            provider="none" :placeholder="[50, 25, 75, 5]" :src="CMSStore.landingData.privateRooms?.bloofEye?.url || ''"
             alt="Bloof Eye" />
         </Transition>
       </div>

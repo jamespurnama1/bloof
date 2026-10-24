@@ -1,3 +1,5 @@
+import type { TypedObject } from '@portabletext/types'
+
 declare global {
 
   declare type reservationTime = {
@@ -19,81 +21,48 @@ declare global {
     reservationTime: reservationTime[];
   };
 
-  declare type media = {
+  declare type CmsImage = {
+    url: string | null;
+    alt?: string;
     name?: string;
-    original_name?: string;
-    metadata?: {
-      name: string;
-    };
-    url: url;
-    imgix_url: url;
   };
 
-  declare type extraMetadata = {
-    id: string;
-    bucket: string;
-    created_at: date;
-    modified_at: date;
-    status: 'published' | 'draft';
-    thumbnail: url;
-    published_at: date;
-    modified_by: string;
-    created_by: string;
-    type: string;
-  };
+  declare type CmsRichText = string | TypedObject[];
 
-  declare type landingData = {
-    hero_image: media;
-    socials: {[key: string]: string};
-    happening: happening & extraMetadata;
-    location: { address: string; lng: number; lat: number; };
-    menu: {
-      metadata: menuData;
-    };
-    private_rooms: {
-      bloof_eye: media;
-      bloof_belly: media;
-    };
-    regulation: string;
-  };
-
-  declare type photosData = {
-    media: media[];
-    total: number;
-  };
-
-  declare type eventsData = {
-    description: string;
-    brochures?: url[];
-    call_to_action: string;
-    more_description: string;
-  };
-
-  declare type happening = {
+  declare type Happening = {
     slug: string;
     title: string;
-    published_at?: date;
-    metadata: {
-      thumbnail: media;
-      type: {
-        key: string;
-        value: string;
-      };
-      post: string;
-    };
+    publishedAt?: string;
+    category: 'ongoing' | 'upcoming' | 'happy_hours' | 'collaborations';
+    thumbnail: CmsImage | null;
+    body?: CmsRichText;
   };
 
-  declare type happeningsData = {
-    objects: happening[];
-    total: number;
+  declare type LandingData = {
+    heroImage: CmsImage | null;
+    socials: Record<string, string>;
+    featuredHappening: Happening | null;
+    location: { address?: string; lng?: number; lat?: number } | null;
+    privateRooms: { bloofEye: CmsImage | null; bloofBelly: CmsImage | null } | null;
+    regulation?: CmsRichText;
   };
 
-  declare type menuData = {
-    thumbnail: media;
-    pdf: {
-      url: url;
-      imgix_url: url;
-    };
+  declare type GalleryData = { media: CmsImage[] };
+
+  declare type EventsData = {
+    description: CmsRichText;
+    brochures: CmsImage[];
+    callToAction: string;
+    moreDescription: CmsRichText;
+  };
+
+  declare type MenuData = {
+    subhead: string;
+    coverImage: CmsImage | null;
+    pdfUrl?: string;
+    foodPages: CmsImage[];
+    drinkPages: CmsImage[];
+    breakfastPages: CmsImage[];
   };
 };
 
