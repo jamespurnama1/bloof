@@ -11,6 +11,7 @@ const logo = ref(true);
 const route = useRoute()
 const takingLonger = ref(false);
 const { currentRoute } = useRouter();
+let loadingFallback: ReturnType<typeof setTimeout> | undefined
 
 function loadIn() {
   if (UIStore.loading || !riveInstance) return;
@@ -35,11 +36,15 @@ UIStore.$subscribe((mutation, state) => {
 })
 
 function resize() {
-  if(!riveInstance) return;
+  if (!riveInstance) return;
   riveInstance.resizeDrawingSurfaceToCanvas()
 }
 
 onMounted(async () => {
+  loadingFallback = setTimeout(() => {
+    UIStore.loadingScreen = false
+  }, 15000)
+
   riveInstance = new Rive({
     canvas: canvas.value as HTMLCanvasElement,
     src: '/animations/bloof.riv',
@@ -73,6 +78,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
+  if (loadingFallback) clearTimeout(loadingFallback)
   document.querySelector('body')!.style.overflow = 'initial'
 })
 </script>
@@ -82,7 +88,8 @@ onUnmounted(() => {
     <Transition
       class="bottom-0 absolute bg-gradient-to-b to-[rgba(0,0,0,0.8)] from-transparent w-full h-[10%] flex items-center justify-center"
       name="fade">
-      <p class="text-white text-center z-10" v-if="takingLonger && UIStore.loading">Loading is taking longer than usual...
+      <p class="text-white text-center z-10" v-if="takingLonger && UIStore.loading">Loading is taking longer than
+        usual...
       </p>
     </Transition>
     <Transition name="fade">

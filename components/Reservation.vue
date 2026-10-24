@@ -190,10 +190,11 @@ async function getTime() {
           (availableTime.value as reservationTime[]).push(x);
         }
       })
-      UIStore.fetch = false;
     }
-  }, error => {
+  }).catch(error => {
     console.error(error);
+  }).finally(() => {
+    UIStore.fetch = false;
   })
 }
 

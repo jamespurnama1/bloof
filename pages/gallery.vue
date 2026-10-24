@@ -30,9 +30,9 @@ onUnmounted(() => {
       :column-width="[300, 400, 400]" :gap="16">
       <template #default="{ item, index }">
         <div class="relative group hover:scale-125 transition-transform hover:z-10">
-          <div v-if="item.alt || item.name"
+          <div v-if="item.alt"
             class="absolute text-white text-xs bg-gradient-to-b from-transparent to-black z-10 w-full bottom-0 h-24 p-2 flex items-end transition-opacity duration-700 opacity-0 group-hover:opacity-100">
-            {{ item.alt || item.name }}</div>
+            {{ item.alt }}</div>
           <NuxtPicture provider="none" densities="x1 x2" sizes="400px" :src="item.url || ''" :alt="item.alt || ''" />
         </div>
       </template>

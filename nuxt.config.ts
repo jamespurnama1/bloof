@@ -167,6 +167,7 @@ export default defineNuxtConfig({
     }
   },
   image: {
+    provider: 'none',
     format: ['avif', 'webp', 'jpg'],
   },
   vite: {

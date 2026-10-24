@@ -118,7 +118,7 @@ watch(currentRoute, value => {
 
 <template>
   <ClientOnly>
-    <loadingScreen v-if="UIStore.loadingScreen" />
+    <loadingScreen v-if="UIStore.loadingScreen && !route.path.startsWith('/studio')" />
   </ClientOnly>
 
   <!-- Newsletter -->
