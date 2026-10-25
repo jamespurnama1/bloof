@@ -211,7 +211,7 @@ export default defineNuxtConfig({
       dataset: process.env.SANITY_DATASET || 'production',
     },
     domains: ['cdn.sanity.io'],
-    format: ['avif', 'webp', 'jpg'],
+    format: ['webp', 'jpg'],
     quality: 80,
   },
   vite: {
