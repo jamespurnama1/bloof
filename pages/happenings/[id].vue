@@ -9,16 +9,16 @@
         <div class="flex items-center gap-5">
           <h2 class="bordered w-min whitespace-nowrap bg-teal-400 p-2 my-2 text-xs font-sans">{{
             post.category.replace('_', ' ')
-          }}
+            }}
           </h2>
           <time v-if="post.publishedAt" :datetime="post.publishedAt">{{ new Date(post.publishedAt).toLocaleDateString()
-          }}</time>
+            }}</time>
         </div>
       </header>
       <main>
         <article class="pt-4 md:pt-12 md:max-w-2xl px-8 md:px-0 w-full">
-          <NuxtPicture preload :imgAttrs="{ class: 'object-cover' }" :src="post.thumbnail?.url || ''"
-            :alt="post.thumbnail?.alt || post.title" densities="x1 x2"
+          <NuxtPicture provider="sanity" preload :imgAttrs="{ class: 'object-cover' }"
+            :src="post.thumbnail?.assetId || ''" :alt="post.thumbnail?.alt || post.title" densities="x1 x2"
             sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw" :placeholder="[50, 25, 75, 5]" />
           <br>
           <SanityRichText :value="post.body" />

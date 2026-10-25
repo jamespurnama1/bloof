@@ -1,7 +1,6 @@
-import type { TypedObject } from '@portabletext/types'
+import type { TypedObject } from '@portabletext/types';
 
 declare global {
-
   declare type reservationTime = {
     time: string;
     available: boolean;
@@ -14,7 +13,7 @@ declare global {
   };
 
   declare type reservationPurpose = {
-    reservationPurpose: purpose[]
+    reservationPurpose: purpose[];
   };
 
   declare type reservationTimes = {
@@ -23,6 +22,7 @@ declare global {
 
   declare type CmsImage = {
     url: string | null;
+    assetId?: string;
     alt?: string;
     name?: string;
   };
@@ -43,7 +43,10 @@ declare global {
     socials: Record<string, string>;
     featuredHappening: Happening | null;
     location: { address?: string; lng?: number; lat?: number } | null;
-    privateRooms: { bloofEye: CmsImage | null; bloofBelly: CmsImage | null } | null;
+    privateRooms: {
+      bloofEye: CmsImage | null;
+      bloofBelly: CmsImage | null;
+    } | null;
     regulation?: CmsRichText;
   };
 
@@ -64,6 +67,6 @@ declare global {
     drinkPages: CmsImage[];
     breakfastPages: CmsImage[];
   };
-};
+}
 
 export {};

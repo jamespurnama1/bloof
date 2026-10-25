@@ -17,14 +17,14 @@
               post.title }}</h3>
           <div
             class="bg-gradient-to-b w-full h-full absolute top-0 left-0 from-transparent to-teal-600 opacity-75 mix-blend-multiply -z-0" />
-          <NuxtPicture preload
+          <NuxtPicture provider="sanity" preload
             class="md:grayscale flex absolute top-0 left-0 w-full h-full -z-10 group-hover/item:scale-125 group-hover/slider:grayscale-0 transition duration-700 md:brightness-50 group-hover/item:brightness-100"
-            :imgAttrs="{ class: 'object-cover w-full h-full absolute' }" :src="post.thumbnail?.url || ''"
+            :imgAttrs="{ class: 'object-cover w-full h-full absolute' }" :src="post.thumbnail?.assetId || ''"
             :alt="post.thumbnail?.alt || post.title" densities="x1 x2"
             sizes="xs:100vw sm:100vw md:100vw lg:33vw xl:33vw xxl:33vw 2xl:25vw" :placeholder="[50, 25, 75, 5]" />
         </NuxtLink>
-        <NuxtImg v-else class="flex-1 h-full w-full object-cover" :src="`/images/super${post}.jpg`"
-          alt="Bloof Pattern" format="webp" quality="70" />
+        <NuxtImg v-else class="flex-1 h-full w-full object-cover" :src="`/images/super${post}.jpg`" alt="Bloof Pattern"
+          format="webp" quality="70" />
       </swiper-slide>
       <!-- <button @click="swiperRef.slideNext()" class="absolute right-5 z-20 top-1/2 -translate-y-1/2 bg-warm-200 bordered p-2 hover:scale-110 active:duration-0 active:translate-x-[3px] active:translate-y-[1px] hover:disabled:scale-100 transition">
         <img src="/images/caret.png" :alt="`${title} Slide Right`" class="transition h-5 w-auto object-cover">
@@ -37,8 +37,7 @@
       </h3>
     </div>
     <NuxtImg class="absolute top-0 left-0 w-full h-full object-cover -z-0 saturate-0"
-      :src="`/images/super${getRandomInt(3)}.jpg`" alt="Bloof Pattern"
-      format="webp" quality="70" />
+      :src="`/images/super${getRandomInt(3)}.jpg`" alt="Bloof Pattern" format="webp" quality="70" />
   </div>
 </template>
 

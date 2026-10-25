@@ -1,6 +1,6 @@
-import { defineNuxtConfig } from 'nuxt/config'
-import { fileURLToPath } from 'node:url'
-import { createClient } from '@sanity/client'
+import { defineNuxtConfig } from 'nuxt/config';
+import { fileURLToPath } from 'node:url';
+import { createClient } from '@sanity/client';
 
 export const routes = [
   {
@@ -29,43 +29,51 @@ export const routes = [
   },
   {
     name: [],
-    path: '/happenings/[id]'
+    path: '/happenings/[id]',
   },
   {
     name: '404',
     path: '/404',
   },
-]
+];
 
 const happenings = async () => {
-  const projectId = process.env.SANITY_PROJECT_ID
-  if (!projectId) return []
+  const projectId = process.env.SANITY_PROJECT_ID;
+  if (!projectId) return [];
 
   const client = createClient({
     projectId,
     dataset: process.env.SANITY_DATASET || 'production',
     apiVersion: '2026-10-24',
     useCdn: true,
-  })
-  const slugs = await client.fetch<string[]>(`*[_type == "happening" && defined(slug.current)].slug.current`)
-  return slugs.map(slug => `/happenings/${slug}`)
-}
+  });
+  const slugs = await client.fetch<string[]>(
+    `*[_type == "happening" && defined(slug.current)].slug.current`,
+  );
+  return slugs.map((slug) => `/happenings/${slug}`);
+};
 
 export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== 'production' ? true : false },
   experimental: {
-    renderJsonPayloads: false
+    renderJsonPayloads: false,
   },
   ssr: true,
   site: {
     url: 'https://bloofbdg.com',
   },
   sitemap: {
-    sources: [
-      '/api/__sitemap__/urls',
-    ]
+    sources: ['/api/__sitemap__/urls'],
   },
-  modules: ['@pinia/nuxt', '@nuxt/image', '@nuxtjs/sanity', '@samk-dev/nuxt-vcalendar', 'nuxt-simple-sitemap', 'nuxt-vuefire', 'floating-vue/nuxt'],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxt/image',
+    '@nuxtjs/sanity',
+    '@samk-dev/nuxt-vcalendar',
+    'nuxt-simple-sitemap',
+    'nuxt-vuefire',
+    'floating-vue/nuxt',
+  ],
   sanity: {
     projectId: process.env.SANITY_PROJECT_ID || 'yourProjectId',
     dataset: process.env.SANITY_DATASET || 'production',
@@ -87,7 +95,7 @@ export default defineNuxtConfig({
       projectId: process.env.FIREBASE_PROJECT_ID,
       storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.FIREBASE_APP_ID
+      appId: process.env.FIREBASE_APP_ID,
     },
     appCheck: {
       // Allows you to use a debug token in development
@@ -98,9 +106,10 @@ export default defineNuxtConfig({
       key: process.env.RECAPTCHA_SITE_KEY as string,
     },
   },
-    vue: {  
+  vue: {
     compilerOptions: {
-      isCustomElement: (tag) => tag.startsWith('swiper-') || tag.startsWith('dotlottie-player'),
+      isCustomElement: (tag) =>
+        tag.startsWith('swiper-') || tag.startsWith('dotlottie-player'),
     },
   },
   runtimeConfig: {
@@ -110,7 +119,7 @@ export default defineNuxtConfig({
       ESB_BRANCH_CODE: process.env.ESB_BRANCH_CODE,
       GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
       POSTHOG_KEY: process.env.POSTHOG_KEY,
-      POSTHOG_URL: process.env.POSTHOG_URL
+      POSTHOG_URL: process.env.POSTHOG_URL,
     },
     GMAIL_SEND: process.env.GMAIL_SEND,
     GMAIL_RECEIVE: process.env.GMAIL_RECEIVE,
@@ -120,54 +129,87 @@ export default defineNuxtConfig({
     // pageTransition: { name: 'fade', mode: 'out-in' },
     head: {
       htmlAttrs: {
-        lang: "en"
+        lang: 'en',
       },
-      title: "Bloof Bandung Rooftop Restaurant",
+      title: 'Bloof Bandung Rooftop Restaurant',
       link: [
-        {rel: "apple-touch-icon", sizes:"180x180", href:"/apple-touch-icon.png"},
-        {rel: "icon", type:"image/png", sizes:"32x32", href: "/favicon-32x32.png"},
-        {rel: "icon", type:"image/png", sizes:"16x16", href: "/favicon-16x16.png"},
-        {rel: "manifest", href: "/site.webmanifest", crossorigin:"use-credentials"},
-        {rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5"}],
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png',
+        },
+        {
+          rel: 'manifest',
+          href: '/site.webmanifest',
+          crossorigin: 'use-credentials',
+        },
+        { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#5bbad5' },
+      ],
       meta: [
-        {name: "msapplication-TileColor", content:"#b6dfd8"},
-        {name: "theme-color", content:"#faf9f8"},
-		    {name: "description", content: "Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
-        {property:"og:title", content:"Bloof Bandung Restaurant"},
-		    {property: "og:site_name", content: "Bloof Bandung Restaurant"},
-		    {property: "og:url", content: "https://bloofbdg.com"},
-		    {property: "og:description", content: "Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
-		    {property: "og:type", content: "restaurant"},
-		    {property: "og:image", content: "https://bloofbdg.com/og.jpg"},
-		    {name: "twitter:card", content: "summary_large_image"},
-		    {name: "twitter:title", content: "Bloof Bandung Restaurant"},
-		    {name: "twitter:description", content: "Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance."},
-		    {name: "twitter:image", content: "https://bloofbdg.com/twitter.jpg"},
-      ]
-    }
+        { name: 'msapplication-TileColor', content: '#b6dfd8' },
+        { name: 'theme-color', content: '#faf9f8' },
+        {
+          name: 'description',
+          content:
+            'Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance.',
+        },
+        { property: 'og:title', content: 'Bloof Bandung Restaurant' },
+        { property: 'og:site_name', content: 'Bloof Bandung Restaurant' },
+        { property: 'og:url', content: 'https://bloofbdg.com' },
+        {
+          property: 'og:description',
+          content:
+            'Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance.',
+        },
+        { property: 'og:type', content: 'restaurant' },
+        { property: 'og:image', content: 'https://bloofbdg.com/og.jpg' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Bloof Bandung Restaurant' },
+        {
+          name: 'twitter:description',
+          content:
+            'Perched atop Hemangini Hotel, Bloof is a rooftop haven boasting stunning skyline views and an innovative cocktail program. Discover an enchanting blend of indoor-outdoor spaces adorned by a sculptural bar, seamlessly merging sophistication with a magnetic ambiance.',
+        },
+        { name: 'twitter:image', content: 'https://bloofbdg.com/twitter.jpg' },
+      ],
+    },
   },
   hooks: {
     'pages:extend': (pages) => {
-
       pages.map((page) => {
- 
-        routes.forEach(route => {
+        routes.forEach((route) => {
           if (route.name === page.name) {
-            Object.assign(page, {path: route.path});
+            Object.assign(page, { path: route.path });
           }
-        })
-      })
+        });
+      });
     },
     async 'nitro:config'(nitroConfig) {
       // if (nitroConfig.dev || !nitroConfig.prerender || !nitroConfig.prerender.routes) { return }
       if (process.argv?.includes('generate')) {
-      const happeningsSlug = await happenings();
-      nitroConfig.prerender!.routes!.push(...happeningsSlug);
+        const happeningsSlug = await happenings();
+        nitroConfig.prerender!.routes!.push(...happeningsSlug);
       }
-    }
+    },
   },
   image: {
     provider: 'ipx',
+    sanity: {
+      projectId: process.env.SANITY_PROJECT_ID || 'yourProjectId',
+      dataset: process.env.SANITY_DATASET || 'production',
+    },
     domains: ['cdn.sanity.io'],
     format: ['avif', 'webp', 'jpg'],
     quality: 80,
@@ -176,9 +218,9 @@ export default defineNuxtConfig({
     vue: {
       script: {
         globalTypeFiles: [
-          fileURLToPath(new URL('./types/index.d.ts', import.meta.url))
-        ]
-      }
-    }
+          fileURLToPath(new URL('./types/index.d.ts', import.meta.url)),
+        ],
+      },
+    },
   },
-})
+});

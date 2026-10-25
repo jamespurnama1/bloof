@@ -43,8 +43,9 @@ onMounted(async () => {
         <h3 class="text-3xl md:text-5xl text-center">Special Packages</h3>
         <swiper-container ref="swiperRef" init="false" class="flex w-full">
           <swiper-slide class="m-auto" v-for="(brochure, i) in CMSStore.eventsData.brochures" :key="i">
-            <NuxtPicture preload class="flex m-auto max-h-[80vh] w-auto" :imgAttrs="{ class: 'object-contain' }"
-              :src="brochure.url || ''" :alt="brochure.alt || ''" densities="x1 x2" :placeholder="[50, 25, 75, 5]" />
+            <NuxtPicture provider="sanity" preload class="flex m-auto max-h-[80vh] w-auto"
+              :imgAttrs="{ class: 'object-contain' }" :src="brochure.assetId || ''" :alt="brochure.alt || ''"
+              densities="x1 x2" :placeholder="[50, 25, 75, 5]" />
           </swiper-slide>
         </swiper-container>
       </section>
