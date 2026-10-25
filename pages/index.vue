@@ -216,8 +216,7 @@ onUnmounted(() => {
         </div>
         <Transition name="fade">
           <div v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden">
-            <NuxtImg provider="none" class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg"
-              alt="Bloof Pattern" format="webp" quality="70" />
+            <img class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg" alt="Bloof Pattern" />
           </div>
           <NuxtPicture provider="sanity" v-else-if="privateRoom === 'bloof_belly'"
             class="absolute w-full h-full top-0 left-0 overflow-hidden" loading="lazy"
