@@ -158,10 +158,10 @@ onUnmounted(() => {
         class="md:mt-5 md:h-24 h-12 w-auto rotate-[220deg] invert arrow" />
       <div
         class="absolute top-0 left-0 object-cover w-full h-full bg-gradient-to-b from-transparent to-black opacity-40 -z-10" />
-      <NuxtPicture class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy"
+      <NuxtPicture provider="sanity" class="zoom absolute top-0 left-0 w-full h-full -z-20" loading="lazy"
         :imgAttrs="{ class: 'object-cover flex w-full h-full' }" densities="x1 x2" alt="Menu Chapter 1"
         sizes="xs:100vw sm:100vw md:100vw lg:100vw xl:100vw xxl:100vw 2xl:100vw"
-        :src="CMSStore.menuData.coverImage?.url || ''" />
+        :src="CMSStore.menuData.coverImage?.assetId || ''" />
     </section>
     <!-- Socials --->
     <section class="h-[100dvh] flex flex-col">
@@ -216,7 +216,7 @@ onUnmounted(() => {
         </div>
         <Transition name="fade">
           <div v-if="!privateRoom" class="absolute w-full h-full top-0 left-0 overflow-hidden">
-            <NuxtImg class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg"
+            <NuxtImg provider="none" class="pattern2 w-auto h-full object-contain scale-[3]" src="/images/super2.jpg"
               alt="Bloof Pattern" format="webp" quality="70" />
           </div>
           <NuxtPicture provider="sanity" v-else-if="privateRoom === 'bloof_belly'"

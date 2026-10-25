@@ -93,8 +93,8 @@ onUnmounted(() => {
       </p>
     </Transition>
     <Transition name="fade">
-      <NuxtPicture v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo" densities="x1 x2"
-        class="h-48 md:h-72 w-auto absolute z-10" sizes="144px md:288px" />
+      <NuxtPicture provider="none" v-if="currentRoute.path !== '/' && logo" src="/logo.png" alt="Bloof Logo"
+        densities="x1 x2" class="h-48 md:h-72 w-auto absolute z-10" sizes="144px md:288px" />
     </Transition>
     <canvas ref="canvas" class="w-full h-full" />
   </div>
